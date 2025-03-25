@@ -1,6 +1,6 @@
 import requests
 import streamlit as st
-
+API_BASE_URL = "http://localhost:8000"
 def get_api_response(question, session_id, model):
     headers = {
         'accept': 'application/json',
@@ -67,3 +67,42 @@ def delete_document(file_id):
     except Exception as e:
         st.error(f"An error occurred while deleting the document: {str(e)}")
         return None
+# app/api_utils.py
+
+def save_test(test_content, document_id=None, session_id=None):
+    try:
+        response = requests.post(
+            f"{API_BASE_URL}/save-test",
+            json={
+                "test_content": test_content,
+                "document_id": document_id,
+                "session_id": session_id
+            }
+        )
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        st.error(f"Save Test Error: {str(e)}")
+        return None
+
+def list_tests():
+    try:
+        response = requests.get(f"{API_BASE_URL}/list-tests")
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        st.error(f"List Tests Error: {str(e)}")
+        return []
+
+def delete_test(test_id):
+    try:
+        response = requests.post(
+            f"{API_BASE_URL}/delete-test",
+            json={"test_id": test_id}
+        )
+        return response.status_code == 200
+    except Exception as e:
+        st.error(f"Delete Test Error: {str(e)}")
+        return False
+
+

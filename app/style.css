@@ -10,3 +10,18 @@
 #root .st-emotion-cache-h4xjwg{
   display: none !important;
 }
+.st-emotion-cache-79elbk{
+  display: none !important;
+}
+.st-emotion-cache-79elbk .e1tphpha1{
+  display: none !important;
+}
+/* Скрыть боковую панель навигации */
+[data-testid="stSidebarNav"] {
+  display: none !important;
+}
+
+/* Скрыть разделитель под навигацией */
+[data-testid="stSidebarNavSeparator"] {
+  display: none !important;
+}
