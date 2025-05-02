@@ -11,9 +11,8 @@ def load_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Загружаем CSS из файла
 load_css("style.css")
-# Регистрируем шрифт с поддержкой кириллицы
+
 try:
     pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))
 except:
@@ -23,18 +22,16 @@ def markdown_to_pdf(markdown_text):
     buffer = BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
 
-    # Используем шрифт с поддержкой кириллицы
     try:
         p.setFont("Arial", 12)
     except:
-        p.setFont("Helvetica", 12)  # Резервный шрифт
+        p.setFont("Helvetica", 12) 
 
     lines = markdown_text.split("\n")
-    y = 750  # Начальная позиция по Y
+    y = 750  
     line_height = 20
 
     for line in lines:
-        # Разбиваем длинные строки
         while len(line) > 100:
             p.drawString(50, y, line[:100])
             line = line[100:]
@@ -74,14 +71,12 @@ def show_generate_page():
                 st.session_state.uploaded_file_id = response['file_id']
                 st.success(f"Документ {uploaded_file.name} успешно загружен!")
 
-    # Настройки теста
     st.header("2. Настройки теста")
 
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
     difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
     question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
 
-    # Генерация теста
     st.header("3. Сгенерировать тест")
     if st.button("Создать тест"):
         if 'uploaded_file_id' not in st.session_state:
@@ -113,11 +108,9 @@ def show_generate_page():
                 with st.expander("Просмотр теста"):
                     st.markdown(st.session_state.generated_test)
 
-                # Секция экспорта
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
-                    # Скачивание MD-файла
                     st.download_button(
                         label="Скачать MD",
                         data=st.session_state.generated_test,
@@ -126,7 +119,6 @@ def show_generate_page():
                     )
                 
                 with col2:
-                    # Конвертация PDF
                     pdf_buffer = markdown_to_pdf(st.session_state.generated_test)
                     st.download_button(
                         label="Скачать PDF",
@@ -136,7 +128,6 @@ def show_generate_page():
                     )
                 
                 with col3:
-                    # Сохранение в базу данных
                     if st.button("Сохранить тест"):
                         save_response = save_test(
                             test_content=st.session_state.generated_test,
