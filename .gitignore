@@ -1,0 +1,5 @@
+venv/
+rag_app.db
+chroma_db/
+temp_*
+*.log

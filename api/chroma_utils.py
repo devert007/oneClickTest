@@ -9,8 +9,10 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20
 
 embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
+import os
+if not os.path.exists("./chroma_db"):
+    os.makedirs("./chroma_db")
 vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
-
 def load_and_split_document(file_path: str) -> List[Document]:
     if file_path.endswith('.pdf'):
         loader = PyPDFLoader(file_path)
