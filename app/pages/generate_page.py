@@ -72,7 +72,6 @@ def show_generate_page():
                 st.success(f"Документ {uploaded_file.name} успешно загружен!")
 
     st.header("2. Настройки теста")
-
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
     difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
     question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
@@ -88,9 +87,9 @@ def show_generate_page():
         - Количество вопросов: {question_count}
         - Уровень сложности: {difficulty}
         - Формат вопросов: {question_format}
-        - Включай правильные ответы (пиши правильныые ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+        - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
         - Используй информацию из последнего загруженного документа
-        - Используй только тот язык, который используется в документе, но по возможноси используй только русский и английский язык
+        - Используй только тот язык, который используется в документе, но по возможности используй только русский и английский язык
         - Использовать только ту информацию, которая есть в загруженном документе
         """
 
@@ -103,44 +102,48 @@ def show_generate_page():
 
             if response:
                 st.session_state.generated_test = response['answer']
+                st.session_state.test_generated = True  # Flag to indicate test is generated
                 st.success("Тест успешно сгенерирован!")
-
-                with st.expander("Просмотр теста"):
-                    st.markdown(st.session_state.generated_test)
-
-                col1, col2, col3 = st.columns(3)
-                
-                with col1:
-                    st.download_button(
-                        label="Скачать MD",
-                        data=st.session_state.generated_test,
-                        file_name="generated_test.md",
-                        mime="text/markdown"
-                    )
-                
-                with col2:
-                    pdf_buffer = markdown_to_pdf(st.session_state.generated_test)
-                    st.download_button(
-                        label="Скачать PDF",
-                        data=pdf_buffer,
-                        file_name="generated_test.pdf",
-                        mime="application/pdf"
-                    )
-                
-                with col3:
-                    if st.button("Сохранить тест"):
-                        save_response = save_test(
-                            test_content=st.session_state.generated_test,
-                            document_id=st.session_state.uploaded_file_id,
-                            session_id=st.session_state.session_id
-                        )
-                        if save_response:
-                            st.success(f"Тест сохранён! ID: {save_response.get('test_id')}")
-                        else:
-                            st.error("Ошибка сохранения теста")
-
             else:
                 st.error("Ошибка генерации теста")
+
+    # Display generated test and buttons if test exists
+    if 'test_generated' in st.session_state and st.session_state.test_generated and 'generated_test' in st.session_state:
+        with st.expander("Просмотр теста", expanded=True):
+            st.markdown(st.session_state.generated_test)
+
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.download_button(
+                label="Скачать MD",
+                data=st.session_state.generated_test,
+                file_name="generated_test.md",
+                mime="text/markdown",
+                key="download_md"
+            )
+        
+        with col2:
+            pdf_buffer = markdown_to_pdf(st.session_state.generated_test)
+            st.download_button(
+                label="Скачать PDF",
+                data=pdf_buffer,
+                file_name="generated_test.pdf",
+                mime="application/pdf",
+                key="download_pdf"
+            )
+        
+        # with col3:
+        #     if st.button("Сохранить тест", key="save_test"):
+        #         save_response = save_test(
+        #             test_content=st.session_state.generated_test,
+        #             document_id=st.session_state.uploaded_file_id,
+        #             session_id=st.session_state.session_id
+        #         )
+        #         if save_response:
+        #             st.success(f"Тест сохранён! ID: {save_response.get('test_id')}")
+        #         else:
+        #             st.error("Ошибка сохранения теста")
 
 if __name__ == "__main__":
     show_generate_page()
