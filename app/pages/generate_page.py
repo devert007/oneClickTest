@@ -1,5 +1,5 @@
 import streamlit as st
-from api_utils import upload_document, get_api_response, save_test
+from api_utils import upload_document, get_api_response, save_test,list_documents
 import uuid
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -60,27 +60,53 @@ def show_generate_page():
     if 'session_id' not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
 
-    # Загрузка документа
-    st.header("1. Загрузите документ")
-    uploaded_file = st.file_uploader("Выберите PDF или DOCX файл", type=["pdf", "docx"], key="gen_uploader")
+    # Секция выбора/загрузки документа
+    st.header("1. Выберите или загрузите документ")
+    
+    # Получение списка документов
+    documents = list_documents()
+    
+    # Выбор из существующих документов
+    if documents:
+        doc_options = {doc['filename']: doc['id'] for doc in documents}
+        selected_doc = st.selectbox(
+            "Выберите из ранее загруженных документов",
+            options=[""] + list(doc_options.keys())
+        )
+        
+        if selected_doc:
+            st.session_state.uploaded_file_id = doc_options[selected_doc]
+            st.info(f"Выбран документ: {selected_doc}")
 
+    # Загрузка нового документа
+    uploaded_file = st.file_uploader(
+        "Или загрузите новый файл", 
+        type=["pdf", "docx"], 
+        key="gen_uploader"
+    )
+    
     if uploaded_file and st.button("Загрузить файл"):
         with st.spinner("Идет загрузка..."):
             response = upload_document(uploaded_file)
             if response:
                 st.session_state.uploaded_file_id = response['file_id']
                 st.success(f"Документ {uploaded_file.name} успешно загружен!")
+                # Обновляем список документов
+                documents = list_documents()
 
+    # Настройки теста
     st.header("2. Настройки теста")
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
     difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
     question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
 
+    # Остальная часть кода без изменений
     st.header("3. Сгенерировать тест")
     if st.button("Создать тест"):
         if 'uploaded_file_id' not in st.session_state:
-            st.error("Сначала загрузите документ!")
+            st.error("Сначала выберите или загрузите документ!")
             return
+
 
         prompt = f"""
         Сгенерируйте тест на основе документа. Требования:
