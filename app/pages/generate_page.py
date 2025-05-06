@@ -1,5 +1,5 @@
 import streamlit as st
-from api_utils import upload_document, get_api_response, save_test,list_documents
+from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf
 import uuid
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -25,10 +25,10 @@ def markdown_to_pdf(markdown_text):
     try:
         p.setFont("Arial", 12)
     except:
-        p.setFont("Helvetica", 12) 
+        p.setFont("Helvetica", 12)
 
     lines = markdown_text.split("\n")
-    y = 750  
+    y = 750
     line_height = 20
 
     for line in lines:
@@ -60,13 +60,10 @@ def show_generate_page():
     if 'session_id' not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
 
-    # Секция выбора/загрузки документа
     st.header("1. Выберите или загрузите документ")
     
-    # Получение списка документов
     documents = list_documents()
     
-    # Выбор из существующих документов
     if documents:
         doc_options = {doc['filename']: doc['id'] for doc in documents}
         selected_doc = st.selectbox(
@@ -78,10 +75,9 @@ def show_generate_page():
             st.session_state.uploaded_file_id = doc_options[selected_doc]
             st.info(f"Выбран документ: {selected_doc}")
 
-    # Загрузка нового документа
     uploaded_file = st.file_uploader(
-        "Или загрузите новый файл", 
-        type=["pdf", "docx"], 
+        "Или загрузите новый файл",
+        type=["pdf", "docx"],
         key="gen_uploader"
     )
     
@@ -91,22 +87,18 @@ def show_generate_page():
             if response:
                 st.session_state.uploaded_file_id = response['file_id']
                 st.success(f"Документ {uploaded_file.name} успешно загружен!")
-                # Обновляем список документов
                 documents = list_documents()
 
-    # Настройки теста
     st.header("2. Настройки теста")
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
     difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
     question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
 
-    # Остальная часть кода без изменений
     st.header("3. Сгенерировать тест")
     if st.button("Создать тест"):
         if 'uploaded_file_id' not in st.session_state:
             st.error("Сначала выберите или загрузите документ!")
             return
-
 
         prompt = f"""
         Сгенерируйте тест на основе документа. Требования:
@@ -128,12 +120,24 @@ def show_generate_page():
 
             if response:
                 st.session_state.generated_test = response['answer']
-                st.session_state.test_generated = True  # Flag to indicate test is generated
+                st.session_state.test_generated = True
+                st.session_state.test_pdf = markdown_to_pdf(st.session_state.generated_test)
                 st.success("Тест успешно сгенерирован!")
+
+
+                pdf_response = upload_test_pdf(
+                    pdf_buffer=st.session_state.test_pdf,
+                    filename="generated_test.pdf",
+                    document_id=st.session_state.uploaded_file_id,
+                    session_id=st.session_state.session_id
+                )
+                if pdf_response:
+                    st.success(f"PDF тест сохранён! ID: {pdf_response.get('file_id')}")
+                else:
+                    st.error("Ошибка сохранения PDF теста")
             else:
                 st.error("Ошибка генерации теста")
 
-    # Display generated test and buttons if test exists
     if 'test_generated' in st.session_state and st.session_state.test_generated and 'generated_test' in st.session_state:
         with st.expander("Просмотр теста", expanded=True):
             st.markdown(st.session_state.generated_test)
@@ -150,26 +154,17 @@ def show_generate_page():
             )
         
         with col2:
-            pdf_buffer = markdown_to_pdf(st.session_state.generated_test)
             st.download_button(
                 label="Скачать PDF",
-                data=pdf_buffer,
+                data=st.session_state.test_pdf,
                 file_name="generated_test.pdf",
                 mime="application/pdf",
                 key="download_pdf"
             )
         
         # with col3:
-        #     if st.button("Сохранить тест", key="save_test"):
-        #         save_response = save_test(
-        #             test_content=st.session_state.generated_test,
-        #             document_id=st.session_state.uploaded_file_id,
-        #             session_id=st.session_state.session_id
-        #         )
-        #         if save_response:
-        #             st.success(f"Тест сохранён! ID: {save_response.get('test_id')}")
-        #         else:
-        #             st.error("Ошибка сохранения теста")
+        #     if st.button("Сохранить PDF тест", key="save_test"):
+               
 
 if __name__ == "__main__":
     show_generate_page()

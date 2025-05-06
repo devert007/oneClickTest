@@ -27,6 +27,17 @@ def create_document_store():
                      upload_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
     conn.close()
 
+def create_test_pdf_store():
+    conn = get_db_connection()
+    conn.execute('''CREATE TABLE IF NOT EXISTS test_pdf_store
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     filename TEXT,
+                     document_id INTEGER,
+                     session_id TEXT,
+                     pdf_content BLOB,
+                     upload_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    conn.close()
+
 def insert_application_logs(session_id, user_query, gpt_response, model):
     conn = get_db_connection()
     conn.execute('INSERT INTO application_logs (session_id, user_query, gpt_response, model) VALUES (?, ?, ?, ?)',
@@ -56,9 +67,26 @@ def insert_document_record(filename):
     conn.close()
     return file_id
 
+def insert_test_pdf_record(filename, document_id, session_id, pdf_content):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO test_pdf_store (filename, document_id, session_id, pdf_content) VALUES (?, ?, ?, ?)',
+                  (filename, document_id, session_id, pdf_content))
+    file_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    return file_id
+
 def delete_document_record(file_id):
     conn = get_db_connection()
     conn.execute('DELETE FROM document_store WHERE id = ?', (file_id,))
+    conn.commit()
+    conn.close()
+    return True
+
+def delete_test_pdf_record(file_id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM test_pdf_store WHERE id = ?', (file_id,))
     conn.commit()
     conn.close()
     return True
@@ -71,5 +99,24 @@ def get_all_documents():
     conn.close()
     return [dict(doc) for doc in documents]
 
+def get_all_test_pdfs():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, filename, document_id, session_id, upload_timestamp FROM test_pdf_store ORDER BY upload_timestamp DESC')
+    test_pdfs = cursor.fetchall()
+    conn.close()
+    return [dict(pdf) for pdf in test_pdfs]
+
+def get_test_pdf_content(file_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT pdf_content FROM test_pdf_store WHERE id = ?', (file_id,))
+    result = cursor.fetchone()
+    conn.close()
+    return result['pdf_content'] if result else None
+
+
+
 create_application_logs()
 create_document_store()
+create_test_pdf_store()
