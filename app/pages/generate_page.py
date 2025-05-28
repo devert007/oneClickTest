@@ -6,6 +6,8 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from io import BytesIO
+from docx import Document
+from docx.shared import Pt
 
 def load_css(file_name):
     with open(file_name) as f:
@@ -18,6 +20,34 @@ try:
 except:
     st.warning("Не удалось загрузить шрифт Arial. Используется резервный шрифт.")
 
+
+def markdown_to_word(markdown_text):
+    # Create a new Word document
+    doc = Document()
+    
+    # Set default font and size
+    style = doc.styles['Normal']
+    style.font.name = 'Arial'
+    style.font.size = Pt(12)
+    
+    # Split Markdown text into lines
+    lines = markdown_text.split("\n")
+    
+    # Process each line
+    for line in lines:
+        # Handle long lines by splitting them into chunks of 100 characters
+        while len(line) > 100:
+            doc.add_paragraph(line[:100])
+            line = line[100:]
+        # Add the remaining line or short lines
+        doc.add_paragraph(line)
+    
+    # Save the document to a BytesIO buffer
+    buffer = BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+    
+    return buffer
 def markdown_to_pdf(markdown_text):
     buffer = BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
@@ -122,6 +152,7 @@ def show_generate_page():
                 st.session_state.generated_test = response['answer']
                 st.session_state.test_generated = True
                 st.session_state.test_pdf = markdown_to_pdf(st.session_state.generated_test)
+                st.session_state.test_word = markdown_to_word(st.session_state.generated_test)
                 st.success("Тест успешно сгенерирован!")
 
 
@@ -161,6 +192,15 @@ def show_generate_page():
                 mime="application/pdf",
                 key="download_pdf"
             )
+        with col3:
+            st.download_button(
+                label="Скачать WORD",
+                data=st.session_state.test_word,
+                file_name="generated_test.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                key="download_word"
+            )
+        
         
         # with col3:
         #     if st.button("Сохранить PDF тест", key="save_test"):

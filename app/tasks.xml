@@ -1,0 +1,36 @@
+<tasks>
+    <subject name="Математика">
+        <topic name="Алгебра">
+            <task>
+                <question>Решите уравнение: x^2 - 5x + 6 = 0</question>
+                <type>Открытый ответ</type>
+                <difficulty>Средний</difficulty>
+                <answer>x = 2, x = 3</answer>
+            </task>
+            <task>
+                <question>Найдите производную функции y = 3x^2 + 2x</question>
+                <type>Открытый ответ</type>
+                <difficulty>Сложный</difficulty>
+                <answer>y' = 6x + 2</answer>
+            </task>
+        </topic>
+        <topic name="Геометрия">
+            <task>
+                <question>Найдите площадь треугольника со сторонами 3, 4 и 5</question>
+                <type>Открытый ответ</type>
+                <difficulty>Легкий</difficulty>
+                <answer>6</answer>
+            </task>
+        </topic>
+    </subject>
+    <subject name="Физика">
+        <topic name="Механика">
+            <task>
+                <question>Какова скорость тела массой 2 кг при энергии 100 Дж?</question>
+                <type>Открытый ответ</type>
+                <difficulty>Средний</difficulty>
+                <answer>10 м/с</answer>
+            </task>
+        </topic>
+    </subject>
+</tasks>
