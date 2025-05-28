@@ -1,6 +1,7 @@
 import streamlit as st
 from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf
 import uuid
+from xml_utils import load_tasks_from_xml, get_tasks,get_preview_tasks
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -124,50 +125,99 @@ def show_generate_page():
     difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
     question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
 
-    st.header("3. Сгенерировать тест")
+    # New section for XML task selection
+    st.header("3. Добавить задачи из базы")
+    tasks_dict = load_tasks_from_xml()
+    subjects = list(tasks_dict.keys()) if tasks_dict else []
+    selected_subject = st.selectbox("Выберите предмет", options=[""] + subjects)
+    selected_topic = None
+    xml_tasks_count = 0
+
+    if selected_subject:
+        topics = list(tasks_dict[selected_subject].keys())
+        selected_topic = st.selectbox("Выберите тему", options=[""] + topics)
+        xml_unlock_tasks_count =get_preview_tasks(subject=selected_subject,
+                topic=selected_topic if selected_topic else None,
+                difficulty=difficulty,
+                task_type=question_format)
+        xml_tasks_count = st.number_input("Количество доступных задач по вашим настройкам  из XML", min_value=1 if xml_unlock_tasks_count>0 else 0, max_value=xml_unlock_tasks_count, value=1 if xml_unlock_tasks_count>0 else 0)
+    
+    st.header("4. Сгенерировать тест")
     if st.button("Создать тест"):
-        if 'uploaded_file_id' not in st.session_state:
-            st.error("Сначала выберите или загрузите документ!")
+        if 'uploaded_file_id' not in st.session_state and not selected_subject:
+            st.error("Выберите документ или предмет для генерации теста!")
             return
 
-        prompt = f"""
-        Сгенерируйте тест на основе документа. Требования:
-        - Количество вопросов: {question_count}
-        - Уровень сложности: {difficulty}
-        - Формат вопросов: {question_format}
-        - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
-        - Используй информацию из последнего загруженного документа
-        - Используй только тот язык, который используется в документе, но по возможности используй только русский и английский язык
-        - Использовать только ту информацию, которая есть в загруженном документе
-        """
+        # Adjust question count for AI generation
+        ai_question_count = question_count
+        generated_questions = []
+        answers = []
 
-        with st.spinner("Генерация теста..."):
-            response = get_api_response(
-                question=prompt,
-                session_id=st.session_state.session_id,
-                model="llama3.2"
-            )
-
-            if response:
-                st.session_state.generated_test = response['answer']
-                st.session_state.test_generated = True
-                st.session_state.test_pdf = markdown_to_pdf(st.session_state.generated_test)
-                st.session_state.test_word = markdown_to_word(st.session_state.generated_test)
-                st.success("Тест успешно сгенерирован!")
-
-
-                pdf_response = upload_test_pdf(
-                    pdf_buffer=st.session_state.test_pdf,
-                    filename="generated_test.pdf",
-                    document_id=st.session_state.uploaded_file_id,
-                    session_id=st.session_state.session_id
+        # Generate AI-based questions if needed
+        if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
+            prompt = f"""
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: {ai_question_count}
+            - Уровень сложности: {difficulty}
+            - Формат вопросов: {question_format}
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй информацию из последнего загруженного документа
+            - Используй только тот язык, который используется в документе,   по возможности используй только русский и английский язык
+            - Использовать только ту информацию, которая есть в загруженном документе
+            """
+            with st.spinner("Генерация теста..."):
+                response = get_api_response(
+                    question=prompt,
+                    session_id=st.session_state.session_id,
+                    model="llama3.2"
                 )
-                if pdf_response:
-                    st.success(f"PDF тест сохранён! ID: {pdf_response.get('file_id')}")
-                else:
-                    st.error("Ошибка сохранения PDF теста")
-            else:
-                st.error("Ошибка генерации теста")
+                if response:
+                    generated_questions = response['answer'].split("\n\n")
+                    # Extract answers (last lines starting with [)
+                    answers = [line for line in generated_questions if line.startswith("[")]
+                    generated_questions = [q for q in generated_questions if not q.startswith("[")]
+
+        # Add XML tasks
+        xml_questions = []
+        print(selected_subject,xml_tasks_count)
+
+        if selected_subject and xml_tasks_count > 0:
+            print('tyta')
+            xml_tasks = get_tasks(
+                subject=selected_subject,
+                topic=selected_topic if selected_topic else None,
+                difficulty=difficulty,
+                task_type=question_format,
+                limit=xml_tasks_count
+            )
+            print(xml_tasks)
+            for i, task in enumerate(xml_tasks, len(generated_questions) + 1):
+                xml_questions.append(f"{i}. {task.question}")
+                answers.append(f"[{i}].{task.answer}")
+        print(xml_questions)
+        # Combine questions and answers
+        combined_questions = generated_questions + xml_questions
+        if not combined_questions:
+            st.error("Не удалось сгенерировать или выбрать вопросы!")
+            return
+
+        test_content = "\n\n".join(combined_questions + ["\n**Ответы:**\n"] + answers)
+        st.session_state.generated_test = test_content
+        st.session_state.test_generated = True
+        st.session_state.test_pdf = markdown_to_pdf(test_content)
+        st.session_state.test_word = markdown_to_word(test_content)
+        st.success("Тест успешно сгенерирован!")
+
+        pdf_response = upload_test_pdf(
+            pdf_buffer=st.session_state.test_pdf,
+            filename="generated_test.pdf",
+            document_id=st.session_state.uploaded_file_id if 'uploaded_file_id' in st.session_state else None,
+            session_id=st.session_state.session_id
+        )
+        if pdf_response:
+            st.success(f"PDF тест сохранён! ID: {pdf_response.get('file_id')}")
+        else:
+            st.error("Ошибка сохранения PDF теста")
 
     if 'test_generated' in st.session_state and st.session_state.test_generated and 'generated_test' in st.session_state:
         with st.expander("Просмотр теста", expanded=True):
@@ -200,11 +250,8 @@ def show_generate_page():
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 key="download_word"
             )
-        
-        
-        # with col3:
-        #     if st.button("Сохранить PDF тест", key="save_test"):
-               
+
+
 
 if __name__ == "__main__":
     show_generate_page()

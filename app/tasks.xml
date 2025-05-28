@@ -9,16 +9,16 @@
             </task>
             <task>
                 <question>Найдите производную функции y = 3x^2 + 2x</question>
-                <type>Открытый ответ</type>
-                <difficulty>Сложный</difficulty>
+                <type>Выбор варианта</type>
+                <difficulty>Легкий</difficulty>
                 <answer>y' = 6x + 2</answer>
             </task>
         </topic>
         <topic name="Геометрия">
             <task>
                 <question>Найдите площадь треугольника со сторонами 3, 4 и 5</question>
-                <type>Открытый ответ</type>
-                <difficulty>Легкий</difficulty>
+                <type>Выбор варианта</type>
+                <difficulty>Средний</difficulty>
                 <answer>6</answer>
             </task>
         </topic>
@@ -27,8 +27,8 @@
         <topic name="Механика">
             <task>
                 <question>Какова скорость тела массой 2 кг при энергии 100 Дж?</question>
-                <type>Открытый ответ</type>
-                <difficulty>Средний</difficulty>
+                <type>Выбор варианта</type>
+                <difficulty>Легкий</difficulty>
                 <answer>10 м/с</answer>
             </task>
         </topic>
