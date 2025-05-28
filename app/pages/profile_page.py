@@ -1,5 +1,5 @@
 import streamlit as st
-from api_utils import upload_document, delete_document, list_documents, list_test_pdfs, delete_test_pdf, download_test_pdf
+from api_utils import upload_document, delete_document, list_documents, list_test_pdfs, delete_test_pdf, download_test_pdf,check_document_uniqueness
 import uuid
 
 def load_css(file_name):
@@ -90,18 +90,35 @@ def show_profile_page():
     else:
         st.write("Сохранённых PDF тестов не найдено")
 
-    st.header("Загрузить новый документ")
-    uploaded_file = st.file_uploader("Выберите файл", type=["pdf", "docx", "html"])
+    # st.header("Загрузить новый документ")
+    # uploaded_file = st.file_uploader("Выберите файл", type=["pdf", "docx", "html"])
     
-    if uploaded_file is not None:
-        if st.button("Загрузить"):
-            with st.spinner("Загрузка..."):
-                upload_response = upload_document(uploaded_file)
-                if upload_response:
-                    st.success(f"Файл '{uploaded_file.name}' загружен успешно с ID {upload_response['file_id']}.")
-                    st.session_state.documents = list_documents()
-                else:
-                    st.error("Ошибка загрузки файла.")
+    # if uploaded_file is not None:
+    #     if st.button("Загрузить"):
+    #        if st.button("Проверить уникальность"):
+    #         with st.spinner("Проверка уникальности..."):
+    #             uniqueness_response = check_document_uniqueness(uploaded_file)
+    #             if uniqueness_response:
+    #                 if uniqueness_response.get("is_unique"):
+    #                     st.success("Документ уникален!")
+    #                 else:
+    #                     source = uniqueness_response.get("source")
+    #                     if source == "SQLite":
+    #                         st.error(f"Документ с именем {uploaded_file.name} уже существует в базе данных!")
+    #                     elif source == "ChromaDB":
+    #                         st.error(
+    #                             f"Документ не уникален! Максимальное сходство: "
+    #                             f"{uniqueness_response['max_similarity']:.2f} с файлом ID {uniqueness_response['similar_doc_id']}"
+    #                         )
+        
+    #     if st.button("Загрузить"):
+    #         with st.spinner("Загрузка..."):
+    #             upload_response = upload_document(uploaded_file)
+    #             if upload_response:
+    #                 st.success(f"Файл '{uploaded_file.name}' загружен успешно с ID {upload_response['file_id']}.")
+    #                 st.session_state.documents = list_documents()
+    #             else:
+    #                 st.error("Ошибка загрузки файла.")
 
 if __name__ == "__main__":
     show_profile_page()

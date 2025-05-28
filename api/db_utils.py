@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime
-
+from typing import Tuple
 DB_NAME = "rag_app.db"
 
 def get_db_connection():
@@ -115,6 +115,23 @@ def get_test_pdf_content(file_id):
     conn.close()
     return result['pdf_content'] if result else None
 
+def check_filename_uniqueness(filename: str) -> Tuple[bool, str]:
+    """
+    Проверяет, существует ли файл с таким же именем в SQLite.
+    Возвращает: (is_unique, existing_filename)
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT filename FROM document_store WHERE filename = ?', (filename,))
+        result = cursor.fetchone()
+        conn.close()
+        if result:
+            return False, result['filename']
+        return True, ""
+    except Exception as e:
+        print(f"Error checking filename uniqueness: {e}")
+        return False, f"Error: {str(e)}"
 
 
 create_application_logs()

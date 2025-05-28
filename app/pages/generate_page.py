@@ -1,5 +1,5 @@
 import streamlit as st
-from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf
+from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf,check_document_uniqueness
 import uuid
 from xml_utils import load_tasks_from_xml, get_tasks,get_preview_tasks
 from reportlab.lib.pagesizes import letter
@@ -90,7 +90,12 @@ def show_generate_page():
 
     if 'session_id' not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
-
+    if 'is_document_unique' not in st.session_state:
+        st.session_state.is_document_unique = False
+    if 'uniqueness_checked' not in st.session_state:
+        st.session_state.uniqueness_checked = False
+    if 'uploaded_file_id' not in st.session_state:
+        st.session_state.uploaded_file_id = None
     st.header("1. Выберите или загрузите документ")
     
     documents = list_documents()
@@ -112,13 +117,42 @@ def show_generate_page():
         key="gen_uploader"
     )
     
-    if uploaded_file and st.button("Загрузить файл"):
-        with st.spinner("Идет загрузка..."):
-            response = upload_document(uploaded_file)
-            if response:
-                st.session_state.uploaded_file_id = response['file_id']
-                st.success(f"Документ {uploaded_file.name} успешно загружен!")
-                documents = list_documents()
+    if uploaded_file: 
+        if st.button("Проверить уникальность"):
+            with st.spinner("Проверка уникальности..."):
+                uniqueness_response = check_document_uniqueness(uploaded_file)
+                if uniqueness_response:
+                    if uniqueness_response.get("is_unique"):
+                        st.success("Документ уникален!")
+                        st.session_state.is_document_unique = True
+                        st.session_state.uniqueness_checked = True
+                    else:
+                        st.session_state.is_document_unique = False
+                        st.session_state.uniqueness_checked = True
+                        source = uniqueness_response.get("source")
+                        if source == "SQLite":
+                            st.error(f"Документ с именем {uploaded_file.name} уже существует в базе данных!")
+                        elif source == "ChromaDB":
+                            st.error(
+                                f"Документ не уникален! Максимальное сходство: "
+                                f"{uniqueness_response['max_similarity']:.2f} с файлом ID {uniqueness_response['similar_doc_id']}"
+                            )
+
+        # Show upload button only if document is unique
+        if st.session_state.uniqueness_checked and st.session_state.is_document_unique:
+            if st.button("Загрузить файл"):
+                with st.spinner("Идет загрузка..."):
+                    response = upload_document(uploaded_file)
+                    if response:
+                        st.session_state.uploaded_file_id = response['file_id']
+                        st.success(f"Документ {uploaded_file.name} успешно загружен!")
+                        st.session_state.uniqueness_checked = False  # Reset for next upload
+                        st.session_state.is_document_unique = False
+                        documents = list_documents()
+                    else:
+                        st.error("Ошибка при загрузке документа.")
+
+    
 
     st.header("2. Настройки теста")
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)

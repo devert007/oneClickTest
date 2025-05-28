@@ -132,3 +132,16 @@ def delete_test_pdf(file_id):
     except Exception as e:
         st.error(f"An error occurred while deleting the test PDF: {str(e)}")
         return None
+def check_document_uniqueness(file):
+    try:
+        files = {"file": (file.name, file, file.type)}
+        response = requests.post("http://localhost:8000/check-uniqueness", files=files)
+        if response.status_code == 200:
+            print(response,response.json())
+            return response.json()
+        else:
+            st.error(f"Failed to check uniqueness. Error: {response.status_code} - {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"An error occurred while checking uniqueness: {str(e)}")
+        return None
