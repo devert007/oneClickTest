@@ -1,5 +1,5 @@
 import streamlit as st
-from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf,check_document_uniqueness
+from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf,check_document_uniqueness,get_document_text
 import uuid
 from xml_utils import load_tasks_from_xml, get_tasks,get_preview_tasks
 from reportlab.lib.pagesizes import letter
@@ -23,27 +23,20 @@ except:
 
 
 def markdown_to_word(markdown_text):
-    # Create a new Word document
     doc = Document()
     
-    # Set default font and size
     style = doc.styles['Normal']
     style.font.name = 'Arial'
     style.font.size = Pt(12)
     
-    # Split Markdown text into lines
     lines = markdown_text.split("\n")
     
-    # Process each line
     for line in lines:
-        # Handle long lines by splitting them into chunks of 100 characters
         while len(line) > 100:
             doc.add_paragraph(line[:100])
             line = line[100:]
-        # Add the remaining line or short lines
         doc.add_paragraph(line)
     
-    # Save the document to a BytesIO buffer
     buffer = BytesIO()
     doc.save(buffer)
     buffer.seek(0)
@@ -156,11 +149,12 @@ def show_generate_page():
 
     st.header("2. Настройки теста")
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
-    difficulty = st.select_slider("Уровень сложности", options=["Легкий", "Средний", "Сложный"])
-    question_format = st.radio("Формат вопросов", ["Выбор варианта", "Открытый ответ", "Сбор правильного ответа из двух частей"])
+    difficulty = st.select_slider("Уровень сложности", options=["Для начальных классов", "Для средних классов", "Для старших классов", "Для студентов"])
+    question_format = st.radio("Формат вопросов", ["Вопрос с выбором ответа", 
+    "Вопрос без выбора ответа"])
 
-    # New section for XML task selection
     st.header("3. Добавить задачи из базы")
+
     tasks_dict = load_tasks_from_xml()
     subjects = list(tasks_dict.keys()) if tasks_dict else []
     selected_subject = st.selectbox("Выберите предмет", options=[""] + subjects)
@@ -189,15 +183,26 @@ def show_generate_page():
 
         # Generate AI-based questions if needed
         if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
+            document_text = get_document_text(st.session_state.uploaded_file_id) 
             prompt = f"""
-            Сгенерируйте тест на основе документа. Требования:
-            - Количество вопросов: {ai_question_count}
+            Сгенерируйте тест на основе документа.
+            Требования:
+            - ТОЛЬКО это количество вопросов: {ai_question_count}
             - Уровень сложности: {difficulty}
-            - Формат вопросов: {question_format}
+            - Используй строго этот формат вопросов: {question_format}
             - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
-            - Используй информацию из последнего загруженного документа
-            - Используй только тот язык, который используется в документе,   по возможности используй только русский и английский язык
-            - Использовать только ту информацию, которая есть в загруженном документе
+            
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            После генерации теста, перепроверь все вышеперечисленные требования и исправь строго под требования.
+
+            Текст документа:
+            {document_text} 
+            
             """
             with st.spinner("Генерация теста..."):
                 response = get_api_response(
@@ -235,7 +240,7 @@ def show_generate_page():
             st.error("Не удалось сгенерировать или выбрать вопросы!")
             return
 
-        test_content = "\n\n".join(combined_questions + ["\n**Ответы:**\n"] + answers)
+        test_content = "\n\n".join(combined_questions + answers)
         st.session_state.generated_test = test_content
         st.session_state.test_generated = True
         st.session_state.test_pdf = markdown_to_pdf(test_content)

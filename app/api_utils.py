@@ -41,7 +41,11 @@ def upload_document(file):
     except Exception as e:
         st.error(f"An error occurred while uploading the file: {str(e)}")
         return None
-
+def get_document_text(file_id: int) -> str:
+    response = requests.get(f"{API_BASE_URL}/get-document-text/{file_id}")
+    if response.status_code == 200:
+        return response.json().get("text", "")
+    return ""
 def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None, session_id: str = None):
     print("Uploading test PDF...")
     try:

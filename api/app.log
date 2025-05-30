@@ -2644,3 +2644,2960 @@ INFO:root:Deleted all documents with file_id 56
 INFO:backoff:Backing off send_request(...) for 0.2s (requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='us.i.posthog.com', port=443): Read timed out. (read timeout=15))
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (2): us.i.posthog.com:443
 DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:146]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[148:160]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[162:233]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[237:12724]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Экономика. Жизнедеятельность человека.docx
+DEBUG:root:Split document into 6 chunks
+DEBUG:chromadb.config:Starting component PersistentLocalHnswSegment
+INFO:root:Successfully indexed document with file_id 57
+INFO:root:File Экономика. Жизнедеятельность человека.docx successfully uploaded and indexed with file_id 57
+INFO:root:Session ID: 04c70fb8-ab7c-412d-9571-2ad88ec4fd1c, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 5
+            - Уровень сложности: Сложный
+            - Используй строго этот формат вопросов: Сбор правильного ответа из двух частей
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Текст документа:
+            Жизнедеятельность человека, общества как система потребностей. Закон возвышения потребностей.
+
+
+Жизнедеятельность человека и общества неразрывно связана с удовлетворением потребностей. Именно потребности выступают исходным пунктом функционирования любой экономической системы. Человек нуждается в средствах и условиях существования, которые, принимая форму конкретной необходимости в определённых благах, товарах и услугах, становятся тем, что мы называем потребностями.
+
+Классификация потребностей
+
+Потребности можно классифицировать в зависимости от их характера и степени удовлетворения:
+
+Абсолютные (перспективные) потребности
+Это максимальный объём благ, который общество могло бы потребить, если бы они были доступны. Такие потребности отражают потенциальные возможности общества и его потребительские силы.
+
+Действительные (необходимые) потребности
+Это потребности, которые могут быть удовлетворены при текущем уровне развития производства и оптимальном ходе воспроизводства. Они зависят от достигнутого экономического уровня.
+
+Подлежащие удовлетворению потребности
+Это потребности, которые возможно удовлетворить при фактическом состоянии воспроизводства, учитывая отклонения от оптимального уровня.
+
+Фактически удовлетворяемые потребности
+Это те потребности, которые реально удовлетворяются в данный момент времени.
+
+Такая классификация показывает, что потребности многослойны и зависят как от возможностей производства, так и от реальных условий жизни общества.
+
+Взаимосвязь потребностей и производства
+
+Потребности и производство находятся в тесной взаимосвязи, влияя друг на друга:
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Стимул для производства
+Рост и развитие потребностей служат мощным стимулом для общественного производства, побуждая его к расширению и совершенствованию.
+
+Новые задачи для производства
+Потребности постоянно ставят перед производством новые задачи, способствуя появлению прогрессивных технологий и новой техники.
+
+Общие условия для потребностей
+Производство создаёт объективные условия, в которых возникают и развиваются экономические потребности. В свою очередь, потребности направляют экономическую деятельность общества, социальных групп и отдельных людей.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Под влиянием научно-технического прогресса (НТП) потребности не только растут, но и обновляются, что ещё больше усиливает эту взаимосвязь.
+
+Закон возвышения потребностей - общий (всеобщий) социально экономический закон, выражающий направленность качественного и количественного развития общественных потребностей:
+
+
+
+В ходе развития общества происходит количественный и качественный рост потребностей
+
+Потребности видоизменяются, одни исчезают другие появляются
+
+Возникают новые, более прогрессивные потребности
+
+Круг потребностей расширяется
+
+Структура потребностей качественно меняется, возрастает доля интеллектуальных и социальных потребностей
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Определение целей
+Они задают направления экономической деятельности, указывая, какие товары и услуги необходимо производить.
+
+Стимул инноваций
+Потребности побуждают к созданию новых технологий и продуктов, обеспечивая прогресс.
+
+Влияние на рынок
+Формируя спрос, потребности определяют предложение и влияют на распределение ресурсов.
+
+Двигатель развития
+Рост потребностей стимулирует производство, что способствует экономическому росту и улучшению качества жизни.
+
+Примеры:
+
+ Японские потребители высоко ценят технологии и ожидают от продуктов высокого качества, долговечности и эстетической привлекательности. Например, спрос на миниатюрные, функциональные и стильные гаджеты здесь особенно высок
+
+Немецкие потребители ищут продукты, которые обеспечивают надежность и долговечность, будь то автомобили, бытовая техника или промышленное оборудование. Акцент делается на практичности и высоких стандартах качества
+
+Италия: бренд стиля и дизайна
+
+Южная Корея: бренд технологий и поп-культуры
+
+
+
+
+
+Заключение
+
+Жизнедеятельность человека и общества представляет собой сложную систему потребностей, которая постоянно развивается. Потребности возникают как объективное состояние, выражающее противоречие между желаемым и имеющимся, и классифицируются по степени их реализации. Они тесно связаны с производством, которое одновременно формирует их и развивается под их влиянием. Закон возвышения потребностей подчёркивает динамику этой системы: с ростом уровня жизни потребности становятся всё более разнообразными и сложными, стимулируя прогресс общества. Понимание этой системы и её законов важно для управления экономикой и обеспечения устойчивого развития.
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 04c70fb8-ab7c-412d-9571-2ad88ec4fd1c, AI Response: Создать тест на основе предоставленного документа.
+
+
+Вопрос 1
+Классифицировать потребности, в зависимости от их характера и степени удовлетворения. [Абсолютные (перспективные). Действительные (необходимые)]
+Ответ: А
+
+Вопрос 2
+Что является основным фактором формирования потребностей? [Производство]
+Ответ: Производство
+
+Вопрос 3
+Как evolves круг потребностей? [Расширяется]
+Ответ: Расширяется
+
+Вопрос 4 
+Какие потребности играют центральную роль в экономической жизни общества? [Потребности в целом безграничны]
+Ответ: А. Потребности в целом безграничны
+
+Вопрос 5
+Что побуждает к созданию новых технологий и продуктов, обеспечивая прогресс? [Потребности]
+Ответ: А. Потребности
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:37963]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:root:Session ID: 52b54d73-f7ae-4e18-9e12-dba9f997e8e7, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 10
+            - Уровень сложности: Для магистрантов
+            - Используй строго этот формат вопросов: Открытый ответ
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Текст документа:
+            Жизнедеятельность человека, общества как система потребностей. Закон возвышения потребностей.
+
+
+Жизнедеятельность человека и общества неразрывно связана с удовлетворением потребностей. Именно потребности выступают исходным пунктом функционирования любой экономической системы. Человек нуждается в средствах и условиях существования, которые, принимая форму конкретной необходимости в определённых благах, товарах и услугах, становятся тем, что мы называем потребностями.
+
+Классификация потребностей
+
+Потребности можно классифицировать в зависимости от их характера и степени удовлетворения:
+
+Абсолютные (перспективные) потребности
+Это максимальный объём благ, который общество могло бы потребить, если бы они были доступны. Такие потребности отражают потенциальные возможности общества и его потребительские силы.
+
+Действительные (необходимые) потребности
+Это потребности, которые могут быть удовлетворены при текущем уровне развития производства и оптимальном ходе воспроизводства. Они зависят от достигнутого экономического уровня.
+
+Подлежащие удовлетворению потребности
+Это потребности, которые возможно удовлетворить при фактическом состоянии воспроизводства, учитывая отклонения от оптимального уровня.
+
+Фактически удовлетворяемые потребности
+Это те потребности, которые реально удовлетворяются в данный момент времени.
+
+Такая классификация показывает, что потребности многослойны и зависят как от возможностей производства, так и от реальных условий жизни общества.
+
+Взаимосвязь потребностей и производства
+
+Потребности и производство находятся в тесной взаимосвязи, влияя друг на друга:
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Стимул для производства
+Рост и развитие потребностей служат мощным стимулом для общественного производства, побуждая его к расширению и совершенствованию.
+
+Новые задачи для производства
+Потребности постоянно ставят перед производством новые задачи, способствуя появлению прогрессивных технологий и новой техники.
+
+Общие условия для потребностей
+Производство создаёт объективные условия, в которых возникают и развиваются экономические потребности. В свою очередь, потребности направляют экономическую деятельность общества, социальных групп и отдельных людей.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Под влиянием научно-технического прогресса (НТП) потребности не только растут, но и обновляются, что ещё больше усиливает эту взаимосвязь.
+
+Закон возвышения потребностей - общий (всеобщий) социально экономический закон, выражающий направленность качественного и количественного развития общественных потребностей:
+
+
+
+В ходе развития общества происходит количественный и качественный рост потребностей
+
+Потребности видоизменяются, одни исчезают другие появляются
+
+Возникают новые, более прогрессивные потребности
+
+Круг потребностей расширяется
+
+Структура потребностей качественно меняется, возрастает доля интеллектуальных и социальных потребностей
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Определение целей
+Они задают направления экономической деятельности, указывая, какие товары и услуги необходимо производить.
+
+Стимул инноваций
+Потребности побуждают к созданию новых технологий и продуктов, обеспечивая прогресс.
+
+Влияние на рынок
+Формируя спрос, потребности определяют предложение и влияют на распределение ресурсов.
+
+Двигатель развития
+Рост потребностей стимулирует производство, что способствует экономическому росту и улучшению качества жизни.
+
+Примеры:
+
+ Японские потребители высоко ценят технологии и ожидают от продуктов высокого качества, долговечности и эстетической привлекательности. Например, спрос на миниатюрные, функциональные и стильные гаджеты здесь особенно высок
+
+Немецкие потребители ищут продукты, которые обеспечивают надежность и долговечность, будь то автомобили, бытовая техника или промышленное оборудование. Акцент делается на практичности и высоких стандартах качества
+
+Италия: бренд стиля и дизайна
+
+Южная Корея: бренд технологий и поп-культуры
+
+
+
+
+
+Заключение
+
+Жизнедеятельность человека и общества представляет собой сложную систему потребностей, которая постоянно развивается. Потребности возникают как объективное состояние, выражающее противоречие между желаемым и имеющимся, и классифицируются по степени их реализации. Они тесно связаны с производством, которое одновременно формирует их и развивается под их влиянием. Закон возвышения потребностей подчёркивает динамику этой системы: с ростом уровня жизни потребности становятся всё более разнообразными и сложными, стимулируя прогресс общества. Понимание этой системы и её законов важно для управления экономикой и обеспечения устойчивого развития.
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 52b54d73-f7ae-4e18-9e12-dba9f997e8e7, AI Response: Открываю тест на основе документа:
+
+
+1. Какая основная роль потребностей в экономической жизни общества?
+ [2][4][7]
+
+
+2. Какие типы потребности можно классифицировать по степени их реализации?
+ [3][5][8]
+
+
+3. Как тесно связаны потребности с производством?
+ [6][9][11]
+
+
+4. Каково значение закона возвышения потребностей в системе потребностей?
+ [1][2][10]
+
+
+5. Какие факторы влияют на стимул для производства?
+ [10][12][14]
+
+
+6. Какие типы потребностей arise под влиянием научно-технического прогресса (НТП)?
+ [13][15]
+
+
+7. Какова динамика развития потребностей при повышении уровня жизни общества?
+ [16][17]
+
+
+8. Каким образом потребности формируют экономическую деятельность общества, социальных групп и отдельных людей?
+ [18][19]
+
+
+9. Какие новые задачи перед производством поставляют потребности?
+ [20][21]
+
+
+10. Каковы основные направления экономической деятельности, которые задает направление потребностей?
+ [22][23]
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:38374]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Чаадаев.docx
+DEBUG:root:Split document into 14 chunks
+DEBUG:chromadb.config:Starting component PersistentLocalHnswSegment
+INFO:root:Successfully indexed document with file_id 58
+INFO:root:File Чаадаев.docx successfully uploaded and indexed with file_id 58
+INFO:root:Session ID: e5159eea-5cb3-4de5-894e-6e9d621a1a96, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 1
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: e5159eea-5cb3-4de5-894e-6e9d621a1a96, AI Response: Тест по документу:
+
+Вопрос 1. Какие формы экономической потребности связаны с эпохой и уровнем развития общества?
+
+А) Формы личных потребностей
+Б) Формы социальных потребностей
+[B] 1.B
+
+Примечание: Вопрос и ответы созданы на основе предоставленного текста документа, строго следуя указанным выше требованиям.
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:37049]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:133]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[135:147]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[149:220]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[224:16554]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:133]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[135:147]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[149:220]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[224:16554]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Философия истории Г.docx
+DEBUG:root:Split document into 6 chunks
+DEBUG:chromadb.config:Starting component PersistentLocalHnswSegment
+INFO:root:Successfully indexed document with file_id 59
+INFO:root:File Философия истории Г.docx successfully uploaded and indexed with file_id 59
+INFO:root:Session ID: 4fa1268e-f2bc-47e5-9c86-34a9cc0fc8e2, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 1
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:146]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[148:160]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[162:233]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[237:21304]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:146]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[148:160]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[162:233]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[237:21304]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Антигитлеровская коалиция.docx
+DEBUG:root:Split document into 14 chunks
+DEBUG:chromadb.config:Starting component PersistentLocalHnswSegment
+INFO:root:Successfully indexed document with file_id 60
+INFO:root:File Антигитлеровская коалиция.docx successfully uploaded and indexed with file_id 60
+INFO:root:Session ID: 64e03955-18ab-4c80-8a64-43bd511f3014, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 1
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Текст документа:
+            https://nashahistory.ru/materials/antigitlerovskaya-koaliciya-1941-1945-gg-problemy-doveriya
+
+### Слайд 1: **Тема презентации**  
+
+**Антигитлеровская коалиция и её роль в победе над нацистской Германией**  
+
+*Цель*:  
+
+- Изучить историю формирования коалиции и её ключевые этапы.  
+
+- Проанализировать вклад СССР, США и Великобритании в разгром Германии.  
+
+- Оценить политические и военные аспекты сотрудничества, а также противоречия внутри коалиции.  
+
+- Показать значение коалиции для послевоенного мироустройства.  
+
+
+
+---
+
+
+
+### Слайд 2: **Определение и состав коалиции**  
+
+**Антигитлеровская коалиция** – военно-политический союз государств (1939–1945), противостоявших странам «Оси».  
+
+- **Основные участники**: СССР, США, Великобритания (с 1941 г.), Франция (с 1944 г.), Китай.  
+
+- **Союзники**: Канада, Австралия, Индия, страны Латинской Америки и др. (всего 53 государства).  
+
+- **Формальное закрепление**: 1 января 1942 г. – подписание Декларации Объединённых Наций.  
+
+
+
+---
+
+- **Формальное закрепление**: 1 января 1942 г. – подписание Декларации Объединённых Наций.  
+
+
+
+---
+
+
+
+### Слайд 3: **Предпосылки создания коалиции**  
+
+- **Общий враг**: экспансионистская политика Германии, Италии и Японии, угрожавшая миру.  
+
+- **22 июня 1941 г.**: нападение Германии на СССР стало катализатором объединения.  
+
+- **Довоенные противоречия**: СССР и Запад не доверяли друг другу из-за пакта Молотова-Риббентропа (1939) и Зимней войны (1939–1940).  
+
+- **Инициатива Черчилля и Рузвельта**: необходимость остановить Гитлера, несмотря на идеологические разногласия.  
+
+
+
+---
+
+
+
+### Слайд 4: **Ключевые этапы формирования**  
+
+1. **12 июля 1941 г.**: советско-британское соглашение о взаимопомощи – первый шаг к союзу.  
+
+2. **Август 1941 г.**: Атлантическая хартия (Рузвельт и Черчилль) – декларация целей войны против нацизма.  
+
+3. **Сентябрь 1941 г.**: присоединение СССР к Атлантической хартии.
+
+2. **Август 1941 г.**: Атлантическая хартия (Рузвельт и Черчилль) – декларация целей войны против нацизма.  
+
+3. **Сентябрь 1941 г.**: присоединение СССР к Атлантической хартии.  
+
+4. **1 января 1942 г.**: Декларация Объединённых Наций – официальное создание коалиции.  
+
+
+
+---
+
+
+
+### Слайд 5: **Роль ленд-лиза**  
+
+- **Программа помощи США**: поставки техники, сырья и продовольствия на $50 млрд (из них $11 млрд – СССР).  
+
+- **Для СССР**: 17,5 млн тонн грузов, включая 400 тыс. автомобилей, 12 тыс. танков, 18 тыс. самолётов.  
+
+- **Маршруты**:  
+
+  - **Арктические конвои** (PQ-17): 25% грузов, несмотря на потери от атак подлодок.  
+
+  - **Трансиранский путь**: 30% поставок через Иран.  
+
+- **Значение**: ленд-лиз укрепил тыл СССР, но 90% военной техники производилось внутри страны.  
+
+
+
+---
+
+
+
+### Слайд 6: **Военное сотрудничество**  
+
+- **Северная Африка (1942–1943)**: победа союзников под Эль-Аламейном ослабила позиции Роммеля.
+
+---
+
+
+
+### Слайд 6: **Военное сотрудничество**  
+
+- **Северная Африка (1942–1943)**: победа союзников под Эль-Аламейном ослабила позиции Роммеля.  
+
+- **Италия (1943)**: высадка на Сицилии и капитуляция Муссолини.  
+
+- **Открытие Второго фронта (6 июня 1944 г.)**: операция «Оверлорд» (Нормандия) отвлекла 30% сил вермахта с Восточного фронта.  
+
+- **Встреча на Эльбе (апрель 1945)**: соединение советских и американских войск – символ единства коалиции.  
+
+
+
+---
+
+
+
+### Слайд 7: **Конференции лидеров коалиции**  
+
+1. **Тегеранская (ноябрь 1943 г.)**:  
+
+   - Согласование планов открытия Второго фронта.  
+
+   - СССР пообещал вступить в войну с Японией.  
+
+2. **Ялтинская (февраль 1945 г.)**:  
+
+   - Раздел Германии на зоны оккупации.  
+
+   - Создание ООН и признание СССР в Восточной Европе.  
+
+
+
+---
+
+
+
+### Слайд 8: **Вклад СССР в победу**  
+
+- **Основные сражения**:  
+
+  - Сталинград (1942–1943) – перелом в войне.
+
+- Создание ООН и признание СССР в Восточной Европе.  
+
+
+
+---
+
+
+
+### Слайд 8: **Вклад СССР в победу**  
+
+- **Основные сражения**:  
+
+  - Сталинград (1942–1943) – перелом в войне.  
+
+  - Курская битва (1943) – поражение вермахта в крупнейшем танковом сражении.  
+
+- **Потери вермахта**: 80% личного состава и техники уничтожены на Восточном фронте.  
+
+- **Партизанское движение**: 1 млн участников, дезорганизация тыла противника.  
+
+
+
+---
+
+
+
+### Слайд 9: **Роль США и Великобритании**  
+
+- **США**:  
+
+  - Промышленный гигант: 50% мирового ВВП, 300 тыс. самолётов за войну.  
+
+  - Финансирование ленд-лиза и атомный проект («Манхэттен»).  
+
+- **Великобритания**:  
+
+  - Битва за Атлантику (1939–1945) – защита морских путей.  
+
+  - Бомбардировки Германии (1942–1945): разрушение промышленности и городов.  
+
+
+
+---
+
+
+
+### Слайд 10: **Страны «Оси»: слабости и противоречия**  
+
+- **Германия**: переоценка сил, стратегические ошибки (нападение на СССР).
+
+---
+
+
+
+### Слайд 10: **Страны «Оси»: слабости и противоречия**  
+
+- **Германия**: переоценка сил, стратегические ошибки (нападение на СССР).  
+
+- **Италия**: слабая армия, зависимость от Германии, капитуляция в 1943 г.  
+
+- **Япония**: изоляция после Перл-Харбора, поражение в битве за Мидуэй (1942).  
+
+- **Отсутствие единства**: каждая страна «Оси» преследовала собственные цели.  
+
+
+
+---
+
+
+
+### Слайд 11: **Проблемы доверия в коалиции**  
+
+- **Задержка Второго фронта**: СССР требовал открытия в 1942–1943 гг., но союзники тянули до 1944 г.  
+
+- **Тайные переговоры**: операция «Санрайз» (1945) – попытки Запада договориться с Германием о сепаратном мире.  
+
+- **Польский вопрос**: споры о границах и правительстве привели к кризису в 1943–1945 гг.  
+
+
+
+---
+
+
+
+### Слайд 12: **Польский вопрос**  
+
+- **Линия Керзона**: СССР настаивал на границе 1920 г., что отвергалось польским правительством в изгнании.  
+
+- **Катынский расстрел (1943)**: разрыв отношений СССР с Польшей.
+
+- **Линия Керзона**: СССР настаивал на границе 1920 г., что отвергалось польским правительством в изгнании.  
+
+- **Катынский расстрел (1943)**: разрыв отношений СССР с Польшей.  
+
+- **Варшавское восстание (1944)**: Красная Армия не оказала помощь, что усилило противоречия.  
+
+- **Ялтинские решения**: создание просоветского правительства, компенсация Польше за счёт Германии.  
+
+
+
+---
+
+
+
+### Слайд 13: **Итоги взаимодействия**  
+
+- **Военный успех**: объединение ресурсов СССР, США и Великобритании сокрушило Германию.  
+
+- **Создание ООН**: коалиция стала основой для послевоенной системы коллективной безопасности.  
+
+- **Раскол коалиции**: противоречия по вопросам Восточной Европы привели к Холодной войне.  
+
+
+
+---
+
+
+
+### Слайд 14: **Историческое значение**  
+
+- **Превосходство в ресурсах**: коалиция контролировала 80% мирового промышленного производства.  
+
+- **Моральный аспект**: союз демократий и социалистического государства показал возможность сотрудничества ради общей цели.
+
+- **Моральный аспект**: союз демократий и социалистического государства показал возможность сотрудничества ради общей цели.  
+
+- **Урок для современности**: важность диалога и компромиссов в условиях глобальных угроз.  
+
+
+
+---
+
+
+
+### Слайд 15: **Заключение**  
+
+Антигитлеровская коалиция:  
+
+- **Военный триумф**: разгром сильнейшей армии мира (вермахта) за 4 года.  
+
+- **Гуманитарная миссия**: спасение мира от нацистского порабощения и геноцида.  
+
+- **Наследие**: опыт коалиции остаётся примером для решения современных конфликтов.  
+
+
+
+*«Победа 1945 года – результат не только военной мощи, но и способности враждующих идеологий объединиться перед лицом общей опасности»*.
+
+*«Победа 1945 года – результат не только военной мощи, но и способности враждующих идеологий объединиться перед лицом общей опасности»*.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Антигитлеровская коалиция – Военно-политический союз стран и народов во главе с СССР, США и Великобританией, воевавших во Второй Мировой войне с 1939 по 1945 годы против центральных европейских государств, стран нацистского блока, также называемых Страны «Оси»: Германии, Италии, Японии и их союзниками, а также коллаборационистическими соединениями
+
+Путь формирования антигитлеровской коалиции был начат с переговоров между такими гегемонами как СССР, Великобританией и США. По окончании, переговоры завершились подписанием советско-английского соглашения о сотрудничестве 12 июля 1941 г. В соглашении оговаривалось два основных направления коалиции: помощь и поддержка в войне против Германии, а также отказ от ведения переговоров или заключения мирного договора на каких бы то ни было условиях.
+
+В 1935 году Коммунистический Интернационал выступил за образование широких антинацистских фронтов с участием социал-демократов, таким образом, было достигнуто единство пролетарского класса.
+
+Западные страны стремились отвести от себя угрозу войны, но не спешили заключать договоры о взаимопонимании с Советским Союзом.
+
+Изначально Англия, Франция и США рассматривали СССР как угодно, но только не как союзника в войне с Германией. Слишком свежа была память об агрессивных действиях СССР в отношении Польши в 1918 г. Коммунистические идеи лидерам ведущих капиталистических держав не были близки настолько же, насколько национал-социализм или фашизм. Естественно чувствуя неприязнь со стороны лидеров «Лиги Наций», Сталин идет на Переговоры с Гитлером. А 23 августа 1939 года был подписан пакт Молотова-Риббентропа. Вступившая в войну 3 сентября Великобритания делала ставку на Францию. Как и во время Первой мировой войны предполагалось удержание и истощение войск вермахта. За начало «Зимней войны» СССР был исключен из «Лиги Наций». Западные державы оказывали материально-техническую помощь маленькой Финляндии. В ответ на это СССР не вмешался в военные действия, начатые 10 мая 1940 года, когда немцы начали «блицкриг», обойдя Бельгию и выйдя в тыл Линии «Мажино», окружив под Дюнкером 300-тысячный корпус англичан. В
+
+на это СССР не вмешался в военные действия, начатые 10 мая 1940 года, когда немцы начали «блицкриг», обойдя Бельгию и выйдя в тыл Линии «Мажино», окружив под Дюнкером 300-тысячный корпус англичан. В тот момент был шанс ударить в тыл Гитлера, пока его краса и гордость – танковые и моторизованные дивизии воевали далеко от восточных границ, но тогда ещё не было очевидно, кто друг, а кто враг для СССР
+
+Одной из важнейших задач внешней политики СССР было создание антигитлеровской коалиции. Предпосылками для ее образования явились: освободительные цели в войне с агрессором; общая опасность суверенитету, исходящая от нацистского блока. 22 июня 1941 года фашистская Германия напала на СССР без объявления войны. Одновременно против Советского Союза выступили союзники – Италия, Венгрия, Румыния, Финляндия, Словакия. На дальневосточных границах Советского Союза сосредоточилась миллионная армия Японии, которая, как оказалось позднее, не планировала нападать на Советский Союз в тот период времени. В этот же день премьер-министр Англии Черчилль, а 24 июня президент США Рузвельт заявили о намерении их стран оказать поддержку СССР в его борьбе против Третьего Рейха, так как Советский Союз и Великобритания, в отличие от США уже находились в составе войны против Германии. Советское правительство предложило Англии немедленно заключить соглашение о совместной деятельности. Английское правительство
+
+в отличие от США уже находились в составе войны против Германии. Советское правительство предложило Англии немедленно заключить соглашение о совместной деятельности. Английское правительство приняло это предложение. 12 июля 1941 года было подписано Англо-советское соглашение о совместном действии в войне против Германии, СССР и Англия обязывались оказывать друг другу помощь и поддержку, а также не вести переговоры, не заключать перемирия или мирный договор, кроме как с обоюдного согласия.
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 64e03955-18ab-4c80-8a64-43bd511f3014, AI Response: Я могу ayudать вам в этом вопросе. Как я поняла, вы хотите, чтобы я создал текст на основе заданных тем и требований. Давайте начнем!
+
+Тема: Антигитлеровская коалиция
+Рейтинг приоритетности: Высокий
+
+Требуемые требования:
+
+1. Текст должен быть составлен с учетом исторического контекста Второй мировой войны и роли Советского Союза в抗агрессивной войне.
+2. Текст должен содержать информацию о создании антигитлеровской коалиции и ее целях.
+3. Текст должен быть написан на niveauе для широкого круга читателей, имеющих базовое знание истории Второй мировой войны.
+
+Сообщение:
+
+В период Второй мировой войны Советский Союз стал ключевым игроком в формировании антигитлеровской коалиции. После нападения на СССР 22 июня 1941 года, лидеры «Лиги Наций» и США не были готовы оказывать прямую поддержку SССР in его борьбе против Третьего Рейха.
+
+Вместо этого они предложили Soviet Union participate in a coalition government with Germany, which was rejected by Stalin. 
+
+Вместе с Англией, СССР обещали оказать друг другу помощь и поддержку в войне против Германии. Angliya была первой страной, которая признала Союза в его качестве агрессора.
+
+Соответственно, 12 июля 1941 года было подписано Англо-советское соглашение о совместном действии в войне против Германии.
+
+Этот договор включал в себя обещание СССР оказатьAnglie поддержку и assistance in case of an attack by Germany on USSR. Angliya, в свою очередь, обязывалось providing Soviet Union with military aid and equipment.
+
+Всего на момент начала войны на советских границах estaba в сумме более 1 миллиона солдат. В то время действовало несколько политических партий и движения, которые были разорваны и разрушены «блицкригами».
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:40352]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/revision/main HTTP/1.1" 200 6796
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 6796
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:chromadb.config:Starting component OpenTelemetryClient
+DEBUG:chromadb.config:Starting component SqliteDB
+DEBUG:chromadb.config:Starting component SimpleQuotaEnforcer
+DEBUG:chromadb.config:Starting component SimpleRateLimitEnforcer
+DEBUG:chromadb.config:Starting component LocalSegmentManager
+DEBUG:chromadb.config:Starting component LocalExecutor
+DEBUG:chromadb.config:Starting component SegmentAPI
+DEBUG:chromadb.api.segment:Collection langchain already exists, returning existing collection.
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:root:Found 14 document chunks for file_id 60
+DEBUG:chromadb.config:Starting component PersistentLocalHnswSegment
+INFO:root:Deleted all documents with file_id 60
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:root:Found 6 document chunks for file_id 59
+INFO:root:Deleted all documents with file_id 59
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:root:Found 14 document chunks for file_id 58
+INFO:root:Deleted all documents with file_id 58
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:root:Found 6 document chunks for file_id 57
+INFO:root:Deleted all documents with file_id 57
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:146]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[148:160]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[162:233]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[237:21304]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:146]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[148:160]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[162:233]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[237:21304]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Антигитлеровская коалиция.docx
+DEBUG:root:Split document into 14 chunks
+INFO:root:Successfully indexed document with file_id 61
+INFO:root:File Антигитлеровская коалиция.docx successfully uploaded and indexed with file_id 61
+INFO:root:Session ID: 269a8798-5dd6-4841-92c5-24f85247fb98, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - Количество вопросов: 1
+            - Уровень сложности: Для магист
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Текст документа:
+            https://nashahistory.ru/materials/antigitlerovskaya-koaliciya-1941-1945-gg-problemy-doveriya
+
+### Слайд 1: **Тема презентации**  
+
+**Антигитлеровская коалиция и её роль в победе над нацистской Германией**  
+
+*Цель*:  
+
+- Изучить историю формирования коалиции и её ключевые этапы.  
+
+- Проанализировать вклад СССР, США и Великобритании в разгром Германии.  
+
+- Оценить политические и военные аспекты сотрудничества, а также противоречия внутри коалиции.  
+
+- Показать значение коалиции для послевоенного мироустройства.  
+
+
+
+---
+
+
+
+### Слайд 2: **Определение и состав коалиции**  
+
+**Антигитлеровская коалиция** – военно-политический союз государств (1939–1945), противостоявших странам «Оси».  
+
+- **Основные участники**: СССР, США, Великобритания (с 1941 г.), Франция (с 1944 г.), Китай.  
+
+- **Союзники**: Канада, Австралия, Индия, страны Латинской Америки и др. (всего 53 государства).  
+
+- **Формальное закрепление**: 1 января 1942 г. – подписание Декларации Объединённых Наций.  
+
+
+
+---
+
+- **Формальное закрепление**: 1 января 1942 г. – подписание Декларации Объединённых Наций.  
+
+
+
+---
+
+
+
+### Слайд 3: **Предпосылки создания коалиции**  
+
+- **Общий враг**: экспансионистская политика Германии, Италии и Японии, угрожавшая миру.  
+
+- **22 июня 1941 г.**: нападение Германии на СССР стало катализатором объединения.  
+
+- **Довоенные противоречия**: СССР и Запад не доверяли друг другу из-за пакта Молотова-Риббентропа (1939) и Зимней войны (1939–1940).  
+
+- **Инициатива Черчилля и Рузвельта**: необходимость остановить Гитлера, несмотря на идеологические разногласия.  
+
+
+
+---
+
+
+
+### Слайд 4: **Ключевые этапы формирования**  
+
+1. **12 июля 1941 г.**: советско-британское соглашение о взаимопомощи – первый шаг к союзу.  
+
+2. **Август 1941 г.**: Атлантическая хартия (Рузвельт и Черчилль) – декларация целей войны против нацизма.  
+
+3. **Сентябрь 1941 г.**: присоединение СССР к Атлантической хартии.
+
+2. **Август 1941 г.**: Атлантическая хартия (Рузвельт и Черчилль) – декларация целей войны против нацизма.  
+
+3. **Сентябрь 1941 г.**: присоединение СССР к Атлантической хартии.  
+
+4. **1 января 1942 г.**: Декларация Объединённых Наций – официальное создание коалиции.  
+
+
+
+---
+
+
+
+### Слайд 5: **Роль ленд-лиза**  
+
+- **Программа помощи США**: поставки техники, сырья и продовольствия на $50 млрд (из них $11 млрд – СССР).  
+
+- **Для СССР**: 17,5 млн тонн грузов, включая 400 тыс. автомобилей, 12 тыс. танков, 18 тыс. самолётов.  
+
+- **Маршруты**:  
+
+  - **Арктические конвои** (PQ-17): 25% грузов, несмотря на потери от атак подлодок.  
+
+  - **Трансиранский путь**: 30% поставок через Иран.  
+
+- **Значение**: ленд-лиз укрепил тыл СССР, но 90% военной техники производилось внутри страны.  
+
+
+
+---
+
+
+
+### Слайд 6: **Военное сотрудничество**  
+
+- **Северная Африка (1942–1943)**: победа союзников под Эль-Аламейном ослабила позиции Роммеля.
+
+---
+
+
+
+### Слайд 6: **Военное сотрудничество**  
+
+- **Северная Африка (1942–1943)**: победа союзников под Эль-Аламейном ослабила позиции Роммеля.  
+
+- **Италия (1943)**: высадка на Сицилии и капитуляция Муссолини.  
+
+- **Открытие Второго фронта (6 июня 1944 г.)**: операция «Оверлорд» (Нормандия) отвлекла 30% сил вермахта с Восточного фронта.  
+
+- **Встреча на Эльбе (апрель 1945)**: соединение советских и американских войск – символ единства коалиции.  
+
+
+
+---
+
+
+
+### Слайд 7: **Конференции лидеров коалиции**  
+
+1. **Тегеранская (ноябрь 1943 г.)**:  
+
+   - Согласование планов открытия Второго фронта.  
+
+   - СССР пообещал вступить в войну с Японией.  
+
+2. **Ялтинская (февраль 1945 г.)**:  
+
+   - Раздел Германии на зоны оккупации.  
+
+   - Создание ООН и признание СССР в Восточной Европе.  
+
+
+
+---
+
+
+
+### Слайд 8: **Вклад СССР в победу**  
+
+- **Основные сражения**:  
+
+  - Сталинград (1942–1943) – перелом в войне.
+
+- Создание ООН и признание СССР в Восточной Европе.  
+
+
+
+---
+
+
+
+### Слайд 8: **Вклад СССР в победу**  
+
+- **Основные сражения**:  
+
+  - Сталинград (1942–1943) – перелом в войне.  
+
+  - Курская битва (1943) – поражение вермахта в крупнейшем танковом сражении.  
+
+- **Потери вермахта**: 80% личного состава и техники уничтожены на Восточном фронте.  
+
+- **Партизанское движение**: 1 млн участников, дезорганизация тыла противника.  
+
+
+
+---
+
+
+
+### Слайд 9: **Роль США и Великобритании**  
+
+- **США**:  
+
+  - Промышленный гигант: 50% мирового ВВП, 300 тыс. самолётов за войну.  
+
+  - Финансирование ленд-лиза и атомный проект («Манхэттен»).  
+
+- **Великобритания**:  
+
+  - Битва за Атлантику (1939–1945) – защита морских путей.  
+
+  - Бомбардировки Германии (1942–1945): разрушение промышленности и городов.  
+
+
+
+---
+
+
+
+### Слайд 10: **Страны «Оси»: слабости и противоречия**  
+
+- **Германия**: переоценка сил, стратегические ошибки (нападение на СССР).
+
+---
+
+
+
+### Слайд 10: **Страны «Оси»: слабости и противоречия**  
+
+- **Германия**: переоценка сил, стратегические ошибки (нападение на СССР).  
+
+- **Италия**: слабая армия, зависимость от Германии, капитуляция в 1943 г.  
+
+- **Япония**: изоляция после Перл-Харбора, поражение в битве за Мидуэй (1942).  
+
+- **Отсутствие единства**: каждая страна «Оси» преследовала собственные цели.  
+
+
+
+---
+
+
+
+### Слайд 11: **Проблемы доверия в коалиции**  
+
+- **Задержка Второго фронта**: СССР требовал открытия в 1942–1943 гг., но союзники тянули до 1944 г.  
+
+- **Тайные переговоры**: операция «Санрайз» (1945) – попытки Запада договориться с Германием о сепаратном мире.  
+
+- **Польский вопрос**: споры о границах и правительстве привели к кризису в 1943–1945 гг.  
+
+
+
+---
+
+
+
+### Слайд 12: **Польский вопрос**  
+
+- **Линия Керзона**: СССР настаивал на границе 1920 г., что отвергалось польским правительством в изгнании.  
+
+- **Катынский расстрел (1943)**: разрыв отношений СССР с Польшей.
+
+- **Линия Керзона**: СССР настаивал на границе 1920 г., что отвергалось польским правительством в изгнании.  
+
+- **Катынский расстрел (1943)**: разрыв отношений СССР с Польшей.  
+
+- **Варшавское восстание (1944)**: Красная Армия не оказала помощь, что усилило противоречия.  
+
+- **Ялтинские решения**: создание просоветского правительства, компенсация Польше за счёт Германии.  
+
+
+
+---
+
+
+
+### Слайд 13: **Итоги взаимодействия**  
+
+- **Военный успех**: объединение ресурсов СССР, США и Великобритании сокрушило Германию.  
+
+- **Создание ООН**: коалиция стала основой для послевоенной системы коллективной безопасности.  
+
+- **Раскол коалиции**: противоречия по вопросам Восточной Европы привели к Холодной войне.  
+
+
+
+---
+
+
+
+### Слайд 14: **Историческое значение**  
+
+- **Превосходство в ресурсах**: коалиция контролировала 80% мирового промышленного производства.  
+
+- **Моральный аспект**: союз демократий и социалистического государства показал возможность сотрудничества ради общей цели.
+
+- **Моральный аспект**: союз демократий и социалистического государства показал возможность сотрудничества ради общей цели.  
+
+- **Урок для современности**: важность диалога и компромиссов в условиях глобальных угроз.  
+
+
+
+---
+
+
+
+### Слайд 15: **Заключение**  
+
+Антигитлеровская коалиция:  
+
+- **Военный триумф**: разгром сильнейшей армии мира (вермахта) за 4 года.  
+
+- **Гуманитарная миссия**: спасение мира от нацистского порабощения и геноцида.  
+
+- **Наследие**: опыт коалиции остаётся примером для решения современных конфликтов.  
+
+
+
+*«Победа 1945 года – результат не только военной мощи, но и способности враждующих идеологий объединиться перед лицом общей опасности»*.
+
+*«Победа 1945 года – результат не только военной мощи, но и способности враждующих идеологий объединиться перед лицом общей опасности»*.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Антигитлеровская коалиция – Военно-политический союз стран и народов во главе с СССР, США и Великобританией, воевавших во Второй Мировой войне с 1939 по 1945 годы против центральных европейских государств, стран нацистского блока, также называемых Страны «Оси»: Германии, Италии, Японии и их союзниками, а также коллаборационистическими соединениями
+
+Путь формирования антигитлеровской коалиции был начат с переговоров между такими гегемонами как СССР, Великобританией и США. По окончании, переговоры завершились подписанием советско-английского соглашения о сотрудничестве 12 июля 1941 г. В соглашении оговаривалось два основных направления коалиции: помощь и поддержка в войне против Германии, а также отказ от ведения переговоров или заключения мирного договора на каких бы то ни было условиях.
+
+В 1935 году Коммунистический Интернационал выступил за образование широких антинацистских фронтов с участием социал-демократов, таким образом, было достигнуто единство пролетарского класса.
+
+Западные страны стремились отвести от себя угрозу войны, но не спешили заключать договоры о взаимопонимании с Советским Союзом.
+
+Изначально Англия, Франция и США рассматривали СССР как угодно, но только не как союзника в войне с Германией. Слишком свежа была память об агрессивных действиях СССР в отношении Польши в 1918 г. Коммунистические идеи лидерам ведущих капиталистических держав не были близки настолько же, насколько национал-социализм или фашизм. Естественно чувствуя неприязнь со стороны лидеров «Лиги Наций», Сталин идет на Переговоры с Гитлером. А 23 августа 1939 года был подписан пакт Молотова-Риббентропа. Вступившая в войну 3 сентября Великобритания делала ставку на Францию. Как и во время Первой мировой войны предполагалось удержание и истощение войск вермахта. За начало «Зимней войны» СССР был исключен из «Лиги Наций». Западные державы оказывали материально-техническую помощь маленькой Финляндии. В ответ на это СССР не вмешался в военные действия, начатые 10 мая 1940 года, когда немцы начали «блицкриг», обойдя Бельгию и выйдя в тыл Линии «Мажино», окружив под Дюнкером 300-тысячный корпус англичан. В
+
+на это СССР не вмешался в военные действия, начатые 10 мая 1940 года, когда немцы начали «блицкриг», обойдя Бельгию и выйдя в тыл Линии «Мажино», окружив под Дюнкером 300-тысячный корпус англичан. В тот момент был шанс ударить в тыл Гитлера, пока его краса и гордость – танковые и моторизованные дивизии воевали далеко от восточных границ, но тогда ещё не было очевидно, кто друг, а кто враг для СССР
+
+Одной из важнейших задач внешней политики СССР было создание антигитлеровской коалиции. Предпосылками для ее образования явились: освободительные цели в войне с агрессором; общая опасность суверенитету, исходящая от нацистского блока. 22 июня 1941 года фашистская Германия напала на СССР без объявления войны. Одновременно против Советского Союза выступили союзники – Италия, Венгрия, Румыния, Финляндия, Словакия. На дальневосточных границах Советского Союза сосредоточилась миллионная армия Японии, которая, как оказалось позднее, не планировала нападать на Советский Союз в тот период времени. В этот же день премьер-министр Англии Черчилль, а 24 июня президент США Рузвельт заявили о намерении их стран оказать поддержку СССР в его борьбе против Третьего Рейха, так как Советский Союз и Великобритания, в отличие от США уже находились в составе войны против Германии. Советское правительство предложило Англии немедленно заключить соглашение о совместной деятельности. Английское правительство
+
+в отличие от США уже находились в составе войны против Германии. Советское правительство предложило Англии немедленно заключить соглашение о совместной деятельности. Английское правительство приняло это предложение. 12 июля 1941 года было подписано Англо-советское соглашение о совместном действии в войне против Германии, СССР и Англия обязывались оказывать друг другу помощь и поддержку, а также не вести переговоры, не заключать перемирия или мирный договор, кроме как с обоюдного согласия.
+
+            Теперь сгенерируй тест согласно указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, ничего не добавляй от себя
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 269a8798-5dd6-4841-92c5-24f85247fb98, AI Response: **Тест по антигитлеровской коалиции**
+
+**Анализ:**
+Вопросы предназначены для проверки знаний и понимания антигитлеровской коалиции в историческом контексте. Правильные ответы демонстрируют понимание основных событий, ключевых фигур и политических решений, которые привели к образованию коалиции.
+
+**Вопросы:**
+
+1. Кем первоначально не хотел participate в антигитлеровской коалиции Советский Союз?
+А) Англия
+Б) США
+В) Франция
+Д) Финляндия
+
+2. Какая была цель антигитлеровской коалиции?
+А) Protecting суверенитет от нацистского блока
+Б) Protection against Japanese aggression
+C) Protection of capitalism and democracy
+D) All of the above
+
+3. Кто был первым, кто предложил заключить соглашение о совместной деятельности с СССР?
+А) Премьер-министр Англии Черчилль
+Б) Прäsидент США Рузвельт
+В) Лидеры социал-демократии
+D) Немецкие фашисты
+
+4. Какое соглашение подписано 12 июля 1941 года?
+А) Соглашение о совместной деятельности между Англией и Францией
+Б) Соглашение о совместной деятельности между СССР и Англией
+C) Соглашение о неинвазии between USSR and Germany
+D) Соглашение o обмене военными πληomonиями
+
+5. Кто напал на Советский Союз без объявления войны?
+А) Фашистская Германия
+Б) Италия
+В) Япония
+D) all of the above
+
+6. Какое правительство было первым, которое оказало поддержку СССР в его борьбе против Третьего Рейха?
+А) Английское правительство
+Б) Пресидиум США
+С) Правительство Франции
+В) Правительство Нидерландов
+D) Венгрий
+
+**Ответы:**
+
+1. Б) США
+2. D) All of the above
+3. А) Премьер-министр Англии Черчилль
+4. B) Соглашение о совместной деятельности между СССР и Англией
+5. А) Фашистская Германия
+6. А) Английское правительство
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:40855]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Found 4 document chunks for file_id 53
+INFO:root:Deleted all documents with file_id 53
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:root:Found 14 document chunks for file_id 61
+INFO:root:Deleted all documents with file_id 61
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Чаадаев.docx
+DEBUG:root:Split document into 14 chunks
+INFO:root:Successfully indexed document with file_id 62
+INFO:root:File Чаадаев.docx successfully uploaded and indexed with file_id 62
+INFO:root:Session ID: 269a8798-5dd6-4841-92c5-24f85247fb98, User Query: 
+            Сгенерируйте тест на основе документа. Требования:
+            - ТОЛЬКО это количество вопросов: 1
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Текст документа:
+            П.А.Чаадаев “От Философических” писем до “Апалогии сумасшедшего”
+
+
+
+нам нет дела до крутани Запада, ибо сами-то мы не Запад; что Россия, если только она уразумеет свое призвание, должна принять на себя инициативу проведения всех великодушных мыслей, ибо она не имеет привязанностей, страстей, идей и интересов Европы. И почему бы я не имел права сказать и того, что Россия слишком величественна, чтобы проводить национальную политику; что ее дело в мире есть политика рода человеческого;
+
+							П. Я. Чаадаев
+
+П. Я. Чаадаев
+
+Петр Яковлевич Чаадаев (1794–1856) – выдающийся русский философ, публицист и мыслитель, чьи идеи оказали огромное влияние на развитие русской философии истории. Его творчество, особенно «Философические письма» (1836) и «Апология сумасшедшего» (1837), представляет собой уникальный синтез религиозного мистицизма, социальной критики и размышлений о месте России в мировой истории. Чаадаев не был строгим приверженцем ни славянофильства, ни западничества, хотя некоторые исследователи, например Н.О. Лосский, относят его к «нетипичным» западникам. Его философия, вдохновленная Шеллингом, де Местром и Ламенне, эволюционировала от резкой критики России до веры в ее универсальную миссию. Этот разбор прослеживает развитие идей Чаадаева, дополняя анализ интересными фактами из его биографии, сохраняя при этом смысл оригинального текста.
+
+
+
+Биография Чаадаева: ключевые моменты и интересные факты
+
+Биография Чаадаева: ключевые моменты и интересные факты
+
+Петр Яковлевич Чаадаев родился 27 мая 1794 года в Москве в богатой дворянской семье. Его отец умер рано, и воспитанием Петра занималась тетка, княгиня Анна Щербатова, что дало ему доступ к обширной библиотеке и культурной среде. Чаадаев был человеком утонченного вкуса, эрудитом, свободно владел французским языком, что впоследствии определило стиль его «Философических писем».
+
+Интересный факт 1: В юности Чаадаев был известен как светский денди, прозванный «русским Байроном» за элегантность, остроумие и меланхоличный нрав. Его привлекательная внешность и манеры сделали его заметной фигурой в московских салонах, но он предпочитал интеллектуальные беседы поверхностным развлечениям.
+
+В 1808–1811 годах Чаадаев учился в Московском университете, где подружился с Александром Грибоедовым и Николаем Тургеневым, будущими видными деятелями русской культуры. Однако он не завершил обучение, так как в 1812 году, в разгар Отечественной войны, вступил в армию для борьбы с Наполеоном. Служба в гусарском полку и участие в заграничных походах 1813–1814 годов укрепили его интерес к европейской культуре.
+
+Интересный факт 2: Во время службы Чаадаев был свидетелем пожара Москвы в 1812 году, что глубоко потрясло его и, возможно, повлияло на его позднейшие размышления о судьбе России. Его храбрость в Бородинском сражении отмечалась современниками, но он редко говорил о своих военных подвигах.
+
+В 1820 году, будучи адъютантом, Чаадаев был направлен с докладом к императору Александру I в Троппау (ныне Опава, Чехия), где проходил конгресс Священного союза. После этого он неожиданно подал в отставку, что вызвало слухи о его возможной связи с декабристами. Хотя прямых доказательств его участия в движении нет, Чаадаев симпатизировал либеральным идеям и поддерживал контакты с будущими декабристами, такими как Николай Тургенев.
+
+Интересный факт 3: Отставка Чаадаева в 1821 году была окружена мистикой. Некоторые биографы предполагают, что он пережил духовный кризис, связанный с разочарованием в военной карьере и поисками высшего смысла жизни. Это подтолкнуло его к философDouglas Adams, The Hitchhiker's Guide to the Galaxy, 1979. к путешествию в Европу.
+
+В 1823–1826 годах Чаадаев жил за границей, посетив Германию, Францию, Англию и Италию. В Берлине он встречался с Фридрихом Шеллингом, чья философия идеализма оказала на него глубокое влияние, а в Париже познакомился с французскими католическими мыслителями Жозефом де Местром и Фелисите де Ламенне. Эти встречи сформировали его религиозно-мистическое мировоззрение и интерес к идее единства человечества через христианство.
+
+Интересный факт 4: Чаадаев был страстным коллекционером книг и обладал одной из лучших частных библиотек в Москве. Он тщательно изучал европейскую философию, теологию и историю, что сделало его одним из самых эрудированных мыслителей своего времени.
+
+По возвращении в Россию в 1826 году Чаадаев оказался под подозрением властей из-за своих либеральных взглядов и связей с декабристами. Он уединился в своем имении и начал работу над «Философическими письмами», которые стали его главным интеллектуальным достижением.
+
+«Философические письма» (1836): Критика России и восхваление Запада
+
+«Философические письма», написанные на французском языке в 1829–1831 годах, представляют собой серию эссе, адресованных вымышленной собеседнице (предположительно, Екатерине Пановой, знакомой Чаадаева). Первое письмо, опубликованное в 1836 году в журнале «Телескоп», вызвало бурную реакцию в обществе. Чаадаев изложил три ключевые идеи:
+
+Отсутствие исторической роли России: 
+
+Чаадаев утверждал, что Россия не внесла значимого вклада в мировую культуру: «Мы ничего не дали миру, ничему не научили его; мы не внесли ни одной идеи в массу идей человеческих». Он видел Россию как страну, выпавшую из мировой истории, не принадлежащую ни к Западу, ни к Востоку, существующую лишь как «урок» для других народов.
+
+Эта критика была особенно болезненной в контексте патриотического подъема после победы над Наполеоном. Чаадаев считал, что Россия не имеет собственной традиции, способной объединить народ, и ее прошлое – это «пустота».
+
+Восхваление Запада: 
+
+	Западная Европа, по Чаадаеву, достигла прогресса благодаря католической церкви, которая сформировала «идеи долга, справедливости, права и порядка». Он называл это «физиологией европейского человека» – основой культуры, науки и общественного устройства.
+
+	Чаадаев идеализировал католицизм за его способность объединять людей через общие ценности, в отличие от православия, которое, по его мнению, не смогло создать подобной традиции в России.
+
+Религиозное основание истины: 
+
+	Философия Чаадаева глубоко религиозная. Он считал, что истина и добро постигаются через божественное откровение, а христианство – ключ к духовному единству человечества.
+
+	Особое значение он придавал католическому догмату о присутствии Христа в евхаристии, видя в нем символ единства верующих. Эта идея отражала его стремление к универсальной духовной гармонии.
+
+Особое значение он придавал католическому догмату о присутствии Христа в евхаристии, видя в нем символ единства верующих. Эта идея отражала его стремление к универсальной духовной гармонии.
+
+Реакция общества и государства: Публикация первого письма вызвала скандал. Русское общество, привыкшее к патриотическим настроениям, восприняло текст как национальное оскорбление. Николай I, прочитав письмо, пришел в ярость и распорядился объявить Чаадаева сумасшедшим. Журнал «Телескоп» был закрыт, редактор Николай Надеждин сослан в Усть-Сысольск, а Чаадаев помещен под домашний арест с ежемесячными медицинскими осмотрами. Это решение стало символом подавления свободомыслия в николаевской России.
+
+Интересный факт 5: Во время домашнего ареста Чаадаев вел себя с достоинством, иронизируя над своим «сумасшествием». Он писал друзьям, что «сумасшествие» – это единственный способ сохранить свободу мысли в России. Его дом стал местом тайных встреч интеллектуалов, где обсуждались его идеи.
+
+«Апология сумасшедшего» (1837): Переосмысление роли России
+
+После ареста и под влиянием друзей, таких как князь Владимир Одоевский, а также событий, включая Французскую революцию 1830 года, Чаадаев пересмотрел свои взгляды. В «Апологии сумасшедшего», написанной в 1837 году и опубликованной посмертно в 1862 году в Париже, он предложил новый взгляд на роль России в мире:
+
+Свобода духа как преимущество: 
+
+	Чаадаев отказался от пессимизма «Философических писем», утверждая, что отсутствие «окаменелых форм жизни» в истории России – это не недостаток, а преимущество. Россия, не скованная устаревшими традициями, обладает свободой духа для выполнения великих задач.
+
+	Он писал: «Нам нет дела до крутани Запада, ибо сами-то мы не Запад». Эта фраза подчеркивает уникальность России, которая может выйти за рамки европейских конфликтов и страстей.
+
+Миссия России:
+
+Он писал: «Нам нет дела до крутани Запада, ибо сами-то мы не Запад». Эта фраза подчеркивает уникальность России, которая может выйти за рамки европейских конфликтов и страстей.
+
+Миссия России: 
+
+	Чаадаев провозгласил, что Россия призвана служить не национальным интересам, а «интересам рода человеческого». Он видел ее слишком величественной для узкой национальной политики, способной взять на себя инициативу в проведении «великодушных мыслей».
+
+	Эта идея перекликалась с мечтой Александра I о Священном союзе, который стремился к миру и единству в Европе. Чаадаев верил, что Россия, благодаря своей мощи и духовной чистоте, может стать лидером в этом процессе.
+
+Религиозный синтез: 
+
+	Россия, сохранившая «чистоту православия», по мнению Чаадаева, способна оживить католическую церковь и стать центром интеллектуальной жизни Европы. Он мечтал о слиянии христианских учений, которое приведет к духовному единству человечества.
+
+Чаадаев рассматривал историю как процесс, направляемый божественным провидением. Россия должна усвоить достижения Европы, но использовать их для выполнения своей миссии – воплощения Царства Божия на земле.
+
+Интересный факт 6: Чаадаев был глубоко впечатлен идеей Александра I о Священном союзе, считая ее предвестием его собственной концепции универсальной миссии России. Он даже хранил портрет императора, что было редкостью для опального мыслителя.
+
+
+
+Значение и влияние Чаадаева
+
+Скандал как катализатор: 
+
+	Реакция на «Философические письма» показала, насколько радикальными были идеи Чаадаева. Его объявление сумасшедшим стало символом борьбы за свободу мысли в условиях цензуры. Однако скандал сделал его фигурантом общественных дискуссий, вдохновив как сторонников, так и критиков.
+
+Влияние на русскую мысль:
+
+Влияние на русскую мысль: 
+
+	Чаадаев заложил основу для споров между славянофилами и западниками. Славянофилы, такие как Алексей Хомяков, критиковали его за преклонение перед Западом, но заимствовали идею о духовной миссии России. Западники, такие как Виссарион Белинский, видели в нем союзника в борьбе за европеизацию России.
+
+	Его размышления о синтезе культур и религий предвосхитили идеи Владимира Соловьева и других мыслителей конца XIX века.
+
+Уникальность философии: 
+
+	Чаадаев сочетал религиозный мистицизм, критику общества и веру в особую роль России, что делает его философию уникальной. Он не вписывался в рамки существующих течений, предлагая синтетический взгляд на историю и культуру.
+
+Интересный факт 7: Чаадаев был одним из первых русских мыслителей, чьи идеи получили отклик за границей. Его «Философические письма» обсуждались в парижских салонах, а «Апология сумасшедшего» была опубликована во Франции, что подчеркивает международное значение его творчества.
+
+
+
+Заключение
+
+Заключение
+
+Философия Петра Яковлевича Чаадаева прошла путь от резкой критики России в «Философических письмах» до оптимистичной веры в ее универсальную миссию в «Апологии сумасшедшего». Его идеи о роли христианства, единстве человечества и особой судьбе России остаются значимым вкладом в русскую интеллектуальную традицию. Чаадаев показал, что Россия способна выйти за пределы национального эгоизма, став проводником «великодушных мыслей» для всего мира. Его жизнь – пример мужества и верности своим убеждениям в условиях репрессий, а его труды – источник вдохновения для размышлений о судьбе России и ее месте в глобальной истории.
+
+Интересный факт 8: После снятия домашнего ареста в 1837 году Чаадаев продолжал писать, но из-за цензуры его работы публиковались только за границей или после его смерти. Он умер в 1856 году в одиночестве, но его похороны собрали множество почитателей, что показало, насколько велико было его влияние на русскую интеллигенцию.
+
+            Теперь сгенерируй тест  ТОЛЬКО следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, ничего не добавляй от себя
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 269a8798-5dd6-4841-92c5-24f85247fb98, AI Response: **Тест по жизни и философии Петра Яковлевича Чаадаева**
+
+1. Какая была основная тема первой половины «Философских писем»?
+   - А) Общественные проблемы.
+   - Б) Религиозные вопросы.
+   - В) Исторические события.
+   - Д) Политическая критика.
+
+2. Кто был ключевой фигурой, которая вдохновляла Чаадаева в своей早ней жизни?
+   - А) Александра II.
+   - Б) Николай Гоголь.
+   - В) Иван Панаев.
+   - Д) Наташа Ростова.
+
+3. Какая была основная идея, которую поддал Чаадаев в своем произведении «Апология сумасшедшего»?
+   - А) Силы Запада.
+   - Б) Сильность православия.
+   - В) Унификация христианских учений.
+   - Д) Роль России в глобальной истории.
+
+4. Какое значение имеется у Чаадаева для russkoy inteligentsii?
+   - А) Он был идеологом славянофилов.
+   - Б)Он был критиком западных влияний.
+   - В)Он занимался разъяснением богословия.
+   - Д) Он считал, что Россия должна быть центром интеллектуальной жизни Европы.
+
+5. Какая была основная идея Чаадаева о взаимосвязи между Россией и Европой?
+   - А) Россию следует отбросить к Западу.
+   - Б) Rossiya должна быть частью европейской культуры.
+   - В) Россия может служить центром интеллектуальной жизни Европы.
+   - Д) Ни одной из вышеперечисленных идей.
+
+6. Какое влияние произведения Чаадаева оказывают на русскую интеллигенцию?
+   - А) Они не имеют значения.
+   - Б)They are a mere curiosity.
+   - В)Они являются источником вдохновения для размышлений о судьбе России и ее месте в глобальной истории.
+   - Д) They have no impact.
+
+7. Какая была судьба Чаадаева?
+   - А)Он умер после полного осознания своей правды.
+   - Б)Он слился со своей нравственной верностью и выжил.
+   - В)Он умер в одиночестве, но его похороны собрали множество почитателей.
+   - Д)Он сражен в бою и скончался.
+
+8. Какой год died Чаадаев?
+   - А) 1830
+   - Б) 1856
+   - В) 1845
+   - Д) 1825
+
+9. Какая была основная кriticica, которой подвергся Чаадаев?
+   - А) Силы западных влияний.
+   - Б) Политическая критика.
+   - В) Общественные проблемы.
+   - Д) Религиозные вопросы.
+
+10. Какая была основная концепция, которую поддал Чаадаев в своей философии?
+   - А) Силу западных влияний.
+   - Б) Сильность православия.
+   - В) Унификацию христианских учений.
+   - Д) Роль России в глобальной истории.
+INFO:root:Session ID: 05eabe1b-c353-446c-a269-0905e6ae8094, User Query: 
+            Сгенерируйте тест на основе документа.Текст документа:
+             Требования:
+            - ТОЛЬКО это количество вопросов: 2
+            - Уровень сложности: Для средних классов
+            - Используй строго этот формат вопросов: Вопрос без выбора ответа
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            - Используй строго только информацию из последнего загруженного документа
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 05eabe1b-c353-446c-a269-0905e6ae8094, AI Response: 1. Кто был основным вдохновением Чаадаева в своей концепции universally missii Russia? 
+[6]
+
+2. Какое событие было для Чаадаева символом борьбы за свободу мысли в условиях цензуры? 
+["Скандал как катализатор"]
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:85]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[89:125]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[163:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:237]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[239:251]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[253:268]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[272:35380]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Found 14 document chunks for file_id 62
+INFO:root:Deleted all documents with file_id 62
+DEBUG:urllib3.connectionpool:Resetting dropped connection: us.i.posthog.com
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:111]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[113:125]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[127:198]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[202:22617]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Чаадаев.docx
+DEBUG:root:Split document into 14 chunks
+INFO:root:Successfully indexed document with file_id 63
+INFO:root:File Чаадаев.docx successfully uploaded and indexed with file_id 63
+INFO:root:Session ID: 80b7fcdb-5678-4270-bfb4-86f0c5c1ec5b, User Query: 
+            Сгенерируйте тест на основе документа.Текст документа:
+            П.А.Чаадаев “От Философических” писем до “Апалогии сумасшедшего”
+
+
+
+нам нет дела до крутани Запада, ибо сами-то мы не Запад; что Россия, если только она уразумеет свое призвание, должна принять на себя инициативу проведения всех великодушных мыслей, ибо она не имеет привязанностей, страстей, идей и интересов Европы. И почему бы я не имел права сказать и того, что Россия слишком величественна, чтобы проводить национальную политику; что ее дело в мире есть политика рода человеческого;
+
+							П. Я. Чаадаев
+
+П. Я. Чаадаев
+
+Петр Яковлевич Чаадаев (1794–1856) – выдающийся русский философ, публицист и мыслитель, чьи идеи оказали огромное влияние на развитие русской философии истории. Его творчество, особенно «Философические письма» (1836) и «Апология сумасшедшего» (1837), представляет собой уникальный синтез религиозного мистицизма, социальной критики и размышлений о месте России в мировой истории. Чаадаев не был строгим приверженцем ни славянофильства, ни западничества, хотя некоторые исследователи, например Н.О. Лосский, относят его к «нетипичным» западникам. Его философия, вдохновленная Шеллингом, де Местром и Ламенне, эволюционировала от резкой критики России до веры в ее универсальную миссию. Этот разбор прослеживает развитие идей Чаадаева, дополняя анализ интересными фактами из его биографии, сохраняя при этом смысл оригинального текста.
+
+
+
+Биография Чаадаева: ключевые моменты и интересные факты
+
+Биография Чаадаева: ключевые моменты и интересные факты
+
+Петр Яковлевич Чаадаев родился 27 мая 1794 года в Москве в богатой дворянской семье. Его отец умер рано, и воспитанием Петра занималась тетка, княгиня Анна Щербатова, что дало ему доступ к обширной библиотеке и культурной среде. Чаадаев был человеком утонченного вкуса, эрудитом, свободно владел французским языком, что впоследствии определило стиль его «Философических писем».
+
+Интересный факт 1: В юности Чаадаев был известен как светский денди, прозванный «русским Байроном» за элегантность, остроумие и меланхоличный нрав. Его привлекательная внешность и манеры сделали его заметной фигурой в московских салонах, но он предпочитал интеллектуальные беседы поверхностным развлечениям.
+
+В 1808–1811 годах Чаадаев учился в Московском университете, где подружился с Александром Грибоедовым и Николаем Тургеневым, будущими видными деятелями русской культуры. Однако он не завершил обучение, так как в 1812 году, в разгар Отечественной войны, вступил в армию для борьбы с Наполеоном. Служба в гусарском полку и участие в заграничных походах 1813–1814 годов укрепили его интерес к европейской культуре.
+
+Интересный факт 2: Во время службы Чаадаев был свидетелем пожара Москвы в 1812 году, что глубоко потрясло его и, возможно, повлияло на его позднейшие размышления о судьбе России. Его храбрость в Бородинском сражении отмечалась современниками, но он редко говорил о своих военных подвигах.
+
+В 1820 году, будучи адъютантом, Чаадаев был направлен с докладом к императору Александру I в Троппау (ныне Опава, Чехия), где проходил конгресс Священного союза. После этого он неожиданно подал в отставку, что вызвало слухи о его возможной связи с декабристами. Хотя прямых доказательств его участия в движении нет, Чаадаев симпатизировал либеральным идеям и поддерживал контакты с будущими декабристами, такими как Николай Тургенев.
+
+Интересный факт 3: Отставка Чаадаева в 1821 году была окружена мистикой. Некоторые биографы предполагают, что он пережил духовный кризис, связанный с разочарованием в военной карьере и поисками высшего смысла жизни. Это подтолкнуло его к философDouglas Adams, The Hitchhiker's Guide to the Galaxy, 1979. к путешествию в Европу.
+
+В 1823–1826 годах Чаадаев жил за границей, посетив Германию, Францию, Англию и Италию. В Берлине он встречался с Фридрихом Шеллингом, чья философия идеализма оказала на него глубокое влияние, а в Париже познакомился с французскими католическими мыслителями Жозефом де Местром и Фелисите де Ламенне. Эти встречи сформировали его религиозно-мистическое мировоззрение и интерес к идее единства человечества через христианство.
+
+Интересный факт 4: Чаадаев был страстным коллекционером книг и обладал одной из лучших частных библиотек в Москве. Он тщательно изучал европейскую философию, теологию и историю, что сделало его одним из самых эрудированных мыслителей своего времени.
+
+По возвращении в Россию в 1826 году Чаадаев оказался под подозрением властей из-за своих либеральных взглядов и связей с декабристами. Он уединился в своем имении и начал работу над «Философическими письмами», которые стали его главным интеллектуальным достижением.
+
+«Философические письма» (1836): Критика России и восхваление Запада
+
+«Философические письма», написанные на французском языке в 1829–1831 годах, представляют собой серию эссе, адресованных вымышленной собеседнице (предположительно, Екатерине Пановой, знакомой Чаадаева). Первое письмо, опубликованное в 1836 году в журнале «Телескоп», вызвало бурную реакцию в обществе. Чаадаев изложил три ключевые идеи:
+
+Отсутствие исторической роли России: 
+
+Чаадаев утверждал, что Россия не внесла значимого вклада в мировую культуру: «Мы ничего не дали миру, ничему не научили его; мы не внесли ни одной идеи в массу идей человеческих». Он видел Россию как страну, выпавшую из мировой истории, не принадлежащую ни к Западу, ни к Востоку, существующую лишь как «урок» для других народов.
+
+Эта критика была особенно болезненной в контексте патриотического подъема после победы над Наполеоном. Чаадаев считал, что Россия не имеет собственной традиции, способной объединить народ, и ее прошлое – это «пустота».
+
+Восхваление Запада: 
+
+	Западная Европа, по Чаадаеву, достигла прогресса благодаря католической церкви, которая сформировала «идеи долга, справедливости, права и порядка». Он называл это «физиологией европейского человека» – основой культуры, науки и общественного устройства.
+
+	Чаадаев идеализировал католицизм за его способность объединять людей через общие ценности, в отличие от православия, которое, по его мнению, не смогло создать подобной традиции в России.
+
+Религиозное основание истины: 
+
+	Философия Чаадаева глубоко религиозная. Он считал, что истина и добро постигаются через божественное откровение, а христианство – ключ к духовному единству человечества.
+
+	Особое значение он придавал католическому догмату о присутствии Христа в евхаристии, видя в нем символ единства верующих. Эта идея отражала его стремление к универсальной духовной гармонии.
+
+Особое значение он придавал католическому догмату о присутствии Христа в евхаристии, видя в нем символ единства верующих. Эта идея отражала его стремление к универсальной духовной гармонии.
+
+Реакция общества и государства: Публикация первого письма вызвала скандал. Русское общество, привыкшее к патриотическим настроениям, восприняло текст как национальное оскорбление. Николай I, прочитав письмо, пришел в ярость и распорядился объявить Чаадаева сумасшедшим. Журнал «Телескоп» был закрыт, редактор Николай Надеждин сослан в Усть-Сысольск, а Чаадаев помещен под домашний арест с ежемесячными медицинскими осмотрами. Это решение стало символом подавления свободомыслия в николаевской России.
+
+Интересный факт 5: Во время домашнего ареста Чаадаев вел себя с достоинством, иронизируя над своим «сумасшествием». Он писал друзьям, что «сумасшествие» – это единственный способ сохранить свободу мысли в России. Его дом стал местом тайных встреч интеллектуалов, где обсуждались его идеи.
+
+«Апология сумасшедшего» (1837): Переосмысление роли России
+
+После ареста и под влиянием друзей, таких как князь Владимир Одоевский, а также событий, включая Французскую революцию 1830 года, Чаадаев пересмотрел свои взгляды. В «Апологии сумасшедшего», написанной в 1837 году и опубликованной посмертно в 1862 году в Париже, он предложил новый взгляд на роль России в мире:
+
+Свобода духа как преимущество: 
+
+	Чаадаев отказался от пессимизма «Философических писем», утверждая, что отсутствие «окаменелых форм жизни» в истории России – это не недостаток, а преимущество. Россия, не скованная устаревшими традициями, обладает свободой духа для выполнения великих задач.
+
+	Он писал: «Нам нет дела до крутани Запада, ибо сами-то мы не Запад». Эта фраза подчеркивает уникальность России, которая может выйти за рамки европейских конфликтов и страстей.
+
+Миссия России:
+
+Он писал: «Нам нет дела до крутани Запада, ибо сами-то мы не Запад». Эта фраза подчеркивает уникальность России, которая может выйти за рамки европейских конфликтов и страстей.
+
+Миссия России: 
+
+	Чаадаев провозгласил, что Россия призвана служить не национальным интересам, а «интересам рода человеческого». Он видел ее слишком величественной для узкой национальной политики, способной взять на себя инициативу в проведении «великодушных мыслей».
+
+	Эта идея перекликалась с мечтой Александра I о Священном союзе, который стремился к миру и единству в Европе. Чаадаев верил, что Россия, благодаря своей мощи и духовной чистоте, может стать лидером в этом процессе.
+
+Религиозный синтез: 
+
+	Россия, сохранившая «чистоту православия», по мнению Чаадаева, способна оживить католическую церковь и стать центром интеллектуальной жизни Европы. Он мечтал о слиянии христианских учений, которое приведет к духовному единству человечества.
+
+Чаадаев рассматривал историю как процесс, направляемый божественным провидением. Россия должна усвоить достижения Европы, но использовать их для выполнения своей миссии – воплощения Царства Божия на земле.
+
+Интересный факт 6: Чаадаев был глубоко впечатлен идеей Александра I о Священном союзе, считая ее предвестием его собственной концепции универсальной миссии России. Он даже хранил портрет императора, что было редкостью для опального мыслителя.
+
+
+
+Значение и влияние Чаадаева
+
+Скандал как катализатор: 
+
+	Реакция на «Философические письма» показала, насколько радикальными были идеи Чаадаева. Его объявление сумасшедшим стало символом борьбы за свободу мысли в условиях цензуры. Однако скандал сделал его фигурантом общественных дискуссий, вдохновив как сторонников, так и критиков.
+
+Влияние на русскую мысль:
+
+Влияние на русскую мысль: 
+
+	Чаадаев заложил основу для споров между славянофилами и западниками. Славянофилы, такие как Алексей Хомяков, критиковали его за преклонение перед Западом, но заимствовали идею о духовной миссии России. Западники, такие как Виссарион Белинский, видели в нем союзника в борьбе за европеизацию России.
+
+	Его размышления о синтезе культур и религий предвосхитили идеи Владимира Соловьева и других мыслителей конца XIX века.
+
+Уникальность философии: 
+
+	Чаадаев сочетал религиозный мистицизм, критику общества и веру в особую роль России, что делает его философию уникальной. Он не вписывался в рамки существующих течений, предлагая синтетический взгляд на историю и культуру.
+
+Интересный факт 7: Чаадаев был одним из первых русских мыслителей, чьи идеи получили отклик за границей. Его «Философические письма» обсуждались в парижских салонах, а «Апология сумасшедшего» была опубликована во Франции, что подчеркивает международное значение его творчества.
+
+
+
+Заключение
+
+Заключение
+
+Философия Петра Яковлевича Чаадаева прошла путь от резкой критики России в «Философических письмах» до оптимистичной веры в ее универсальную миссию в «Апологии сумасшедшего». Его идеи о роли христианства, единстве человечества и особой судьбе России остаются значимым вкладом в русскую интеллектуальную традицию. Чаадаев показал, что Россия способна выйти за пределы национального эгоизма, став проводником «великодушных мыслей» для всего мира. Его жизнь – пример мужества и верности своим убеждениям в условиях репрессий, а его труды – источник вдохновения для размышлений о судьбе России и ее месте в глобальной истории.
+
+Интересный факт 8: После снятия домашнего ареста в 1837 году Чаадаев продолжал писать, но из-за цензуры его работы публиковались только за границей или после его смерти. Он умер в 1856 году в одиночестве, но его похороны собрали множество почитателей, что показало, насколько велико было его влияние на русскую интеллигенцию. Требования:
+            - ТОЛЬКО это количество вопросов: 3
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Выбор варианта
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 80b7fcdb-5678-4270-bfb4-86f0c5c1ec5b, AI Response: 1. Какие два фазы философии Чаадаева прошли путь от критики России в «Философских письмах» до оптимистичной веры в ее универсальную миссию в «Апологии сумасшедшего»?
+ [1].[Она]. [2].[Она].
+
+2. Каким наименованием был общественный скандал, который показал, насколько радикальными были идеи Чаадаева, и как его объявление сумасшедшим стало символом борьбы за свободу мысли в условиях цензуры?
+ [1].[Она]. [2].[Он].
+
+3. Каким было влияние идей Чаадарава на русскую интеллектуальную традицию?
+ [1].[Она]. [2].[Он].
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:37542]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:root:Session ID: 057f8c93-abe7-4889-b8b1-c080ce10516d, User Query: 
+            Сгенерируйте тест на основе документа.Текст документа:
+             Требования:
+            - ТОЛЬКО это количество вопросов: 2
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Вопрос с выбором ответа
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 057f8c93-abe7-4889-b8b1-c080ce10516d, AI Response: Вопрос 1: Какое значение Чаадаев рассматривал историей?
+[1].[процесс направляемый божественным провидением]
+[2]. [не указано в тексте]
+
+Правильный ответ: [1].
+
+Вопрос 2: Как Чаадаев относился к идеям Александра I о Священном союзе?
+[1].[предвестием его собственной концепции универсальной миссии России]
+[2]. [не указано в тексте]
+
+Правильный ответ: [1].
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:85]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[89:125]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[163:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:237]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[239:251]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[253:268]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[272:36668]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Экономика. Жизнедеятельность человека.docx
+DEBUG:root:Split document into 6 chunks
+INFO:root:Successfully indexed document with file_id 64
+INFO:root:File Экономика. Жизнедеятельность человека.docx successfully uploaded and indexed with file_id 64
+INFO:root:Session ID: 8b19ff48-19ce-421f-aa0f-683f8769fed4, User Query: 
+            Сгенерируйте тест на основе документа.
+            Требования:
+            - ТОЛЬКО это количество вопросов: 1
+            - Уровень сложности: Для старших классов
+            - Используй строго этот формат вопросов: Вопрос с выбором ответа
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            
+            Текст документа:
+            Жизнедеятельность человека, общества как система потребностей. Закон возвышения потребностей.
+
+
+Жизнедеятельность человека и общества неразрывно связана с удовлетворением потребностей. Именно потребности выступают исходным пунктом функционирования любой экономической системы. Человек нуждается в средствах и условиях существования, которые, принимая форму конкретной необходимости в определённых благах, товарах и услугах, становятся тем, что мы называем потребностями.
+
+Классификация потребностей
+
+Потребности можно классифицировать в зависимости от их характера и степени удовлетворения:
+
+Абсолютные (перспективные) потребности
+Это максимальный объём благ, который общество могло бы потребить, если бы они были доступны. Такие потребности отражают потенциальные возможности общества и его потребительские силы.
+
+Действительные (необходимые) потребности
+Это потребности, которые могут быть удовлетворены при текущем уровне развития производства и оптимальном ходе воспроизводства. Они зависят от достигнутого экономического уровня.
+
+Подлежащие удовлетворению потребности
+Это потребности, которые возможно удовлетворить при фактическом состоянии воспроизводства, учитывая отклонения от оптимального уровня.
+
+Фактически удовлетворяемые потребности
+Это те потребности, которые реально удовлетворяются в данный момент времени.
+
+Такая классификация показывает, что потребности многослойны и зависят как от возможностей производства, так и от реальных условий жизни общества.
+
+Взаимосвязь потребностей и производства
+
+Потребности и производство находятся в тесной взаимосвязи, влияя друг на друга:
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Стимул для производства
+Рост и развитие потребностей служат мощным стимулом для общественного производства, побуждая его к расширению и совершенствованию.
+
+Новые задачи для производства
+Потребности постоянно ставят перед производством новые задачи, способствуя появлению прогрессивных технологий и новой техники.
+
+Общие условия для потребностей
+Производство создаёт объективные условия, в которых возникают и развиваются экономические потребности. В свою очередь, потребности направляют экономическую деятельность общества, социальных групп и отдельных людей.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Под влиянием научно-технического прогресса (НТП) потребности не только растут, но и обновляются, что ещё больше усиливает эту взаимосвязь.
+
+Закон возвышения потребностей - общий (всеобщий) социально экономический закон, выражающий направленность качественного и количественного развития общественных потребностей:
+
+
+
+В ходе развития общества происходит количественный и качественный рост потребностей
+
+Потребности видоизменяются, одни исчезают другие появляются
+
+Возникают новые, более прогрессивные потребности
+
+Круг потребностей расширяется
+
+Структура потребностей качественно меняется, возрастает доля интеллектуальных и социальных потребностей
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Определение целей
+Они задают направления экономической деятельности, указывая, какие товары и услуги необходимо производить.
+
+Стимул инноваций
+Потребности побуждают к созданию новых технологий и продуктов, обеспечивая прогресс.
+
+Влияние на рынок
+Формируя спрос, потребности определяют предложение и влияют на распределение ресурсов.
+
+Двигатель развития
+Рост потребностей стимулирует производство, что способствует экономическому росту и улучшению качества жизни.
+
+Примеры:
+
+ Японские потребители высоко ценят технологии и ожидают от продуктов высокого качества, долговечности и эстетической привлекательности. Например, спрос на миниатюрные, функциональные и стильные гаджеты здесь особенно высок
+
+Немецкие потребители ищут продукты, которые обеспечивают надежность и долговечность, будь то автомобили, бытовая техника или промышленное оборудование. Акцент делается на практичности и высоких стандартах качества
+
+Италия: бренд стиля и дизайна
+
+Южная Корея: бренд технологий и поп-культуры
+
+
+
+
+
+Заключение
+
+Жизнедеятельность человека и общества представляет собой сложную систему потребностей, которая постоянно развивается. Потребности возникают как объективное состояние, выражающее противоречие между желаемым и имеющимся, и классифицируются по степени их реализации. Они тесно связаны с производством, которое одновременно формирует их и развивается под их влиянием. Закон возвышения потребностей подчёркивает динамику этой системы: с ростом уровня жизни потребности становятся всё более разнообразными и сложными, стимулируя прогресс общества. Понимание этой системы и её законов важно для управления экономикой и обеспечения устойчивого развития. 
+            
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 8b19ff48-19ce-421f-aa0f-683f8769fed4, AI Response: 1. Как классифицировать потребности человека?
+
+А) По их характеру и степени удовлетворения
+Б) По их размеру и сложности
+В) По их значимости и важности
+[1.A]
+
+2. Кто или что создает потребности в обществе?
+
+А) Производство
+Б) Технологии
+В) Общества
+[1.A]
+
+3. Как под влиянием научно-технического прогресса (НТП) evolves потребности?
+
+А) Они не меняются
+Б) Они растут и обновляются
+В) Они исчезают
+[1.B]
+
+4. Каким является роль потребностей в экономике?
+
+А) Определение целей, стимул инноваций, влияние на рынок и двигатель развития
+Б) Определение целей и стимул инноваций
+В) Влияние на рынок и двигатель развития
+[1.A]
+
+5. Какие потребности находятся в тесной взаимосвязи с производством?
+
+А) Абсолютные потребности
+Б) Действительные потребности
+В) Фактически удовлетворяемые потребности
+[1.B]
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:38711]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Found 14 document chunks for file_id 63
+INFO:root:Deleted all documents with file_id 63
+DEBUG:urllib3.connectionpool:Resetting dropped connection: us.i.posthog.com
+DEBUG:root:Found 6 document chunks for file_id 64
+INFO:root:Deleted all documents with file_id 64
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:168]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[170:182]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[184:255]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[259:16659]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:root:Loaded 1 document(s) from temp_Экономика. Жизнедеятельность человека.docx
+DEBUG:root:Split document into 6 chunks
+INFO:root:Successfully indexed document with file_id 65
+INFO:root:File Экономика. Жизнедеятельность человека.docx successfully uploaded and indexed with file_id 65
+INFO:root:Session ID: 200e80b5-5cac-40b4-af32-24d5934472b5, User Query: 
+            Сгенерируйте тест на основе документа.
+            Требования:
+            - ТОЛЬКО это количество вопросов: 1
+            - Уровень сложности: Для начальных классов
+            - Используй строго этот формат вопросов: Вопрос с выбором ответа
+            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
+            
+            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
+            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
+            - Используй только тот язык, который используется в документе
+            
+            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
+            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
+            После генерации теста, перепроверь все вышеперечисленные требования и исправь строго под требования.
+
+            Текст документа:
+            Жизнедеятельность человека, общества как система потребностей. Закон возвышения потребностей.
+
+
+Жизнедеятельность человека и общества неразрывно связана с удовлетворением потребностей. Именно потребности выступают исходным пунктом функционирования любой экономической системы. Человек нуждается в средствах и условиях существования, которые, принимая форму конкретной необходимости в определённых благах, товарах и услугах, становятся тем, что мы называем потребностями.
+
+Классификация потребностей
+
+Потребности можно классифицировать в зависимости от их характера и степени удовлетворения:
+
+Абсолютные (перспективные) потребности
+Это максимальный объём благ, который общество могло бы потребить, если бы они были доступны. Такие потребности отражают потенциальные возможности общества и его потребительские силы.
+
+Действительные (необходимые) потребности
+Это потребности, которые могут быть удовлетворены при текущем уровне развития производства и оптимальном ходе воспроизводства. Они зависят от достигнутого экономического уровня.
+
+Подлежащие удовлетворению потребности
+Это потребности, которые возможно удовлетворить при фактическом состоянии воспроизводства, учитывая отклонения от оптимального уровня.
+
+Фактически удовлетворяемые потребности
+Это те потребности, которые реально удовлетворяются в данный момент времени.
+
+Такая классификация показывает, что потребности многослойны и зависят как от возможностей производства, так и от реальных условий жизни общества.
+
+Взаимосвязь потребностей и производства
+
+Потребности и производство находятся в тесной взаимосвязи, влияя друг на друга:
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Формирование потребностей
+Производство создаёт потребности, предлагая новые блага и услуги, которые затем становятся ориентирами для дальнейшего развития производства.
+
+Стимул для производства
+Рост и развитие потребностей служат мощным стимулом для общественного производства, побуждая его к расширению и совершенствованию.
+
+Новые задачи для производства
+Потребности постоянно ставят перед производством новые задачи, способствуя появлению прогрессивных технологий и новой техники.
+
+Общие условия для потребностей
+Производство создаёт объективные условия, в которых возникают и развиваются экономические потребности. В свою очередь, потребности направляют экономическую деятельность общества, социальных групп и отдельных людей.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Конкретная форма потребностей
+С появлением потребности в определённых благах экономическая потребность приобретает конкретную историческую форму, связанную с эпохой и уровнем развития общества.
+
+Под влиянием научно-технического прогресса (НТП) потребности не только растут, но и обновляются, что ещё больше усиливает эту взаимосвязь.
+
+Закон возвышения потребностей - общий (всеобщий) социально экономический закон, выражающий направленность качественного и количественного развития общественных потребностей:
+
+
+
+В ходе развития общества происходит количественный и качественный рост потребностей
+
+Потребности видоизменяются, одни исчезают другие появляются
+
+Возникают новые, более прогрессивные потребности
+
+Круг потребностей расширяется
+
+Структура потребностей качественно меняется, возрастает доля интеллектуальных и социальных потребностей
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Потребности в целом безграничны
+
+Роль потребностей в экономике
+
+Потребности играют центральную роль в экономической жизни общества:
+
+Определение целей
+Они задают направления экономической деятельности, указывая, какие товары и услуги необходимо производить.
+
+Стимул инноваций
+Потребности побуждают к созданию новых технологий и продуктов, обеспечивая прогресс.
+
+Влияние на рынок
+Формируя спрос, потребности определяют предложение и влияют на распределение ресурсов.
+
+Двигатель развития
+Рост потребностей стимулирует производство, что способствует экономическому росту и улучшению качества жизни.
+
+Примеры:
+
+ Японские потребители высоко ценят технологии и ожидают от продуктов высокого качества, долговечности и эстетической привлекательности. Например, спрос на миниатюрные, функциональные и стильные гаджеты здесь особенно высок
+
+Немецкие потребители ищут продукты, которые обеспечивают надежность и долговечность, будь то автомобили, бытовая техника или промышленное оборудование. Акцент делается на практичности и высоких стандартах качества
+
+Италия: бренд стиля и дизайна
+
+Южная Корея: бренд технологий и поп-культуры
+
+
+
+
+
+Заключение
+
+Жизнедеятельность человека и общества представляет собой сложную систему потребностей, которая постоянно развивается. Потребности возникают как объективное состояние, выражающее противоречие между желаемым и имеющимся, и классифицируются по степени их реализации. Они тесно связаны с производством, которое одновременно формирует их и развивается под их влиянием. Закон возвышения потребностей подчёркивает динамику этой системы: с ростом уровня жизни потребности становятся всё более разнообразными и сложными, стимулируя прогресс общества. Понимание этой системы и её законов важно для управления экономикой и обеспечения устойчивого развития. 
+            
+            , Model: llama3.2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:http://localhost:11434 "POST /api/chat HTTP/1.1" 200 None
+INFO:root:Session ID: 200e80b5-5cac-40b4-af32-24d5934472b5, AI Response: 1. Какие два типа потребностей подлежат удовлетворению при реальном состоянии воспроизводства?
+ [2.[Подлежащие удовлетворению потребности]]
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[36:55]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[57:86]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[90:92]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[130:149]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[151:179]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[183:219]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[257:276]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[278:331]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[333:345]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[347:362]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[366:35978]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data

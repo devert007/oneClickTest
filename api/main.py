@@ -6,7 +6,7 @@ from db_utils import (
     delete_document_record, insert_test_pdf_record, get_all_test_pdfs, delete_test_pdf_record,
     get_test_pdf_content,check_filename_uniqueness
 )
-from chroma_utils import index_document_to_chroma, delete_doc_from_chroma,check_document_uniqueness, load_and_split_document
+from chroma_utils import vectorstore,index_document_to_chroma, delete_doc_from_chroma,check_document_uniqueness, load_and_split_document
 import os
 import uuid
 import logging
@@ -167,3 +167,18 @@ def check_document_uniqueness_endpoint(file: UploadFile = File(...)):
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
+
+
+@app.get("/get-document-text/{file_id}")
+def get_document_text(file_id: int):
+    try:
+        # Получаем документ из ChromaDB
+        docs = vectorstore.get(where={"file_id": file_id})
+        if not docs or not docs.get('documents'):
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Собираем весь текст документа
+        document_text = "\n\n".join(docs['documents'])
+        return {"text": document_text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
