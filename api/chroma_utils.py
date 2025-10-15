@@ -7,6 +7,8 @@ from langchain_core.documents import Document
 import numpy as np
 import logging
 
+from docling.document_converter import DocumentConverter
+
 # Настройка логирования
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
@@ -19,28 +21,77 @@ if not os.path.exists("./chroma_db"):
     os.makedirs("./chroma_db")
 vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
 
+
+#devert007################
 def load_and_split_document(file_path: str) -> List[Document]:
+    """
+    Универсальная функция загрузки документов с использованием Docling
+    Поддерживает: PDF, DOCX, HTML, PPTX, XLSX и другие форматы
+    """
     try:
-        if file_path.endswith('.pdf'):
+        # Инициализация конвертера Docling
+        converter = DocumentConverter()
+        
+        # Конвертация документа
+        result = converter.convert(file_path)
+        
+        if not result.documents:
+            logging.error(f"No content extracted from {file_path}")
+            return []
+        
+        # Извлечение текста из всех документов
+        all_texts = []
+        for doc in result.documents:
+            # Экспорт в Markdown для сохранения структуры
+            markdown_content = doc.export_to_markdown()
+            all_texts.append(markdown_content)
+        
+        # Объединение всего текста
+        full_text = "\n\n".join(all_texts)
+        
+        # Создание Langchain Document
+        documents = [Document(page_content=full_text, metadata={"source": file_path})]
+        
+        logging.debug(f"Loaded document from {file_path} using Docling")
+        print(f"Loaded document from {file_path} using Docling")
+        
+        # Разбиение на чанки
+        splits = text_splitter.split_documents(documents)
+        logging.debug(f"Split document into {len(splits)} chunks")
+        print(f"Split document into {len(splits)} chunks")
+        
+        return splits
+        
+    except Exception as e:
+        logging.error(f"Error loading document {file_path} with Docling: {e}")
+        print(f"Error loading document {file_path} with Docling: {e}")
+        
+        # Fallback на старые методы при ошибке
+        return load_with_fallback(file_path)
+
+def load_with_fallback(file_path: str) -> List[Document]:
+    """Fallback метод для загрузки документов старыми способами"""
+    try:
+        file_extension = os.path.splitext(file_path)[1].lower()
+        
+        if file_extension == '.pdf':
             loader = PyPDFLoader(file_path)
-        elif file_path.endswith('.docx'):
+        elif file_extension == '.docx':
             loader = Docx2txtLoader(file_path)
-        elif file_path.endswith('.html'):
+        elif file_extension == '.html':
             loader = UnstructuredHTMLLoader(file_path)
         else:
             raise ValueError(f"Unsupported file type: {file_path}")
 
         documents = loader.load()
-        logging.debug(f"Loaded {len(documents)} document(s) from {file_path}")
-        print(f"Loaded {len(documents)} document(s) from {file_path}")
+        logging.debug(f"Loaded {len(documents)} document(s) from {file_path} using fallback")
         splits = text_splitter.split_documents(documents)
-        logging.debug(f"Split document into {len(splits)} chunks")
-        print(f"Split document into {len(splits)} chunks")
         return splits
+        
     except Exception as e:
-        logging.error(f"Error loading document {file_path}: {e}")
-        print(f"Error loading document {file_path}: {e}")
+        logging.error(f"Error in fallback loading for {file_path}: {e}")
         return []
+
 
 def index_document_to_chroma(file_path: str, file_id: int) -> bool:
     try:
