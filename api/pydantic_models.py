@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field,EmailStr
+from pydantic import BaseModel, Field
 from enum import Enum
 from datetime import datetime
 from typing import Optional
@@ -32,29 +32,3 @@ class TestPDFInfo(BaseModel):
 
 class DeleteFileRequest(BaseModel):
     file_id: int
-
-
-class UserCreate(Basemodel):
-    username: str = Field(..., min_length=2, max_length=50)
-    email:EmailStr
-    password:str = Field(...,min_length=6)
-
-class UserLogin(BaseModel):
-    username:str
-    password:str
-
-class UserResponse(BaseModel):
-    id: int
-    username: str
-    email: str
-    is_active: bool
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-    user: UserResponse
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
-
