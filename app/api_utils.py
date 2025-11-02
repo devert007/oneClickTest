@@ -169,3 +169,25 @@ def check_document_uniqueness(file):
     except Exception as e:
         st.error(f"An error occurred while checking uniqueness: {str(e)}")
         return None
+
+def generate_test_api(document_id: int, question_count: int, difficulty: str, question_type: str):
+    """
+    Вызов API для генерации теста с улучшенным промптом
+    """
+    try:
+        data = {
+            "document_id": document_id,
+            "question_count": question_count,
+            "difficulty": difficulty,
+            "question_type": question_type
+        }
+        
+        response = requests.post("http://localhost:8000/generate-test", json=data)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Failed to generate test. Error: {response.status_code} - {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"An error occurred while generating test: {str(e)}")
+        return None

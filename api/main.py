@@ -1,11 +1,13 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response
-from pydantic_models import QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest, TestPDFInfo
+from pydantic_models import QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest, TestPDFInfo, TestGenerationRequest
+from pydantic_models import TestGenerationRequest, QuestionType, DifficultyLevel
 from langchain_utils import get_rag_chain
 from db_utils import (
     insert_application_logs, get_chat_history, get_all_documents, insert_document_record, 
     delete_document_record, insert_test_pdf_record, get_all_test_pdfs, delete_test_pdf_record,
     get_test_pdf_content,check_filename_uniqueness
 )
+from langchain_utils import get_simple_rag_chain, get_rag_chain
 from chroma_utils import vectorstore,index_document_to_chroma, delete_doc_from_chroma,check_document_uniqueness, load_and_split_document
 import os
 import uuid
@@ -16,6 +18,59 @@ from typing import Optional,Tuple
 logging.basicConfig(filename='app.log', level=logging.INFO)
 
 app = FastAPI()
+
+@app.post("/generate-test")
+def generate_test(request: TestGenerationRequest):
+    """
+    Генерирует тест по заданным параметрам (совместимость с generate_page.py)
+    """
+    try:
+        # Получаем текст документа
+        docs = vectorstore.get(where={"file_id": request.document_id})
+        if not docs or not docs.get('documents'):
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        document_text = "\n\n".join(docs['documents'])
+        
+        # Создаем промпт для генерации теста
+        prompt = f"""
+        Сгенерируй тест на основе предоставленного документа.
+        Тип вопросов: {request.question_type}
+        Уровень сложности: {request.difficulty}
+        Количество вопросов: {request.question_count}
+        """
+        
+        # Получаем RAG цепочку с нужными параметрами для генерации теста
+        rag_chain = get_rag_chain(
+            model="smol-lm-3b",
+            question_type=request.question_type,
+            difficulty=request.difficulty,
+            question_count=request.question_count
+        )
+        
+        # Генерируем тест
+        result = rag_chain.invoke({
+            "input": prompt,
+            "chat_history": [],
+            "context": document_text
+        })
+        
+        test_content = result['answer']
+        
+        # Логируем генерацию
+        insert_application_logs(
+            session_id=str(uuid.uuid4()),
+            user_query=f"Generate test: {request.question_type}, {request.difficulty}, {request.question_count} questions",
+            gpt_response=test_content,
+            model="smol-lm-3b"
+        )
+        
+        return {"test_content": test_content, "document_id": request.document_id}
+        
+    except Exception as e:
+        logging.error(f"Error generating test: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating test: {str(e)}")
+
 
 
 @app.post("/upload-doc")
@@ -94,7 +149,10 @@ def chat(query_input: QueryInput):
     logging.info(f"Session ID: {session_id}, User Query: {query_input.question}, Model: {query_input.model.value}")
     
     chat_history = get_chat_history(session_id)
-    rag_chain = get_rag_chain(query_input.model.value)
+    
+    # Используем простую цепочку для обычных чат-запросов
+    rag_chain = get_simple_rag_chain(query_input.model.value)
+    
     answer = rag_chain.invoke({
         "input": query_input.question,
         "chat_history": chat_history
@@ -103,8 +161,6 @@ def chat(query_input: QueryInput):
     insert_application_logs(session_id, query_input.question, answer, query_input.model.value)
     logging.info(f"Session ID: {session_id}, AI Response: {answer}")
     return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
-
-
 @app.post("/upload-test-pdf")
 def upload_test_pdf(
     file: UploadFile = File(...),

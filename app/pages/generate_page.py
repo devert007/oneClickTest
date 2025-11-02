@@ -179,46 +179,73 @@ def show_generate_page():
         # Adjust question count for AI generation
         ai_question_count = question_count
         generated_questions = []
-        answers = []
+        answers = ""
 
         # Generate AI-based questions if needed
         if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
             print(st.session_state.uploaded_file_id)
             document_text = get_document_text(st.session_state.uploaded_file_id) 
-            prompt = f"""
-            Сгенерируйте тест на основе документа.
-            Требования:
-            - ТОЛЬКО это количество вопросов: {ai_question_count}
-            - Уровень сложности: {difficulty}
-            - Используй строго этот формат вопросов: {question_format}
-            - Включай правильные ответы (пиши правильные ответы в конце своего ответа, в таком формате [номер_вопроса].[ответ])
-            
-            - Используй ТОЛЬКО предоставленный ниже текст документа, не добавляй информацию из других источников
-            - Все вопросы и ответы должны быть прямо извлечены или логически выведены из предоставленного текста
-            - Используй только тот язык, который используется в документе
-            
-            Теперь сгенерируй тест  строго следуя указанным выше требованиям.
-            В твоем ответе мне нужен только сам сгенерированный тест с ответами на него, нельзя добавлять примечания и другую дополнительную информацию
-            После генерации теста, перепроверь все вышеперечисленные требования и исправь строго под требования.
+            if question_format == "Вопрос с выбором ответа":
+                format_instructions = "Создавай вопросы с 4 вариантами ответов (A, B, C, D). Только один правильный. В конце укажи правильные ответы в формате: 1.A, 2.C и т.д."
+            else:
+                format_instructions = "Создавай открытые вопросы, требующие развернутого ответа. В конце дай краткие правильные ответы на каждый вопрос."
 
-            Текст документа:
-            {document_text} 
+            # УЛУЧШЕННЫЙ ПРОМПТ
+            prompt = f"""
+            Сгенерируй качественный тест на основе документа.
             
+            ТРЕБОВАНИЯ:
+            - Количество вопросов: {ai_question_count}
+            - Уровень сложности: {difficulty}
+            - Формат вопросов: {question_format}
+            - Все вопросы должны быть на русском языке
+            - Все вопросы должны быть строго по теме документа
+            
+            ИНСТРУКЦИИ ПО ФОРМАТУ:
+            {format_instructions}
+            
+            СТРУКТУРА:
+            1. Сначала все вопросы по порядку
+            2. Затем раздел с правильными ответами
+            
+            КАЧЕСТВО ВОПРОСОВ:
+            - Вопросы должны проверять понимание материала
+            - Формулировки четкие и однозначные
+            - Охватывай ключевые темы документа
+            - Соответствуй уровню сложности: {difficulty}
+            
+            ВАЖНО:
+            - Используй ТОЛЬКО информацию из предоставленного документа
+            - Не добавляй вопросы на темы, которых нет в документе
+            - Все ответы должны быть подтверждены текстом документа
+            
+            Текст документа:
+            {document_text}
+            
+            Сгенерируй тест строго по этим требованиям.
             """
-            with st.spinner("Генерация теста..."):
+            
+            with st.spinner("Генерация качественного теста..."):
                 response = get_api_response(
                     question=prompt,
                     session_id=st.session_state.session_id,
-                    model="llama3.2"
+                    model="smol-lm-3b" # Меняем на русскую модель
                 )
+                
                 if response:
-                    generated_questions = response['answer'].split("\n\n")
-                    # Extract answers (last lines starting with [)
-                    answers = [line for line in generated_questions if line.startswith("[")]
-                    generated_questions = [q for q in generated_questions if not q.startswith("[")]
+                    test_content = response['answer']
 
+                    # Сохраняем весь тест как есть
+                    st.session_state.generated_test = test_content
+                    st.session_state.test_generated = True
+                    st.session_state.test_pdf = markdown_to_pdf(test_content)
+                    st.session_state.test_word = markdown_to_word(test_content)
+                    st.success("✅ Тест успешно сгенерирован!")
+
+
+        # Остальной код с XML tasks остается без изменений...
         # Add XML tasks
-        xml_questions = []
+        xml_questions = ""
         print(selected_subject,xml_tasks_count)
 
         if selected_subject and xml_tasks_count > 0:
@@ -234,14 +261,15 @@ def show_generate_page():
             for i, task in enumerate(xml_tasks, len(generated_questions) + 1):
                 xml_questions.append(f"{i}. {task.question}")
                 answers.append(f"[{i}].{task.answer}")
-        print(xml_questions)
+        print(test_content)
         # Combine questions and answers
-        combined_questions = generated_questions + xml_questions
+        combined_questions = test_content + xml_questions
         if not combined_questions:
             st.error("Не удалось сгенерировать или выбрать вопросы!")
             return
 
-        test_content = "\n\n".join(combined_questions + answers)
+        test_content = "".join(combined_questions + answers)
+        test_content=test_content.split("</think>")[-1]
         st.session_state.generated_test = test_content
         st.session_state.test_generated = True
         st.session_state.test_pdf = markdown_to_pdf(test_content)
