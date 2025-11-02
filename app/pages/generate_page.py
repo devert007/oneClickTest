@@ -109,7 +109,6 @@ def show_generate_page():
         type=["pdf", "docx"],
         key="gen_uploader"
     )
-    
     if uploaded_file: 
         if st.button("Проверить уникальность"):
             with st.spinner("Проверка уникальности..."):
@@ -134,6 +133,7 @@ def show_generate_page():
         # Show upload button only if document is unique
         if st.session_state.uniqueness_checked and st.session_state.is_document_unique:
             if st.button("Загрузить файл"):
+
                 with st.spinner("Идет загрузка..."):
                     response = upload_document(uploaded_file)
                     if response:
@@ -183,6 +183,7 @@ def show_generate_page():
 
         # Generate AI-based questions if needed
         if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
+            print(st.session_state.uploaded_file_id)
             document_text = get_document_text(st.session_state.uploaded_file_id) 
             prompt = f"""
             Сгенерируйте тест на основе документа.

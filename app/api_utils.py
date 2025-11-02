@@ -42,6 +42,7 @@ def upload_document(file):
         st.error(f"An error occurred while uploading the file: {str(e)}")
         return None
 def get_document_text(file_id: int) -> str:
+    print("file_id",file_id)
     if file_id is None:
         return ""
     
