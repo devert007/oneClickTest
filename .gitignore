@@ -3,6 +3,3 @@ rag_app.db
 chroma_db/
 temp_*
 *.log
-api/.env
-api/*.env
-config/secrets.json
