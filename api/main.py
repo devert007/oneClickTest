@@ -29,38 +29,61 @@ def upload_and_index_document(file: UploadFile = File(...)):
     temp_file_path = f"temp_{file.filename}"
 
     try:
+        print(f"📥 Начало загрузки файла: {file.filename}")
+        
         # Сохраняем файл временно
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
+        
+        file_size = os.path.getsize(temp_file_path)
+        print(f"📊 Размер файла: {file_size} bytes")
 
-        # Проверка уникальности имени файла в SQLite
+        print(f"🔍 Проверка уникальности файла: {file.filename}")
+        
+        # Проверка уникальности имени файла в PostgreSQL
         is_unique_filename, existing_filename = check_filename_uniqueness(file.filename)
+        print(f"✅ Результат проверки уникальности: {is_unique_filename}, существующий файл: {existing_filename}")
+        
         if not is_unique_filename:
-            logging.warning(f"Document {file.filename} already exists in SQLite.")
+            logging.warning(f"Document {file.filename} already exists in PostgreSQL.")
             raise HTTPException(
                 status_code=400,
                 detail=f"Document with filename {file.filename} already exists in the database."
             )
 
-        # Проверка уникальности в ChromaDB
-        # is_unique_chroma, max_similarity_chroma, similar_doc_id = check_document_uniqueness(temp_file_path)
-        # if not is_unique_chroma:
-        #     logging.warning(f"Document {file.filename} is not unique (ChromaDB). Max similarity: {max_similarity_chroma} with file_id {similar_doc_id}")
-        #     raise HTTPException(
-        #         status_code=400,
-        #         detail=f"Document is not unique. Maximum similarity: {max_similarity_chroma:.2f} with file_id {similar_doc_id}"
-        #     )
-
         # Если документ уникален, продолжаем индексацию
+        print(f"➕ Вставка записи в БД для файла: {file.filename}")
         file_id = insert_document_record(file.filename)
+        print(f"✅ Document record inserted with ID: {file_id}")
+        
+        print(f"🔍 Индексация документа в ChromaDB...")
         success = index_document_to_chroma(temp_file_path, file_id)
 
         if success:
             logging.info(f"File {file.filename} successfully uploaded and indexed with file_id {file_id}")
+            print(f"🎉 Файл успешно загружен и проиндексирован! ID: {file_id}")
+            
+            # Проверим, что документ действительно добавлен в ChromaDB
+            docs = vectorstore.get(where={"file_id": file_id})
+            print(f"📚 Проверка ChromaDB: найдено {len(docs['ids'])} чанков для file_id {file_id}")
+            
             return {"message": f"File {file.filename} has been successfully uploaded and indexed.", "file_id": file_id}
         else:
+            # Откатываем запись в БД если индексация не удалась
+            print(f"❌ Ошибка индексации, откатываем запись в БД...")
             delete_document_record(file_id)
+            logging.error(f"Failed to index document {file.filename}, rolled back DB record")
             raise HTTPException(status_code=500, detail=f"Failed to index {file.filename}.")
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error in upload_and_index_document: {str(e)}")
+        print(f"💥 Критическая ошибка в upload_and_index_document: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+    
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
@@ -86,14 +109,25 @@ def chat(query_input: QueryInput):
 def upload_test_pdf(
     file: UploadFile = File(...),
     document_id: Optional[int] = Form(None),
-    session_id: Optional[str] = Form(None)
+    session_id: Optional[str] = Form(None),
+    client_id: Optional[int] = Form(0)
 ):
     file_extension = os.path.splitext(file.filename)[1].lower()
     if file_extension != '.pdf':
         raise HTTPException(status_code=400, detail="Only PDF files are allowed for test uploads.")
 
     pdf_content = file.file.read()
-    file_id = insert_test_pdf_record(file.filename, document_id, session_id, pdf_content)
+    
+    # Генерируем session_id если он не передан
+    if session_id is None:
+        session_id = str(uuid.uuid4())
+        print(f"📝 Сгенерирован новый session_id: {session_id}")
+    
+    # Устанавливаем document_id в 0 если не передан
+    if document_id is None:
+        document_id = 0
+    
+    file_id = insert_test_pdf_record(file.filename, document_id, session_id, pdf_content, client_id)
     return {"message": f"Test PDF {file.filename} has been successfully uploaded.", "file_id": file_id}
 
 @app.get("/list-docs", response_model=list[DocumentInfo])

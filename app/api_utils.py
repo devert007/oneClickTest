@@ -42,19 +42,38 @@ def upload_document(file):
         st.error(f"An error occurred while uploading the file: {str(e)}")
         return None
 def get_document_text(file_id: int) -> str:
-    response = requests.get(f"{API_BASE_URL}/get-document-text/{file_id}")
-    if response.status_code == 200:
-        return response.json().get("text", "")
-    return ""
-def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None, session_id: str = None):
+    if file_id is None:
+        return ""
+    
+    try:
+        response = requests.get(f"{API_BASE_URL}/get-document-text/{file_id}")
+        if response.status_code == 200:
+            return response.json().get("text", "")
+        else:
+            print(f"Error getting document text: {response.status_code} - {response.text}")
+            return ""
+    except Exception as e:
+        print(f"Error getting document text: {e}")
+        return ""
+
+    
+def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None, session_id: str = None, client_id: int = 0):
     print("Uploading test PDF...")
     try:
         files = {"file": (filename, pdf_buffer, "application/pdf")}
         data = {}
         if document_id:
             data["document_id"] = document_id
+        else:
+            data["document_id"] = 0  # Устанавливаем значение по умолчанию
+            
         if session_id:
             data["session_id"] = session_id
+        else:
+            data["session_id"] = "default_session"  # Или сгенерируйте session_id
+        
+        data["client_id"] = client_id  
+        
         response = requests.post("http://localhost:8000/upload-test-pdf", files=files, data=data)
         if response.status_code == 200:
             return response.json()
@@ -64,7 +83,7 @@ def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None,
     except Exception as e:
         st.error(f"An error occurred while uploading the test PDF: {str(e)}")
         return None
-
+    
 def download_test_pdf(file_id: int):
     try:
         response = requests.get(f"http://localhost:8000/download-test-pdf/{file_id}")
