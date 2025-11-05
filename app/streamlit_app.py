@@ -1,7 +1,14 @@
+# app/streamlit_app.py - ИСПРАВЛЕННАЯ ВЕРСИЯ
 import streamlit as st
+import sys
+import os
+
+# Добавляем путь к папке api для импорта
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 from auth_utils import require_auth, logout_user, init_session_state, get_current_client_id
 from right_sidebar import display_sidebar
-from chat_interface import display_chat_interface
+from chat_agent import handle_chat_interaction, init_chat_agent
 
 def load_css(file_name):
     with open(file_name) as f:
@@ -14,6 +21,9 @@ init_session_state()
 
 # Проверка аутентификации
 require_auth()
+
+# Инициализация чат-агента
+init_chat_agent()
 
 # Основной интерфейс приложения
 st.title("OneClickTest")
@@ -34,8 +44,7 @@ st.subheader("""OneClickTest - интеллектуальная платформ
 
 Автоматизация процесса создания тестовых заданий из загруженных документов (лекций, методичек, статей) с использованием современных технологий AI (RAG-модели) и возможностью управления учебными материалами.
  
- 
- Ключевые функции:
+Ключевые функции:
     -Загрузка материалов
     Поддержка форматов: PDF, DOCX. Документы индексируются в векторную базу ChromaDB для семантического поиска.
 
@@ -66,7 +75,7 @@ if "messages" not in st.session_state:
 if "client_id" not in st.session_state:
     st.session_state.client_id = get_current_client_id()
 
-    
 display_sidebar()
 
-###display_chat_interface()
+# Обрабатываем взаимодействие с чатом
+handle_chat_interaction()
