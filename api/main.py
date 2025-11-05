@@ -74,7 +74,10 @@ def generate_test(request: TestGenerationRequest):
 
 
 @app.post("/upload-doc")
-def upload_and_index_document(file: UploadFile = File(...)):
+def upload_and_index_document(
+    file: UploadFile = File(...),
+    client_id: int = Form(None)  # Добавляем client_id как параметр формы
+):
     allowed_extensions = ['.pdf', '.docx', '.html']
     file_extension = os.path.splitext(file.filename)[1].lower()
 
@@ -85,6 +88,7 @@ def upload_and_index_document(file: UploadFile = File(...)):
 
     try:
         print(f"📥 Начало загрузки файла: {file.filename}")
+        print(f"👤 Client ID: {client_id}")
         
         # Сохраняем файл временно
         with open(temp_file_path, "wb") as buffer:
@@ -96,7 +100,7 @@ def upload_and_index_document(file: UploadFile = File(...)):
         print(f"🔍 Проверка уникальности файла: {file.filename}")
         
         # Проверка уникальности имени файла в PostgreSQL
-        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename)
+        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename,client_id)
         print(f"✅ Результат проверки уникальности: {is_unique_filename}, существующий файл: {existing_filename}")
         
         if not is_unique_filename:
@@ -107,8 +111,14 @@ def upload_and_index_document(file: UploadFile = File(...)):
             )
 
         # Если документ уникален, продолжаем индексацию
-        print(f"➕ Вставка записи в БД для файла: {file.filename}")
-        file_id = insert_document_record(file.filename)
+        print(f"➕ Вставка записи в БД для файла: {file.filename}, client_id: {client_id}")
+        
+        # Используем переданный client_id или клиента по умолчанию
+        if client_id is None:
+            client_id = get_default_client_id()
+            print(f"⚠️  Client ID не передан, используем default: {client_id}")
+        
+        file_id = insert_document_record(file.filename, client_id)  # Передаем client_id
         print(f"✅ Document record inserted with ID: {file_id}")
         
         print(f"🔍 Индексация документа в ChromaDB...")
@@ -142,7 +152,6 @@ def upload_and_index_document(file: UploadFile = File(...)):
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
-
 @app.post("/chat", response_model=QueryResponse)
 def chat(query_input: QueryInput):
     session_id = query_input.session_id or str(uuid.uuid4())
@@ -233,14 +242,14 @@ def delete_test_pdf(request: DeleteFileRequest):
 
 
 @app.post("/check-uniqueness")
-def check_document_uniqueness_endpoint(file: UploadFile = File(...)):
+def check_document_uniqueness_endpoint(file: UploadFile = File(...),client_id:int = Form(None)):
     temp_file_path = f"temp_{file.filename}"
     try:
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-
+        print(client_id)
         # Проверка уникальности имени файла в SQLite
-        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename)
+        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename,client_id)
         if not is_unique_filename:
             return {
                 "is_unique": False,

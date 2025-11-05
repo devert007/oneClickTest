@@ -65,9 +65,10 @@ def create_document_store():
         CREATE TABLE IF NOT EXISTS document_store (
             id SERIAL PRIMARY KEY,
             client_id INTEGER NOT NULL,
-            filename TEXT NOT NULL UNIQUE,
+            filename TEXT NOT NULL,
             upload_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+            FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+            UNIQUE(client_id, filename)  -- ИЗМЕНЕНИЕ: уникальность по паре (client_id, filename)
         )
     ''')
     cursor.execute('''
@@ -231,7 +232,6 @@ def get_all_documents(client_id: int = None) -> List[Dict[str, Any]]:
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    # ИЗМЕНЕНИЕ: Добавляем client_id в SELECT запрос
     cursor.execute(
         'SELECT id, filename, upload_timestamp, client_id FROM document_store WHERE client_id = %s ORDER BY upload_timestamp DESC',
         (client_id,)
@@ -290,15 +290,22 @@ def get_test_pdf_content(file_id: int) -> Optional[bytes]:
     conn.close()
     return result[0] if result else None
 
-def check_filename_uniqueness(filename: str) -> Tuple[bool, str]:
+# В функции check_filename_uniqueness() в db_utils.py
+def check_filename_uniqueness(filename: str, client_id: int = None) -> Tuple[bool, str]:
     """
-    Проверяет, существует ли файл с таким же именем в PostgreSQL.
+    Проверяет, существует ли файл с таким же именем у данного клиента в PostgreSQL.
     Возвращает: (is_unique, existing_filename)
     """
     try:
+        if client_id is None:
+            client_id = get_default_client_id()
+            
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT filename FROM document_store WHERE filename = %s', (filename,))
+        cursor.execute(
+            'SELECT filename FROM document_store WHERE filename = %s AND client_id = %s', 
+            (filename, client_id)
+        )
         result = cursor.fetchone()
         cursor.close()
         conn.close()

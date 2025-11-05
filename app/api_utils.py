@@ -35,7 +35,15 @@ def upload_document(file):
     print("Uploading file...")
     try:
         files = {"file": (file.name, file, file.type)}
-        response = requests.post("http://localhost:8000/upload-doc", files=files)
+        
+        # Получаем client_id текущего пользователя
+        client_id = get_current_client_id()
+        print(f"📝 Загрузка документа от client_id: {client_id}")
+        
+        # Добавляем client_id в данные формы
+        data = {"client_id": client_id}
+        
+        response = requests.post("http://localhost:8000/upload-doc", files=files, data=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -167,8 +175,11 @@ def delete_test_pdf(file_id):
         return None
 def check_document_uniqueness(file):
     try:
+        client_id = get_current_client_id()
+        print("hi",client_id)
         files = {"file": (file.name, file, file.type)}
-        response = requests.post("http://localhost:8000/check-uniqueness", files=files)
+        data = {"client_id": client_id}
+        response = requests.post("http://localhost:8000/check-uniqueness/", files=files,data=data)
         if response.status_code == 200:
             print(response,response.json())
             return response.json()
