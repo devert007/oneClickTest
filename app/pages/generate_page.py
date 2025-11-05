@@ -10,6 +10,7 @@ from io import BytesIO
 from docx import Document
 from docx.shared import Pt
 
+
 def load_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -89,6 +90,7 @@ def show_generate_page():
         st.session_state.uniqueness_checked = False
     if 'uploaded_file_id' not in st.session_state:
         st.session_state.uploaded_file_id = None
+        
     st.header("1. Выберите или загрузите документ")
     
     documents = list_documents()
@@ -109,6 +111,7 @@ def show_generate_page():
         type=["pdf", "docx"],
         key="gen_uploader"
     )
+    
     if uploaded_file: 
         if st.button("Проверить уникальность"):
             with st.spinner("Проверка уникальности..."):
@@ -130,28 +133,23 @@ def show_generate_page():
                                 f"{uniqueness_response['max_similarity']:.2f} с файлом ID {uniqueness_response['similar_doc_id']}"
                             )
 
-        # Show upload button only if document is unique
         if st.session_state.uniqueness_checked and st.session_state.is_document_unique:
             if st.button("Загрузить файл"):
-
                 with st.spinner("Идет загрузка..."):
                     response = upload_document(uploaded_file)
                     if response:
                         st.session_state.uploaded_file_id = response['file_id']
                         st.success(f"Документ {uploaded_file.name} успешно загружен!")
-                        st.session_state.uniqueness_checked = False  # Reset for next upload
+                        st.session_state.uniqueness_checked = False
                         st.session_state.is_document_unique = False
                         documents = list_documents()
                     else:
                         st.error("Ошибка при загрузке документа.")
 
-    
-
     st.header("2. Настройки теста")
     question_count = st.number_input("Количество вопросов", min_value=1, max_value=20, value=1)
     difficulty = st.select_slider("Уровень сложности", options=["Для начальных классов", "Для средних классов", "Для старших классов", "Для студентов"])
-    question_format = st.radio("Формат вопросов", ["Вопрос с выбором ответа", 
-    "Вопрос без выбора ответа"])
+    question_format = st.radio("Формат вопросов", ["Вопрос с выбором ответа", "Вопрос без выбора ответа"])
 
     st.header("3. Добавить задачи из базы")
 
@@ -164,33 +162,46 @@ def show_generate_page():
     if selected_subject:
         topics = list(tasks_dict[selected_subject].keys())
         selected_topic = st.selectbox("Выберите тему", options=[""] + topics)
-        xml_unlock_tasks_count =get_preview_tasks(subject=selected_subject,
-                topic=selected_topic if selected_topic else None,
-                difficulty=difficulty,
-                task_type=question_format)
-        xml_tasks_count = st.number_input("Количество доступных задач по вашим настройкам  из XML", min_value=1 if xml_unlock_tasks_count>0 else 0, max_value=xml_unlock_tasks_count, value=1 if xml_unlock_tasks_count>0 else 0)
+        xml_unlock_tasks_count = get_preview_tasks(
+            subject=selected_subject,
+            topic=selected_topic if selected_topic else None,
+            difficulty=difficulty,
+            task_type=question_format
+        )
+        xml_tasks_count = st.number_input(
+            "Количество доступных задач по вашим настройкам из XML", 
+            min_value=1 if xml_unlock_tasks_count > 0 else 0, 
+            max_value=xml_unlock_tasks_count, 
+            value=1 if xml_unlock_tasks_count > 0 else 0
+        )
     
     st.header("4. Сгенерировать тест")
+    
+    # Инициализация переменных перед использованием
+    test_content = ""
+    xml_questions = []
+    answers = []
+    
     if st.button("Создать тест"):
         if 'uploaded_file_id' not in st.session_state and not selected_subject:
             st.error("Выберите документ или предмет для генерации теста!")
             return
 
+        # Используем правильное имя модели из доступных вариантов
+        model_name = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"  # Основная русская модель
+
         # Adjust question count for AI generation
         ai_question_count = question_count
-        generated_questions = []
-        answers = ""
 
         # Generate AI-based questions if needed
         if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
-            print(st.session_state.uploaded_file_id)
             document_text = get_document_text(st.session_state.uploaded_file_id) 
+            
             if question_format == "Вопрос с выбором ответа":
                 format_instructions = "Создавай вопросы с 4 вариантами ответов (A, B, C, D). Только один правильный. В конце укажи правильные ответы в формате: 1.A, 2.C и т.д."
             else:
                 format_instructions = "Создавай открытые вопросы, требующие развернутого ответа. В конце дай краткие правильные ответы на каждый вопрос."
 
-            # УЛУЧШЕННЫЙ ПРОМПТ
             prompt = f"""
             Сгенерируй качественный тест на основе документа.
             
@@ -229,27 +240,18 @@ def show_generate_page():
                 response = get_api_response(
                     question=prompt,
                     session_id=st.session_state.session_id,
-                    model="smol-lm-3b" # Меняем на русскую модель
+                    model=model_name  # Используем правильное имя модели
                 )
                 
                 if response:
                     test_content = response['answer']
+                    print(f"AI сгенерированный контент: {test_content[:100]}...")  # Отладочная печать
+                else:
+                    st.error("Ошибка при генерации теста AI")
+                    test_content = ""
 
-                    # Сохраняем весь тест как есть
-                    st.session_state.generated_test = test_content
-                    st.session_state.test_generated = True
-                    st.session_state.test_pdf = markdown_to_pdf(test_content)
-                    st.session_state.test_word = markdown_to_word(test_content)
-                    st.success("✅ Тест успешно сгенерирован!")
-
-
-        # Остальной код с XML tasks остается без изменений...
         # Add XML tasks
-        xml_questions = ""
-        print(selected_subject,xml_tasks_count)
-
         if selected_subject and xml_tasks_count > 0:
-            print('tyta')
             xml_tasks = get_tasks(
                 subject=selected_subject,
                 topic=selected_topic if selected_topic else None,
@@ -257,25 +259,34 @@ def show_generate_page():
                 task_type=question_format,
                 limit=xml_tasks_count
             )
-            print(xml_tasks)
-            for i, task in enumerate(xml_tasks, len(generated_questions) + 1):
-                xml_questions.append(f"{i}. {task.question}")
-                answers.append(f"[{i}].{task.answer}")
-        print(test_content)
-        # Combine questions and answers
-        combined_questions = test_content + xml_questions
-        if not combined_questions:
-            st.error("Не удалось сгенерировать или выбрать вопросы!")
-            return
+            
+            for i, task in enumerate(xml_tasks, 1):
+                xml_questions.append(f"{i}. {task.question}\n")
+                answers.append(f"[{i}]. {task.answer}\n")
 
-        test_content = "".join(combined_questions + answers)
-        test_content=test_content.split("</think>")[-1]
+        # Combine questions and answers
+        
+            # Добавление XML вопросов
+        if xml_questions:
+            xml_section = "\n\n".join(xml_questions)
+            if test_content:
+                test_content = test_content + "\n\n" + xml_section
+            else:
+                test_content = xml_section
+        
+        # Добавление ответов
+        if answers:
+            answers_section = "\n".join(answers)
+            test_content = test_content + "\n\nОТВЕТЫ:\n" + answers_section
+
+        # Сохранение в session_state
         st.session_state.generated_test = test_content
         st.session_state.test_generated = True
         st.session_state.test_pdf = markdown_to_pdf(test_content)
         st.session_state.test_word = markdown_to_word(test_content)
-        st.success("Тест успешно сгенерирован!")
+        st.success("✅ Тест успешно сгенерирован!")
 
+        # Сохранение PDF
         pdf_response = upload_test_pdf(
             pdf_buffer=st.session_state.test_pdf,
             filename="generated_test.pdf",
@@ -286,7 +297,8 @@ def show_generate_page():
             st.success(f"PDF тест сохранён! ID: {pdf_response.get('file_id')}")
         else:
             st.error("Ошибка сохранения PDF теста")
-
+    
+    # Отображение сгенерированного теста
     if 'test_generated' in st.session_state and st.session_state.test_generated and 'generated_test' in st.session_state:
         with st.expander("Просмотр теста", expanded=True):
             st.markdown(st.session_state.generated_test)
@@ -318,8 +330,6 @@ def show_generate_page():
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 key="download_word"
             )
-
-
 
 if __name__ == "__main__":
     show_generate_page()

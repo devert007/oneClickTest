@@ -2,6 +2,10 @@ import requests
 import streamlit as st
 import os
 from io import BytesIO
+# import sys
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from auth_utils import get_current_client_id
 
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
@@ -27,7 +31,6 @@ def get_api_response(question, session_id, model):
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
         return None
-
 def upload_document(file):
     print("Uploading file...")
     try:
@@ -58,7 +61,7 @@ def get_document_text(file_id: int) -> str:
         return ""
 
     
-def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None, session_id: str = None, client_id: int = 0):
+def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None, session_id: str = None):
     print("Uploading test PDF...")
     try:
         files = {"file": (filename, pdf_buffer, "application/pdf")}
@@ -66,14 +69,17 @@ def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None,
         if document_id:
             data["document_id"] = document_id
         else:
-            data["document_id"] = 0  # Устанавливаем значение по умолчанию
+            data["document_id"] = 0
             
         if session_id:
             data["session_id"] = session_id
         else:
-            data["session_id"] = "default_session"  # Или сгенерируйте session_id
+            data["session_id"] = "default_session"
         
-        data["client_id"] = client_id  
+        # Используем текущего клиента
+        client_id = get_current_client_id()
+        if client_id:
+            data["client_id"] = client_id
         
         response = requests.post("http://localhost:8000/upload-test-pdf", files=files, data=data)
         if response.status_code == 200:
@@ -84,7 +90,6 @@ def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None,
     except Exception as e:
         st.error(f"An error occurred while uploading the test PDF: {str(e)}")
         return None
-    
 def download_test_pdf(file_id: int):
     try:
         response = requests.get(f"http://localhost:8000/download-test-pdf/{file_id}")
@@ -99,7 +104,9 @@ def download_test_pdf(file_id: int):
 
 def list_documents():
     try:
-        response = requests.get("http://localhost:8000/list-docs")
+        # Передаем client_id в запрос
+        client_id = get_current_client_id()
+        response = requests.get(f"http://localhost:8000/list-docs?client_id={client_id}")
         if response.status_code == 200:
             return response.json()
         else:
@@ -111,7 +118,9 @@ def list_documents():
 
 def list_test_pdfs():
     try:
-        response = requests.get("http://localhost:8000/list-test-pdfs")
+        # Передаем client_id в запрос
+        client_id = get_current_client_id()
+        response = requests.get(f"http://localhost:8000/list-test-pdfs?client_id={client_id}")
         if response.status_code == 200:
             return response.json()
         else:
@@ -169,6 +178,7 @@ def check_document_uniqueness(file):
     except Exception as e:
         st.error(f"An error occurred while checking uniqueness: {str(e)}")
         return None
+
 
 def generate_test_api(document_id: int, question_count: int, difficulty: str, question_type: str):
     """

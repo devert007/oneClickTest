@@ -1,7 +1,7 @@
 import streamlit as st
+from auth_utils import require_auth, logout_user, init_session_state, get_current_client_id
 from right_sidebar import display_sidebar
 from chat_interface import display_chat_interface
-
 
 def load_css(file_name):
     with open(file_name) as f:
@@ -9,6 +9,23 @@ def load_css(file_name):
 
 load_css("style.css")
 
+# Инициализация состояния сессии
+init_session_state()
+
+# Проверка аутентификации
+require_auth()
+
+# Основной интерфейс приложения
+st.title("OneClickTest")
+
+# Панель пользователя
+col1, col2 = st.columns([4, 1])
+with col1:
+    st.subheader(f"Добро пожаловать, {st.session_state.username}!")
+with col2:
+    if st.button("🚪 Выйти"):
+        logout_user()
+        st.rerun()
 
 st.title("OneClickTest")
 st.subheader("""OneClickTest - интеллектуальная платформа для автоматизированного создания тестов на основе учебных материалов, с интеграцией AI и поддержкой полного цикла работы с контентом.
@@ -45,9 +62,11 @@ st.subheader("""OneClickTest - интеллектуальная платформ
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "session_id" not in st.session_state:
-    st.session_state.session_id = None
+# Используем client_id вместо session_id для многопользовательской поддержки
+if "client_id" not in st.session_state:
+    st.session_state.client_id = get_current_client_id()
 
+    
 display_sidebar()
 
 ###display_chat_interface()

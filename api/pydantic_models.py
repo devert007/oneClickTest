@@ -5,23 +5,7 @@ from datetime import datetime
 from typing import Optional
 
 class ModelName(str, Enum):
-    # Новые легкие модели
-    SMOL_LM_3B = "smol-lm-3b"
-    SMOL_LM_1_7B = "smol-lm-1.7b"
-    
-    # Существующие модели
-    DEEPSEEK_R1 = "deepseek-r1"
-    LLAMA_3_70B = "llama-3-70b"
-    MIXTRAL_8X7B = "mixtral-8x7b"
-    ZEPHYR_7B = "zephyr-7b"
-    
-    # Русскоязычные модели
-    RUSSIAN_SAIGA = "russian-saiga"
-    RUSSIAN_GPT = "russian-gpt"
-    
-    # Базовые модели
-    GPT2 = "gpt2"
-    MISTRAL_7B = "mistral-7b"
+    VIKHR = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"
 
 class QuestionType(str, Enum):
     MULTIPLE_CHOICE = "multiple_choice"
@@ -36,7 +20,7 @@ class DifficultyLevel(str, Enum):
 class QueryInput(BaseModel):
     question: str
     session_id: Optional[str] = Field(default=None)
-    model: ModelName = Field(default=ModelName.SMOL_LM_3B)
+    model: ModelName = Field(default=ModelName.VIKHR)  # По умолчанию Vikhr
 
 class QueryResponse(BaseModel):
     answer: str
@@ -46,13 +30,16 @@ class QueryResponse(BaseModel):
 class DocumentInfo(BaseModel):
     id: int
     filename: str
+    client_id: int
     upload_timestamp: datetime
 
 class TestPDFInfo(BaseModel):
     id: int
     filename: str
     document_id: Optional[int] = Field(default=None)
+    document_name: Optional[str] = Field(default=None)
     session_id: Optional[str] = Field(default=None)
+    client_id: Optional[int] = Field(default=None)
     upload_timestamp: datetime
 
 class DeleteFileRequest(BaseModel):
@@ -67,3 +54,4 @@ class TestGenerationRequest(BaseModel):
     xml_subject: Optional[str] = None
     xml_topic: Optional[str] = None
     xml_task_count: int = 0
+    model: ModelName = Field(default=ModelName.VIKHR)  # По умолчанию Vikhr

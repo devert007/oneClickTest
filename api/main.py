@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response, Query
 from pydantic_models import QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest, TestPDFInfo, TestGenerationRequest
 from pydantic_models import TestGenerationRequest, QuestionType, DifficultyLevel
 from langchain_utils import get_rag_chain
@@ -7,7 +7,7 @@ from db_utils import (
     delete_document_record, insert_test_pdf_record, get_all_test_pdfs, delete_test_pdf_record,
     get_test_pdf_content,check_filename_uniqueness
 )
-from langchain_utils import get_simple_rag_chain, get_rag_chain
+from langchain_utils import  get_rag_chain
 from chroma_utils import vectorstore,index_document_to_chroma, delete_doc_from_chroma,check_document_uniqueness, load_and_split_document
 import os
 import uuid
@@ -149,50 +149,55 @@ def chat(query_input: QueryInput):
     logging.info(f"Session ID: {session_id}, User Query: {query_input.question}, Model: {query_input.model.value}")
     
     chat_history = get_chat_history(session_id)
+    rag_chain = get_rag_chain()  # Используем одну модель без параметров
     
-    # Используем простую цепочку для обычных чат-запросов
-    rag_chain = get_simple_rag_chain(query_input.model.value)
-    
-    answer = rag_chain.invoke({
-        "input": query_input.question,
-        "chat_history": chat_history
-    })['answer']
+    try:
+        answer = rag_chain.invoke({
+            "input": query_input.question,
+            "chat_history": chat_history
+        })['answer']
+    except Exception as e:
+        logging.error(f"Ошибка при вызове RAG цепи: {e}")
+        answer = "Извините, произошла ошибка при генерации ответа."
 
     insert_application_logs(session_id, query_input.question, answer, query_input.model.value)
     logging.info(f"Session ID: {session_id}, AI Response: {answer}")
     return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
-@app.post("/upload-test-pdf")
-def upload_test_pdf(
-    file: UploadFile = File(...),
-    document_id: Optional[int] = Form(None),
-    session_id: Optional[str] = Form(None),
-    client_id: Optional[int] = Form(0)
-):
-    file_extension = os.path.splitext(file.filename)[1].lower()
-    if file_extension != '.pdf':
-        raise HTTPException(status_code=400, detail="Only PDF files are allowed for test uploads.")
 
-    pdf_content = file.file.read()
+
+@app.post("/upload-test-pdf")
+@app.post("/upload-test-pdf")
+async def upload_test_pdf(
+    file: UploadFile = File(...),
+    document_id: int = Form(0),
+    session_id: str = Form("default_session"),
+    client_id: int = Form(None)  # Измените на None по умолчанию
+):
+    try:
+        pdf_content = await file.read()
+        
+        # Если client_id не предоставлен, используем клиента по умолчанию
+        if client_id is None:
+            from db_utils import get_default_client_id
+            client_id = get_default_client_id()
+        
+        print(f"📝 Загрузка тестового PDF: {file.filename}, document_id: {document_id}, client_id: {client_id}")
+        
+        file_id = insert_test_pdf_record(file.filename, document_id, session_id, pdf_content, client_id)
+        
+        return {"file_id": file_id, "filename": file.filename}
+    except Exception as e:
+        print(f"❌ Ошибка загрузки тестового PDF: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка загрузки тестового PDF: {str(e)}")
     
-    # Генерируем session_id если он не передан
-    if session_id is None:
-        session_id = str(uuid.uuid4())
-        print(f"📝 Сгенерирован новый session_id: {session_id}")
-    
-    # Устанавливаем document_id в 0 если не передан
-    if document_id is None:
-        document_id = 0
-    
-    file_id = insert_test_pdf_record(file.filename, document_id, session_id, pdf_content, client_id)
-    return {"message": f"Test PDF {file.filename} has been successfully uploaded.", "file_id": file_id}
 
 @app.get("/list-docs", response_model=list[DocumentInfo])
-def list_documents():
-    return get_all_documents()
+def list_documents(client_id: int = Query(None)):
+    return get_all_documents(client_id)
 
 @app.get("/list-test-pdfs", response_model=list[TestPDFInfo])
-def list_test_pdfs():
-    return get_all_test_pdfs()
+def list_test_pdfs(client_id: int = Query(None)):
+    return get_all_test_pdfs(client_id)
 
 @app.get("/download-test-pdf/{file_id}")
 def download_test_pdf(file_id: int):
@@ -272,3 +277,6 @@ def get_document_text(file_id: int):
         return {"text": document_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
