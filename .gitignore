@@ -2,5 +2,5 @@ venv/
 rag_app.db
 chroma_db/
 temp_*
-*env
+api/.env
 *.log
