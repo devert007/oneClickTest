@@ -1,0 +1,56 @@
+{
+  "name": "oneclicktest-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "lucide-react": "^0.263.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.5.0",
+    "jsdom": "^23.0.1",
+    "vite": "^5.0.0",
+    "vitest": "^1.2.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off"
+    },
+    "env": {
+      "browser": true,
+      "es2020": true,
+      "jest": true
+    }
+  }
+}

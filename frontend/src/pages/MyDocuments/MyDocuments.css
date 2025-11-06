@@ -1,0 +1,308 @@
+.my-documents {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.connection-error {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    .page-header h1 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+.upload-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.file-input {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.selected-file {
+    background: #e9f7ef;
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 4px solid #28a745;
+}
+
+.status-message {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+    .status-message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .status-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+.documents-list {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.documents-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.document-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+    .document-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+.document-info h4 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.document-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    .document-meta span {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+/* ВЫРАВНИВАНИЕ КНОПОК - ОСНОВНЫЕ ИЗМЕНЕНИЯ */
+.document-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+    .document-actions .btn {
+        min-width: 140px; /* Одинаковая минимальная ширина для обеих кнопок */
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9em;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease; /* Унифицировал transition */
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px; /* Для иконок, как в create-test */
+    }
+
+    /* Специфичные стили для каждой кнопки (теперь с градиентами, как в create-test) */
+    .document-actions .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3); /* Добавил shadow */
+    }
+
+        .document-actions .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+    .document-actions .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); /* Добавил shadow */
+    }
+
+        .document-actions .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .document-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .document-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+        .document-actions .btn {
+            flex: 1;
+            min-width: auto;
+        }
+}
+
+.loading, .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+    .empty-state p {
+        margin: 5px 0;
+    }
+
+.supported-formats {
+    margin-top: 30px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 6px;
+}
+
+    .supported-formats h4 {
+        margin: 0 0 10px 0;
+        color: #495057;
+    }
+
+    .supported-formats ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .supported-formats li {
+        margin-bottom: 5px;
+        color: #495057;
+    }
+
+/* Стили для основных кнопок на странице (обновлено для соответствия create-test) */
+.btn {
+    padding: 12px 24px; /* Немного больше, как в create-test */
+    border: none;
+    border-radius: 10px; /* Мягче углы */
+    cursor: pointer;
+    font-size: 14px; /* Унифицировал */
+    font-weight: 600;
+    transition: all 0.3s ease; /* Унифицировал */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Для иконок */
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); /* Добавил shadow */
+}
+
+    .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px); /* Как в create-test */
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:disabled {
+        background: linear-gradient(135deg, #bdc3c7 0%, #6c757d 100%);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    color: #212529;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3); /* Добавил shadow */
+}
+
+    .btn-warning:hover:not(:disabled) {
+        background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
+        transform: translateY(-2px); /* Как в create-test */
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+    }
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); /* Добавил, если используется */
+}
+
+    .btn-success:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); /* Добавил, если используется */
+}
+
+    .btn-danger:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+    }
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3); /* Добавил, если используется */
+}
+
+    .btn-secondary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    }
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}

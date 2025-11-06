@@ -1,0 +1,402 @@
+﻿/* Глобальные переменные для цветовой схемы */
+:root {
+    --primary-color: #3498db;
+    --text-dark: #2c3e50;
+    --text-light: #666;
+    --bg-light: #f8f9fa;
+    --bg-white: white;
+    --border-light: #f1f2f6;
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --success-border: #c3e6cb;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --error-border: #f5c6cb;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+    --gradient-primary: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: #f4f6f9; /* Лёгкий фон для страницы */
+}
+
+.profile-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px; /* Добавил padding для воздуха */
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Увеличил gap */
+}
+
+.profile-card {
+    background: var(--bg-white);
+    padding: 30px; /* Немного больше padding */
+    border-radius: 12px; /* Мягче углы */
+    box-shadow: var(--shadow-md);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* Для мобильных */
+    gap: 15px;
+}
+
+    .profile-header h3 {
+        margin: 0;
+        color: var(--text-dark);
+        font-size: 1.5rem;
+        font-weight: 600;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Немного больше */
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0; /* Увеличил padding */
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+}
+
+    .info-item:hover {
+        background-color: rgba(52, 152, 219, 0.02); /* Лёгкий hover */
+        padding-left: 10px;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-item label {
+        font-weight: 500;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+    }
+
+    .info-item span {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        text-align: right;
+    }
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Увеличил */
+}
+
+    /* Предполагаем, что в форме есть input'ы — стили для них */
+    .profile-form input,
+    .profile-form textarea,
+    .profile-form select {
+        padding: 12px 15px;
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        font-size: 0.95rem;
+        transition: var(--transition);
+    }
+
+        .profile-form input:focus,
+        .profile-form textarea:focus,
+        .profile-form select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap; /* Для мобильных */
+}
+
+.message {
+    padding: 15px 18px; /* Увеличил */
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    animation: fadeIn 0.5s ease-out;
+    box-shadow: var(--shadow-sm);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.message.success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.message.error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+
+
+/* ... (предыдущие стили остаются без изменений) ... */
+
+/* Обновлённая секция статистики */
+.profile-stats {
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+    .profile-stats h3 {
+        margin: 0 0 25px 0;
+        color: var(--text-dark);
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around; /* Равномерно распределяет */
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 140px; /* Компактнее */
+    max-width: 180px;
+    text-align: center;
+    padding: 20px 12px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+    .stat-item::before { /* Круглая иконка сверху */
+        content: '';
+        display: block;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 12px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        transition: var(--transition);
+    }
+
+    /* Вариации иконок для разных stats (замените content по необходимости) */
+    .stat-item:nth-child(1)::before {
+        content: '📄';
+    }
+    /* Пользователи */
+    .stat-item:nth-child(2)::before {
+        content: '🧪';
+    }
+    /* Документы */
+    .stat-item:nth-child(3)::before {
+        content: '📊';
+    }
+    /* Тесты */
+
+    .stat-item:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-lg);
+        background: linear-gradient(145deg, white 0%, rgba(52, 152, 219, 0.02) 100%);
+    }
+
+        .stat-item:hover::before {
+            transform: rotate(360deg); /* Полный поворот иконки на hover */
+            animation-duration: 0.6s;
+        }
+
+    /* Прогресс-подобный индикатор под значением */
+    .stat-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        width: 100%;
+        background: linear-gradient(90deg, var(--primary-color) 0%, #2980b9 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-item:hover::after {
+        opacity: 1;
+    }
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    line-height: 1.2;
+    animation: slideInUp 0.6s ease-out; /* Slide-in при загрузке */
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Адаптивность для статистики */
+@media (max-width: 768px) {
+    .stats-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .stat-item {
+        min-width: 200px;
+        max-width: none;
+    }
+
+        .stat-item::before {
+            width: 60px;
+            height: 60px;
+            font-size: 1.75rem;
+        }
+
+    .stat-value {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-stats {
+        padding: 20px;
+    }
+
+    .stats-grid {
+        gap: 12px;
+    }
+}
+
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-page {
+        padding: 20px 15px;
+    }
+
+    .profile-content {
+        gap: 30px;
+    }
+
+    .profile-card,
+    .profile-stats {
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        text-align: left;
+    }
+
+        .info-item span {
+            text-align: left;
+            font-weight: 500;
+        }
+}
+
+@media (max-width: 480px) {
+    .stat-value {
+        font-size: 2rem;
+    }
+}

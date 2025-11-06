@@ -1,18 +1,21 @@
 from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredHTMLLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings  # Обновленный импорт
 from langchain_chroma import Chroma
 from typing import List, Tuple
 from langchain_core.documents import Document
 import numpy as np
 import logging
+import os
+
 
 # Настройка логирования
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
 
-embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+# Обновленная инициализация эмбеддингов
+embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 import os
 if not os.path.exists("./chroma_db"):
@@ -21,22 +24,62 @@ vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embeddi
 
 def load_and_split_document(file_path: str) -> List[Document]:
     try:
+        # Проверяем существование файла и его размер
+        if not os.path.exists(file_path):
+            logging.error(f"File not found: {file_path}")
+            return []
+            
+        file_size = os.path.getsize(file_path)
+        if file_size == 0:
+            logging.error(f"File is empty: {file_path}")
+            return []
+            
+        logging.info(f"Loading document: {file_path}, size: {file_size} bytes")
+
         if file_path.endswith('.pdf'):
-            loader = PyPDFLoader(file_path)
+            # Используем PDFLoader с обработкой ошибок
+            try:
+                loader = PyPDFLoader(file_path)
+                documents = loader.load()
+            except Exception as pdf_error:
+                logging.error(f"PyPDFLoader failed: {pdf_error}, trying alternative approach")
+                # Альтернативный способ загрузки PDF
+                try:
+                    from langchain_community.document_loaders import UnstructuredPDFLoader
+                    loader = UnstructuredPDFLoader(file_path)
+                    documents = loader.load()
+                except Exception as unstructured_error:
+                    logging.error(f"UnstructuredPDFLoader also failed: {unstructured_error}")
+                    return []
+                    
         elif file_path.endswith('.docx'):
             loader = Docx2txtLoader(file_path)
+            documents = loader.load()
         elif file_path.endswith('.html'):
             loader = UnstructuredHTMLLoader(file_path)
+            documents = loader.load()
         else:
             raise ValueError(f"Unsupported file type: {file_path}")
 
-        documents = loader.load()
+        if not documents:
+            logging.warning(f"No content extracted from {file_path}")
+            return []
+
         logging.debug(f"Loaded {len(documents)} document(s) from {file_path}")
         print(f"Loaded {len(documents)} document(s) from {file_path}")
-        splits = text_splitter.split_documents(documents)
+        
+        # Проверяем, есть ли текст в документах
+        valid_documents = [doc for doc in documents if doc.page_content and doc.page_content.strip()]
+        if not valid_documents:
+            logging.warning(f"No valid text content in documents from {file_path}")
+            return []
+            
+        splits = text_splitter.split_documents(valid_documents)
         logging.debug(f"Split document into {len(splits)} chunks")
         print(f"Split document into {len(splits)} chunks")
+        
         return splits
+        
     except Exception as e:
         logging.error(f"Error loading document {file_path}: {e}")
         print(f"Error loading document {file_path}: {e}")
@@ -44,19 +87,30 @@ def load_and_split_document(file_path: str) -> List[Document]:
 
 def index_document_to_chroma(file_path: str, file_id: int) -> bool:
     try:
+        # Дополнительная проверка файла перед обработкой
+        if not os.path.exists(file_path):
+            logging.error(f"File not found for indexing: {file_path}")
+            return False
+            
         splits = load_and_split_document(file_path)
         if not splits:
-            logging.error(f"No splits generated for file_id {file_id}")
-            print(f"No splits generated for file_id {file_id}")
+            logging.error(f"No splits generated for file_id {file_id}. File may be empty, corrupted, or in unsupported format.")
             return False
 
-        for split in splits:
+        # Проверяем, что чанки содержат текст
+        valid_splits = [split for split in splits if split.page_content and split.page_content.strip()]
+        if not valid_splits:
+            logging.error(f"No valid text content in splits for file_id {file_id}")
+            return False
+
+        for split in valid_splits:
             split.metadata['file_id'] = file_id
 
-        vectorstore.add_documents(splits)
-        logging.info(f"Successfully indexed document with file_id {file_id}")
-        print(f"Successfully indexed document with file_id {file_id}")
+        vectorstore.add_documents(valid_splits)
+        logging.info(f"Successfully indexed document with file_id {file_id}, {len(valid_splits)} chunks")
+        print(f"Successfully indexed document with file_id {file_id}, {len(valid_splits)} chunks")
         return True
+        
     except Exception as e:
         logging.error(f"Error indexing document with file_id {file_id}: {e}")
         print(f"Error indexing document with file_id {file_id}: {e}")
