@@ -8423,3 +8423,48 @@ DEBUG:chromadb.config:Starting component System
 DEBUG:chromadb.config:Starting component Posthog
 DEBUG:asyncio:Using selector: SelectSelector
 DEBUG:watchfiles.main:5 changes detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db'), (<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3-journal'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3-journal'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): us.i.posthog.com:443
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:11434
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+DEBUG:urllib3.connectionpool:https://us.i.posthog.com:443 "POST /batch/ HTTP/1.1" 200 15
+ERROR:root:Error generating test: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029158F4E1F0>: Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение'))
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db')}
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[42:61]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[63:120]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[122:134]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[136:151]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[155:35263]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[42:61]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[63:120]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[122:134]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[136:151]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[155:35263]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:root:File generated_test (2).pdf saved, size: 35108 bytes
+INFO:root:Loading document: temp_uploads\temp_aba2e133-6ce4-4e40-8186-6786bbd8532a_generated_test (2).pdf, size: 35108 bytes
+DEBUG:watchfiles.main:7 changes detected: {(<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_generated_test (2).pdf'), (<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db-journal'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_generated_test (2).pdf'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_uploads'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_uploads\\temp_aba2e133-6ce4-4e40-8186-6786bbd8532a_generated_test (2).pdf'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db-journal')}
+DEBUG:root:Loaded 1 document(s) from temp_uploads\temp_aba2e133-6ce4-4e40-8186-6786bbd8532a_generated_test (2).pdf
+DEBUG:root:Split document into 1 chunks
+INFO:root:Successfully indexed document with file_id 79, 1 chunks
+INFO:root:File generated_test (2).pdf successfully uploaded and indexed with file_id 79
+DEBUG:watchfiles.main:5 changes detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db'), (<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3-journal'), (<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_uploads\\temp_aba2e133-6ce4-4e40-8186-6786bbd8532a_generated_test (2).pdf'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3-journal'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db\\chroma.sqlite3')}
+DEBUG:watchfiles.main:3 changes detected: {(<Change.deleted: 3>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db-journal'), (<Change.added: 1>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db-journal'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\rag_app.db')}
+DEBUG:watchfiles.main:2 changes detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\temp_uploads'), (<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\chroma_db')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
+DEBUG:watchfiles.main:1 change detected: {(<Change.modified: 2>, 'C:\\pbz_kurs\\oneClickTest\\api\\app.log')}
