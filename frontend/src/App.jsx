@@ -8,6 +8,7 @@ import CreateTest from './pages/CreateTest/CreateTest';
 import MyDocuments from './pages/MyDocuments/MyDocuments';
 import MyTests from './pages/MyTests/MyTests';
 import Profile from './pages/Profile/Profile';
+import Chat from './pages/Chat/Chat'
 import PropTypes from 'prop-types';
 import './App.css';
 
@@ -46,6 +47,7 @@ function App() {
                             <Route path="my-documents" element={<MyDocuments />} />
                             <Route path="my-tests" element={<MyTests />} />
                             <Route path="profile" element={<Profile />} />
+                            <Route path="chat" element={<Chat />} />
                         </Route>
                     </Routes>
                 </div>

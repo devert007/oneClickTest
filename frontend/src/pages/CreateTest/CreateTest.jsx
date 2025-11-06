@@ -175,6 +175,29 @@ const CreateTest = () => {
         }
     };
 
+    // Функция для скачивания через бэкенд
+    const downloadTestFromBackend = async (fileId, filename = `test_${Date.now()}.pdf`) => {
+        try {
+            const blob = await testPDFAPI.downloadTestPDF(fileId);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            console.log(`Тест ${filename} успешно скачан через бэкенд`);
+            return { success: true, filename };
+        } catch (error) {
+            console.error('Error downloading test from backend:', error);
+            alert(`Ошибка при скачивании теста: ${error.message}`);
+            throw error;
+        }
+    };
+
+    // Обновленная функция saveTest чтобы возвращать file_id
     const saveTest = async () => {
         if (!generatedTest) return;
 
@@ -182,22 +205,75 @@ const CreateTest = () => {
             const filename = `test_${Date.now()}.md`;
             const documentId = selectedDocument ? parseInt(selectedDocument) : null;
 
-            await testGenerationAPI.saveTest(
+            const result = await testGenerationAPI.saveTest(
                 generatedTest.test_content,
                 filename,
                 documentId,
                 generatedTest.session_id
             );
 
-            alert('Тест успешно сохранен!');
+            // Сохраняем file_id для последующего скачивания
+            const savedTestWithId = {
+                ...generatedTest,
+                savedFileId: result.file_id,
+                savedFilename: filename
+            };
+            setGeneratedTest(savedTestWithId);
+
+            alert('Тест успешно сохранен! Теперь можно скачать через бэкенд.');
             await loadSavedTests();
-            setActiveTab('saved');
+
         } catch (error) {
             console.error('Error saving test:', error);
             alert(`Ошибка при сохранении теста: ${error.message}`);
         }
     };
 
+    // Функция для скачивания через бэкенд
+    const handleDownloadFromBackend = async () => {
+        if (!generatedTest?.savedFileId) {
+            alert('Сначала сохраните тест, чтобы скачать через бэкенд');
+            return;
+        }
+
+        try {
+            await downloadTestFromBackend(
+                generatedTest.savedFileId,
+                generatedTest.savedFilename.replace('.md', '.pdf')
+            );
+        } catch (error) {
+            console.error('Error downloading from backend:', error);
+        }
+    };
+
+    // Функция для прямого сохранения и скачивания
+    const handleSaveAndDownload = async () => {
+        if (!generatedTest) return;
+
+        try {
+            const filename = `test_${Date.now()}.md`;
+            const documentId = selectedDocument ? parseInt(selectedDocument) : null;
+
+            const result = await testGenerationAPI.saveTest(
+                generatedTest.test_content,
+                filename,
+                documentId,
+                generatedTest.session_id
+            );
+
+            // Сразу скачиваем через бэкенд
+            await downloadTestFromBackend(result.file_id, filename.replace('.md', '.pdf'));
+
+            alert('Тест сохранен и скачан через бэкенд!');
+            await loadSavedTests();
+
+        } catch (error) {
+            console.error('Error in save and download:', error);
+            alert(`Ошибка: ${error.message}`);
+        }
+    };
+
+    // Клиентское скачивание (старое)
     const downloadTest = (testContent, filename = `test_${Date.now()}.md`) => {
         const blob = new Blob([testContent], { type: 'text/markdown' });
         const url = URL.createObjectURL(blob);
@@ -550,6 +626,8 @@ const CreateTest = () => {
                                     >
                                         💾 Сохранить тест
                                     </button>
+
+                                    {/* Клиентское скачивание (старое) */}
                                     <button
                                         onClick={() => downloadTest(generatedTest.test_content)}
                                         className="btn btn-secondary"
@@ -558,7 +636,43 @@ const CreateTest = () => {
                                     >
                                         📥 Скачать Markdown
                                     </button>
+
+                                    {/* Скачивание через бэкенд */}
+                                    <button
+                                        onClick={handleDownloadFromBackend}
+                                        disabled={!generatedTest?.savedFileId}
+                                        className="btn btn-primary"
+                                        title="Скачать тест через бэкенд в формате PDF"
+                                        aria-label="Скачать тест через бэкенд"
+                                    >
+                                        📄 Скачать PDF (бэкенд)
+                                    </button>
+
+                                    {/* Сохранить и скачать одной кнопкой */}
+                                    <button
+                                        onClick={handleSaveAndDownload}
+                                        className="btn btn-info"
+                                        title="Сохранить и сразу скачать через бэкенд"
+                                        aria-label="Сохранить и скачать"
+                                    >
+                                        💾📥 Сохранить и скачать
+                                    </button>
                                 </div>
+
+                                {/* Информация о сохраненном тесте */}
+                                {generatedTest?.savedFileId && (
+                                    <div className="saved-test-info" style={{
+                                        marginTop: '10px',
+                                        padding: '10px',
+                                        backgroundColor: '#e9f7ef',
+                                        borderRadius: '4px',
+                                        borderLeft: '4px solid #28a745'
+                                    }}>
+                                        <strong>Тест сохранен!</strong> ID: {generatedTest.savedFileId}
+                                        <br />
+                                        <small>Теперь можно скачать через бэкенд эндпоинт</small>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="test-content">
@@ -601,12 +715,12 @@ const CreateTest = () => {
                                     </div>
                                     <div className="test-actions">
                                         <button
-                                            onClick={() => downloadTest(test.content, test.filename)}
+                                            onClick={() => downloadTestFromBackend(test.id, test.filename.replace('.md', '.pdf'))}
                                             className="btn btn-secondary btn-sm"
-                                            title="Скачать тест"
+                                            title="Скачать тест через бэкенд"
                                             aria-label={`Скачать тест ${test.filename}`}
                                         >
-                                            📥 Скачать
+                                            📥 Скачать PDF
                                         </button>
                                         <button
                                             onClick={() => deleteTest(test.id, test.filename)}

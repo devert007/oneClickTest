@@ -6,7 +6,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000,
+    timeout: 30000,
 });
 
 // Обработчик ошибок
@@ -166,13 +166,31 @@ export const testGenerationAPI = {
     }
 };
 
-// Сервис для чата
 export const chatAPI = {
     sendMessage: async (messageData) => {
-        const response = await api.post('/chat', messageData);
-        return response.data;
+        try {
+            console.log('📤 Sending chat message:', messageData);
+            const response = await api.post('/chat', messageData);
+            console.log('📥 Chat response received:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('API Error sending chat message:', error);
+
+            // Более информативные сообщения об ошибках для чата
+            let errorMessage = 'Ошибка при отправке сообщения';
+            if (error.response?.status === 500) {
+                errorMessage = 'Ошибка на сервере. Попробуйте позже.';
+            } else if (error.message.includes('timeout')) {
+                errorMessage = 'Превышено время ожидания ответа. Попробуйте еще раз.';
+            } else if (error.message.includes('Network Error')) {
+                errorMessage = 'Проблемы с подключением к серверу. Проверьте интернет-соединение.';
+            }
+
+            throw new Error(errorMessage);
+        }
     }
 };
+
 
 // Сервис для XML вопросов
 export const xmlAPI = {

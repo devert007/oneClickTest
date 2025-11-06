@@ -17,6 +17,7 @@ const Sidebar = () => {
         { path: '/create-test', label: 'Создать тест', icon: '📝' },
         { path: '/my-documents', label: 'Мои документы', icon: '📁' },
         { path: '/my-tests', label: 'Мои тесты', icon: '💾' },
+        { path: '/chat', label: 'Чат с AI', icon: '💬' },
         { path: '/profile', label: 'Профиль', icon: '👤' }
     ];
 
