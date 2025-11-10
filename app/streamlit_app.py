@@ -1,9 +1,7 @@
-# app/streamlit_app.py - ИСПРАВЛЕННАЯ ВЕРСИЯ
 import streamlit as st
 import sys
 import os
 
-# Добавляем путь к папке api для импорта
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from auth_utils import require_auth, logout_user, init_session_state, get_current_client_id
@@ -16,19 +14,14 @@ def load_css(file_name):
 
 load_css("style.css")
 
-# Инициализация состояния сессии
 init_session_state()
 
-# Проверка аутентификации
 require_auth()
 
-# Инициализация чат-агента
 init_chat_agent()
 
-# Основной интерфейс приложения
 st.title("OneClickTest")
 
-# Панель пользователя
 col1, col2 = st.columns([4, 1])
 with col1:
     st.subheader(f"Добро пожаловать, {st.session_state.username}!")
@@ -71,11 +64,9 @@ st.subheader("""OneClickTest - интеллектуальная платформ
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Используем client_id вместо session_id для многопользовательской поддержки
 if "client_id" not in st.session_state:
     st.session_state.client_id = get_current_client_id()
 
 display_sidebar()
 
-# Обрабатываем взаимодействие с чатом
 handle_chat_interaction()

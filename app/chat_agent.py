@@ -1,11 +1,9 @@
-# app/chat_agent.py - ИСПРАВЛЕННАЯ ВЕРСИЯ С РАБОЧИМИ КНОПКАМИ
 import streamlit as st
 import sys
 import os
 import uuid
 from datetime import datetime
 
-# Добавляем путь к папке api для импорта
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from api.langchain_utils import get_chat_agent, SimpleChatHistory
@@ -32,11 +30,10 @@ def toggle_chat():
 def send_message():
     """Отправляет сообщение чат-агенту"""
     user_input = st.session_state.get('user_input_field', '').strip()
-    
+    print(st.session_state.get('user_input_field', ''))
     if not user_input:
         return
     
-    # Добавляем сообщение пользователя в историю
     st.session_state.chat_history.add_user_message(user_input)
     st.session_state.chat_messages.append({
         "role": "user", 
@@ -44,10 +41,8 @@ def send_message():
         "time": datetime.now().strftime("%H:%M")
     })
     
-    # Очищаем поле ввода
     st.session_state.user_input = ""
     
-    # Получаем ответ от агента
     try:
         with st.spinner("🤔 Думаю..."):
             response = st.session_state.chat_agent.invoke({
@@ -62,6 +57,7 @@ def send_message():
             "content": ai_response,
             "time": datetime.now().strftime("%H:%M")
         })
+        
         
     except Exception as e:
         error_msg = f"Извините, произошла ошибка: {str(e)}"
@@ -80,7 +76,6 @@ def clear_chat_history():
 def render_chat_interface():
     """Рендерит интерфейс чат-агента"""
     
-    # Стили для плавающего чата
     st.markdown("""
     <style>
     /* Основной контейнер чата */
@@ -226,9 +221,7 @@ def render_chat_interface():
     </style>
     """, unsafe_allow_html=True)
     
-    # Кнопка переключения чата (всегда видима)
     if not st.session_state.chat_open:
-        # Используем st.button с кастомным позиционированием
         st.markdown("""
         <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1001;">
         """, unsafe_allow_html=True)
@@ -239,9 +232,7 @@ def render_chat_interface():
         
         st.markdown("</div>", unsafe_allow_html=True)
     
-    # Окно чата (рендерится только когда открыто)
     if st.session_state.chat_open:
-        # Создаем отдельный контейнер для всего чата
         st.markdown("""
         <div class="floating-chat-container">
             <div class="chat-header">
@@ -249,7 +240,6 @@ def render_chat_interface():
                 <div class="header-buttons">
         """, unsafe_allow_html=True)
         
-        # Кнопки в заголовке - используем columns для правильного расположения
         col1, col2, col3 = st.columns([1, 1, 1])
         with col1:
             st.subheader("🤖 OneClickTest Assistant")
@@ -269,7 +259,6 @@ def render_chat_interface():
             <div class="chat-messages-area" id="chatMessages">
         """, unsafe_allow_html=True)
         
-        # Отображаем сообщения
         if not st.session_state.chat_messages:
             st.markdown(
                 '<div style="text-align: center; color: #666; padding: 20px; font-style: italic;">Задайте вопрос о системе OneClickTest!</div>', 
@@ -298,15 +287,12 @@ def render_chat_interface():
                         unsafe_allow_html=True
                     )
         
-        st.markdown('</div>', unsafe_allow_html=True)  # Закрываем chat-messages-area
+        st.markdown('</div>', unsafe_allow_html=True) 
         
-        # Область ввода
         st.markdown('<div class="chat-input-area">', unsafe_allow_html=True)
         
-        # Используем columns для расположения поля ввода и кнопки
         col1, col2 = st.columns([3, 1])
         with col1:
-            # Поле ввода
             user_input = st.text_input(
                 "Ваше сообщение",
                 value=st.session_state.user_input,
@@ -315,15 +301,13 @@ def render_chat_interface():
                 label_visibility="collapsed"
             )
         with col2:
-            # Кнопка отправки
             if st.button("Отправить", key="send_btn", use_container_width=True):
                 send_message()
                 st.rerun()
         
-        st.markdown('</div>', unsafe_allow_html=True)  # Закрываем chat-input-area
-        st.markdown('</div>', unsafe_allow_html=True)  # Закрываем floating-chat-container
+        st.markdown('</div>', unsafe_allow_html=True) 
+        st.markdown('</div>', unsafe_allow_html=True)  
         
-        # JavaScript для автопрокрутки и обработки Enter
         st.markdown("""
         <script>
         // Автопрокрутка вниз
@@ -340,8 +324,6 @@ def render_chat_interface():
 
 def handle_chat_interaction():
     """Обрабатывает взаимодействие с чатом"""
-    # Инициализация чат-агента
     init_chat_agent()
     
-    # Рендерим интерфейс чата
     render_chat_interface()

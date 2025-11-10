@@ -4,10 +4,8 @@ from typing import Tuple, List, Dict, Any, Optional
 import os
 from dotenv import load_dotenv
 
-# Загружаем переменные окружения
 load_dotenv()
 
-# Получение параметров подключения из переменных окружения
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "rag_app")
@@ -44,7 +42,6 @@ def create_application_logs():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    # Создаем индекс для улучшения производительности запросов по session_id
     cursor.execute('''
         CREATE INDEX IF NOT EXISTS idx_application_logs_session_id 
         ON application_logs(session_id)
@@ -242,7 +239,7 @@ def get_all_documents(client_id: int = None) -> List[Dict[str, Any]]:
             'id': row[0],
             'filename': row[1],
             'upload_timestamp': row[2],
-            'client_id': row[3]  # ИЗМЕНЕНИЕ: Добавляем client_id
+            'client_id': row[3]  
         })
     cursor.close()
     conn.close()
@@ -290,7 +287,6 @@ def get_test_pdf_content(file_id: int) -> Optional[bytes]:
     conn.close()
     return result[0] if result else None
 
-# В функции check_filename_uniqueness() в db_utils.py
 def check_filename_uniqueness(filename: str, client_id: int = None) -> Tuple[bool, str]:
     """
     Проверяет, существует ли файл с таким же именем у данного клиента в PostgreSQL.
@@ -323,7 +319,6 @@ def initialize_database():
     create_document_store()
     create_test_pdf_store()
     
-    # Создаем клиента по умолчанию
     client_id = create_default_client()
     if client_id:
         print(f"✅ База данных инициализирована. Клиент по умолчанию: {client_id}")
@@ -360,7 +355,6 @@ def create_clients_table():
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        # Сначала проверяем существующие колонки
         cursor.execute("""
             SELECT column_name 
             FROM information_schema.columns 
@@ -369,12 +363,10 @@ def create_clients_table():
         has_password_hash = cursor.fetchone() is not None
         
         if not has_password_hash:
-            # Добавляем недостающие колонки
             cursor.execute('ALTER TABLE clients ADD COLUMN password_hash TEXT NOT NULL DEFAULT %s', ('',))
             cursor.execute('ALTER TABLE clients ADD COLUMN is_active BOOLEAN DEFAULT TRUE')
             print("✅ Добавлены колонки password_hash и is_active в таблицу clients")
         
-        # Создаем индексы если их нет
         cursor.execute('''
             CREATE INDEX IF NOT EXISTS idx_clients_username 
             ON clients(username)
@@ -430,7 +422,6 @@ def get_default_client_id():
         if result:
             return result[0]
         else:
-            # Если клиент не найден, создаем его
             return create_default_client()
     except Exception as e:
         print(f"❌ Ошибка получения client_id: {e}")
@@ -481,6 +472,5 @@ def get_client_by_id(client_id: int) -> Optional[Dict[str, Any]]:
     return None
 
 
-# Инициализация базы данных при импорте модуля
 if __name__ != "__main__":
     initialize_database()

@@ -1,25 +1,24 @@
-# auth_utils.py - исправленные импорты
 import streamlit as st
 import hashlib
 import secrets
 import sys
 import os
-
-# Добавляем путь к папке api для импорта
+MIN_LENGTH_PASSWORD = 6
+MIN_LENGHT_NAME = 3
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from api.db_utils import get_client_by_username, create_client, get_client_by_id, get_default_client_id
 
 def hash_password(password: str) -> str:
-    """Хеширует пароль"""
+    """хеширует пароль"""
     return hashlib.sha256(password.encode()).hexdigest()
 
 def verify_password(password: str, hashed_password: str) -> bool:
-    """Проверяет пароль"""
+    """проверяет пароль"""
     return hash_password(password) == hashed_password
 
 def init_session_state():
-    """Инициализирует состояние сессии"""
+    """инициализирует состояние сессии"""
     if 'authenticated' not in st.session_state:
         st.session_state.authenticated = False
     if 'username' not in st.session_state:
@@ -30,7 +29,7 @@ def init_session_state():
         st.session_state.session_id = None
 
 def login_user(username: str, password: str) -> bool:
-    """Аутентифицирует пользователя"""
+    """аутентифицирует пользователя"""
     try:
         client = get_client_by_username(username)
         if client and verify_password(password, client['password_hash']):
@@ -45,9 +44,8 @@ def login_user(username: str, password: str) -> bool:
         return False
 
 def register_user(username: str, email: str, password: str) -> bool:
-    """Регистрирует нового пользователя"""
+    """регистрирует нового пользователя"""
     try:
-        # Проверяем, не существует ли уже пользователь
         if get_client_by_username(username):
             return False
         
@@ -66,7 +64,7 @@ def register_user(username: str, email: str, password: str) -> bool:
         return False
 
 def logout_user():
-    """Выход пользователя"""
+    """выход пользователя"""
     st.session_state.authenticated = False
     st.session_state.username = None
     st.session_state.client_id = None
@@ -75,7 +73,7 @@ def logout_user():
         st.session_state.messages = []
 
 def require_auth():
-    """Проверяет аутентификацию, если не авторизован - показывает форму входа"""
+    """проверяет аутентификацию, если не авторизован - показывает форму входа"""
     init_session_state()
     
     if not st.session_state.authenticated:
@@ -83,7 +81,7 @@ def require_auth():
         st.stop()
 
 def show_auth_page():
-    """Показывает страницу аутентификации"""
+    """показывает страницу аутентификации"""
     st.markdown("""
         <style>
         .auth-container {
@@ -94,7 +92,7 @@ def show_auth_page():
         </style>
     """, unsafe_allow_html=True)
     
-    st.title("🔐 OneClickTest - Авторизация")
+    st.title("OneClickTest - Авторизация")
     
     tab1, tab2 = st.tabs(["Вход", "Регистрация"])
     
@@ -126,10 +124,10 @@ def show_auth_page():
             if submit_register:
                 if not new_username or not new_email or not new_password:
                     st.error("Все поля обязательны для заполнения")
-                elif len(new_username) < 3:
-                    st.error("Имя пользователя должно содержать минимум 3 символа")
-                elif len(new_password) < 6:
-                    st.error("Пароль должен содержать минимум 6 символов")
+                elif len(new_username) < MIN_LENGHT_NAME:
+                    st.error(f"Имя пользователя должно содержать минимум {MIN_LENGHT_NAME} символа")
+                elif len(new_password) < MIN_LENGTH_PASSWORD:
+                    st.error(f"Пароль должен содержать минимум {MIN_LENGTH_PASSWORD} символов")
                 elif new_password != confirm_password:
                     st.error("Пароли не совпадают")
                 elif "@" not in new_email:
@@ -142,9 +140,7 @@ def show_auth_page():
                         st.error("Пользователь с таким именем уже существует")
 
 def get_current_client_id():
-    """Возвращает ID текущего клиента или клиента по умолчанию если не авторизован"""
     if st.session_state.get('authenticated') and st.session_state.get('client_id'):
         return st.session_state.client_id
     else:
-        # Возвращаем ID клиента по умолчанию для неавторизованных пользователей
         return get_default_client_id()

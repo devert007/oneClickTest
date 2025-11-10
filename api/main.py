@@ -25,14 +25,12 @@ def generate_test(request: TestGenerationRequest):
     Генерирует тест по заданным параметрам (совместимость с generate_page.py)
     """
     try:
-        # Получаем текст документа
         docs = vectorstore.get(where={"file_id": request.document_id})
         if not docs or not docs.get('documents'):
             raise HTTPException(status_code=404, detail="Document not found")
         
         document_text = "\n\n".join(docs['documents'])
         
-        # Создаем промпт для генерации теста
         prompt = f"""
         Сгенерируй тест на основе предоставленного документа.
         Тип вопросов: {request.question_type}
@@ -40,7 +38,6 @@ def generate_test(request: TestGenerationRequest):
         Количество вопросов: {request.question_count}
         """
         
-        # Получаем RAG цепочку с нужными параметрами для генерации теста
         rag_chain = get_rag_chain(
             model="smol-lm-3b",
             question_type=request.question_type,
@@ -48,7 +45,6 @@ def generate_test(request: TestGenerationRequest):
             question_count=request.question_count
         )
         
-        # Генерируем тест
         result = rag_chain.invoke({
             "input": prompt,
             "chat_history": [],
@@ -57,7 +53,6 @@ def generate_test(request: TestGenerationRequest):
         
         test_content = result['answer']
         
-        # Логируем генерацию
         insert_application_logs(
             session_id=str(uuid.uuid4()),
             user_query=f"Generate test: {request.question_type}, {request.difficulty}, {request.question_count} questions",
@@ -76,7 +71,7 @@ def generate_test(request: TestGenerationRequest):
 @app.post("/upload-doc")
 def upload_and_index_document(
     file: UploadFile = File(...),
-    client_id: int = Form(None)  # Добавляем client_id как параметр формы
+    client_id: int = Form(None) 
 ):
     allowed_extensions = ['.pdf', '.docx', '.html']
     file_extension = os.path.splitext(file.filename)[1].lower()
@@ -90,7 +85,6 @@ def upload_and_index_document(
         print(f"📥 Начало загрузки файла: {file.filename}")
         print(f"👤 Client ID: {client_id}")
         
-        # Сохраняем файл временно
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
@@ -99,7 +93,6 @@ def upload_and_index_document(
 
         print(f"🔍 Проверка уникальности файла: {file.filename}")
         
-        # Проверка уникальности имени файла в PostgreSQL
         is_unique_filename, existing_filename = check_filename_uniqueness(file.filename,client_id)
         print(f"✅ Результат проверки уникальности: {is_unique_filename}, существующий файл: {existing_filename}")
         
@@ -110,32 +103,25 @@ def upload_and_index_document(
                 detail=f"Document with filename {file.filename} already exists in the database."
             )
 
-        # Если документ уникален, продолжаем индексацию
-        print(f"➕ Вставка записи в БД для файла: {file.filename}, client_id: {client_id}")
+        print(f" Вставка записи в БД для файла: {file.filename}, client_id: {client_id}")
         
-        # Используем переданный client_id или клиента по умолчанию
         if client_id is None:
             client_id = get_default_client_id()
-            print(f"⚠️  Client ID не передан, используем default: {client_id}")
+            print(f" Client ID не передан, используем default: {client_id}")
         
-        file_id = insert_document_record(file.filename, client_id)  # Передаем client_id
+        file_id = insert_document_record(file.filename, client_id) 
         print(f"✅ Document record inserted with ID: {file_id}")
         
-        print(f"🔍 Индексация документа в ChromaDB...")
+        
         success = index_document_to_chroma(temp_file_path, file_id)
 
         if success:
             logging.info(f"File {file.filename} successfully uploaded and indexed with file_id {file_id}")
-            print(f"🎉 Файл успешно загружен и проиндексирован! ID: {file_id}")
             
-            # Проверим, что документ действительно добавлен в ChromaDB
             docs = vectorstore.get(where={"file_id": file_id})
-            print(f"📚 Проверка ChromaDB: найдено {len(docs['ids'])} чанков для file_id {file_id}")
             
             return {"message": f"File {file.filename} has been successfully uploaded and indexed.", "file_id": file_id}
         else:
-            # Откатываем запись в БД если индексация не удалась
-            print(f"❌ Ошибка индексации, откатываем запись в БД...")
             delete_document_record(file_id)
             logging.error(f"Failed to index document {file.filename}, rolled back DB record")
             raise HTTPException(status_code=500, detail=f"Failed to index {file.filename}.")
@@ -158,7 +144,7 @@ def chat(query_input: QueryInput):
     logging.info(f"Session ID: {session_id}, User Query: {query_input.question}, Model: {query_input.model.value}")
     
     chat_history = get_chat_history(session_id)
-    rag_chain = get_rag_chain()  # Используем одну модель без параметров
+    rag_chain = get_rag_chain()  
     
     try:
         answer = rag_chain.invoke({
@@ -175,17 +161,15 @@ def chat(query_input: QueryInput):
 
 
 @app.post("/upload-test-pdf")
-@app.post("/upload-test-pdf")
 async def upload_test_pdf(
     file: UploadFile = File(...),
     document_id: int = Form(0),
     session_id: str = Form("default_session"),
-    client_id: int = Form(None)  # Измените на None по умолчанию
+    client_id: int = Form(None)  
 ):
     try:
         pdf_content = await file.read()
         
-        # Если client_id не предоставлен, используем клиента по умолчанию
         if client_id is None:
             from db_utils import get_default_client_id
             client_id = get_default_client_id()
@@ -248,12 +232,11 @@ def check_document_uniqueness_endpoint(file: UploadFile = File(...),client_id:in
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         print(client_id)
-        # Проверка уникальности имени файла в SQLite
         is_unique_filename, existing_filename = check_filename_uniqueness(file.filename,client_id)
         if not is_unique_filename:
             return {
                 "is_unique": False,
-                "source": "SQLite",
+                "source": "PostgreSQL",
                 "message": f"Document with filename {file.filename} already exists"
             }
 
@@ -276,12 +259,10 @@ def check_document_uniqueness_endpoint(file: UploadFile = File(...),client_id:in
 @app.get("/get-document-text/{file_id}")
 def get_document_text(file_id: int):
     try:
-        # Получаем документ из ChromaDB
         docs = vectorstore.get(where={"file_id": file_id})
         if not docs or not docs.get('documents'):
             raise HTTPException(status_code=404, detail="Document not found")
         
-        # Собираем весь текст документа
         document_text = "\n\n".join(docs['documents'])
         return {"text": document_text}
     except Exception as e:

@@ -1,4 +1,3 @@
-# hugging_face_utils.py
 import os
 import logging
 from dotenv import load_dotenv
@@ -10,40 +9,35 @@ class HuggingFaceClient:
     def __init__(self):
         self.hf_token = os.getenv("HF_API_TOKEN")
         
-        # Современные модели с поддержкой chat_completion
         self.working_models = {
-    # Новые модели
     "smol-lm-3b": "HuggingFaceTB/SmolLM3-3B",
     "smol-lm-1.7b": "HuggingFaceTB/SmolLM2-1.7B",
     
-    # Существующие модели
+    
     "deepseek-r1": "deepseek-ai/DeepSeek-R1",
     "llama-3-70b": "meta-llama/Meta-Llama-3-70B-Instruct",
     "mixtral-8x7b": "mistralai/Mixtral-8x7B-Instruct-v0.1",
     "zephyr-7b": "HuggingFaceH4/zephyr-7b-beta",
     
-    # Русскоязычные модели
+    
     "russian-saiga": "IlyaGusev/saiga2_7b",
     "russian-gpt": "ai-forever/rugpt3large_based_on_gpt2",
     
-    # Базовые модели (fallback)
     "gpt2": "gpt2",
     "mistral-7b": "mistralai/Mistral-7B-Instruct-v0.2"
 }
 
         
-        # Приоритетная цепочка моделей
         self.priority_chain = [
-            "smol-lm-3b",    # Легкая и эффективная модель
-    "deepseek-r1",     # Самый мощный
-    "llama-3-70b",     # Очень качественный
-    "mixtral-8x7b",    # Хороший баланс
+            "smol-lm-3b",    
+    "deepseek-r1",     
+    "llama-3-70b",     
+    "mixtral-8x7b",    
       
-    "russian-saiga",   # Русскоязычный
-    "zephyr-7b",       # Надежный
-    "gpt2"             # Fallback
+    "russian-saiga",   
+    "zephyr-7b",       
+    "gpt2"             
 ]
-        # Инициализируем клиент
         self.client = InferenceClient(token=self.hf_token)
     
     def generate_text(self, prompt: str, model: str = "deepseek-r1", max_length: int = 2000, temperature: float = 0.7) -> str:
@@ -53,16 +47,13 @@ class HuggingFaceClient:
             
             logging.info(f"Generating text with model: {model_name}")
             
-            # Используем новый chat_completion API
             response = self.client.chat_completion(
                 model=model_name,
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=max_length,
                 temperature=temperature,
-                # provider="auto"  # Автоматический выбор провайдера
             )
             
-            # Извлекаем ответ
             if response and hasattr(response, 'choices') and len(response.choices) > 0:
                 generated_text = response.choices[0].message.content.strip()
                 logging.info(f"Successfully generated text: {generated_text[:100]}...")
@@ -90,7 +81,6 @@ class HuggingFaceClient:
             logging.info(f"Trying fallback model {i+1}/{len(self.priority_chain)}: {fallback_model}")
             
             try:
-                # Используем базовые параметры для fallback
                 result = self.generate_text(
                     prompt=prompt,
                     model=fallback_model,
@@ -116,7 +106,6 @@ class HuggingFaceClient:
         
         for model_key, model_name in self.working_models.items():
             try:
-                # Простая проверка доступности модели
                 test_response = self.client.chat_completion(
                     model=model_name,
                     messages=[{"role": "user", "content": "test"}],
@@ -129,5 +118,4 @@ class HuggingFaceClient:
         
         return available_models
 
-# Глобальный клиент
 hf_client = HuggingFaceClient()

@@ -125,7 +125,7 @@ def show_generate_page():
                         st.session_state.is_document_unique = False
                         st.session_state.uniqueness_checked = True
                         source = uniqueness_response.get("source")
-                        if source == "SQLite":
+                        if source == "PostgreSQL":
                             st.error(f"Документ с именем {uploaded_file.name} уже существует в базе данных!")
                         elif source == "ChromaDB":
                             st.error(
@@ -177,7 +177,6 @@ def show_generate_page():
     
     st.header("4. Сгенерировать тест")
     
-    # Инициализация переменных перед использованием
     test_content = ""
     xml_questions = []
     answers = []
@@ -187,13 +186,10 @@ def show_generate_page():
             st.error("Выберите документ или предмет для генерации теста!")
             return
 
-        # Используем правильное имя модели из доступных вариантов
-        model_name = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"  # Основная русская модель
+        model_name = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"  # основная русская модель
 
-        # Adjust question count for AI generation
         ai_question_count = question_count
 
-        # Generate AI-based questions if needed
         if ai_question_count > 0 and 'uploaded_file_id' in st.session_state:
             document_text = get_document_text(st.session_state.uploaded_file_id) 
             
@@ -216,7 +212,7 @@ def show_generate_page():
             {format_instructions}
             
             СТРУКТУРА:
-            1. Сначала все вопросы по порядку
+            1. Сначала все вопросы которые ты сформулировал
             2. Затем раздел с правильными ответами
             
             КАЧЕСТВО ВОПРОСОВ:
@@ -224,33 +220,33 @@ def show_generate_page():
             - Формулировки четкие и однозначные
             - Охватывай ключевые темы документа
             - Соответствуй уровню сложности: {difficulty}
+            - Соответствуй формату вопроса: {question_format}
             
             ВАЖНО:
             - Используй ТОЛЬКО информацию из предоставленного документа
             - Не добавляй вопросы на темы, которых нет в документе
-            - Все ответы должны быть подтверждены текстом документа
+            - Не добавляй лишних вопросов
             
             Текст документа:
-            {document_text}
+            '{document_text}'
             
-            Сгенерируй тест строго по этим требованиям.
+            Сгенерируй тест строго по этим требованиям. Никакого другого лишнего текста, только сам тест
             """
             
             with st.spinner("Генерация качественного теста..."):
                 response = get_api_response(
                     question=prompt,
                     session_id=st.session_state.session_id,
-                    model=model_name  # Используем правильное имя модели
+                    model=model_name 
                 )
                 
                 if response:
                     test_content = response['answer']
-                    print(f"AI сгенерированный контент: {test_content[:100]}...")  # Отладочная печать
+                    print(f"AI сгенерированный контент: {test_content[:100]}...")  
                 else:
                     st.error("Ошибка при генерации теста AI")
                     test_content = ""
 
-        # Add XML tasks
         if selected_subject and xml_tasks_count > 0:
             xml_tasks = get_tasks(
                 subject=selected_subject,
@@ -264,9 +260,7 @@ def show_generate_page():
                 xml_questions.append(f"{i}. {task.question}\n")
                 answers.append(f"[{i}]. {task.answer}\n")
 
-        # Combine questions and answers
         
-            # Добавление XML вопросов
         if xml_questions:
             xml_section = "\n\n".join(xml_questions)
             if test_content:
@@ -274,19 +268,16 @@ def show_generate_page():
             else:
                 test_content = xml_section
         
-        # Добавление ответов
         if answers:
             answers_section = "\n".join(answers)
             test_content = test_content + "\n\nОТВЕТЫ:\n" + answers_section
 
-        # Сохранение в session_state
         st.session_state.generated_test = test_content
         st.session_state.test_generated = True
         st.session_state.test_pdf = markdown_to_pdf(test_content)
         st.session_state.test_word = markdown_to_word(test_content)
         st.success("✅ Тест успешно сгенерирован!")
 
-        # Сохранение PDF
         pdf_response = upload_test_pdf(
             pdf_buffer=st.session_state.test_pdf,
             filename="generated_test.pdf",
@@ -298,7 +289,6 @@ def show_generate_page():
         else:
             st.error("Ошибка сохранения PDF теста")
     
-    # Отображение сгенерированного теста
     if 'test_generated' in st.session_state and st.session_state.test_generated and 'generated_test' in st.session_state:
         with st.expander("Просмотр теста", expanded=True):
             st.markdown(st.session_state.generated_test)

@@ -20,7 +20,7 @@ class DifficultyLevel(str, Enum):
 class QueryInput(BaseModel):
     question: str
     session_id: Optional[str] = Field(default=None)
-    model: ModelName = Field(default=ModelName.VIKHR)  # По умолчанию Vikhr
+    model: ModelName = Field(default=ModelName.VIKHR)  
 
 class QueryResponse(BaseModel):
     answer: str
@@ -54,4 +54,4 @@ class TestGenerationRequest(BaseModel):
     xml_subject: Optional[str] = None
     xml_topic: Optional[str] = None
     xml_task_count: int = 0
-    model: ModelName = Field(default=ModelName.VIKHR)  # По умолчанию Vikhr
+    model: ModelName = Field(default=ModelName.VIKHR)  

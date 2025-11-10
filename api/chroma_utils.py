@@ -9,7 +9,6 @@ import logging
 
 from docling.document_converter import DocumentConverter
 
-# Настройка логирования
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
@@ -24,41 +23,29 @@ vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embeddi
 
 #devert007################
 def load_and_split_document(file_path: str) -> List[Document]:
-    """
-    Универсальная функция загрузки документов с использованием Docling
-    Поддерживает: PDF, DOCX, HTML, PPTX, XLSX и другие форматы
-    """
+    
     try:
-        # Инициализация конвертера Docling
         converter = DocumentConverter()
         
-        # Конвертация документа
         result = converter.convert(file_path)
         
         if not result.documents:
             logging.error(f"No content extracted from {file_path}")
             return []
         
-        # Извлечение текста из всех документов
         all_texts = []
         for doc in result.documents:
-            # Экспорт в Markdown для сохранения структуры
             markdown_content = doc.export_to_markdown()
             all_texts.append(markdown_content)
         
-        # Объединение всего текста
         full_text = "\n\n".join(all_texts)
         
-        # Создание Langchain Document
         documents = [Document(page_content=full_text, metadata={"source": file_path})]
         
-        logging.debug(f"Loaded document from {file_path} using Docling")
-        print(f"Loaded document from {file_path} using Docling")
+        logging.debug(f"loaded doc from {file_path} using Docling")
         
-        # Разбиение на чанки
         splits = text_splitter.split_documents(documents)
-        logging.debug(f"Split document into {len(splits)} chunks")
-        print(f"Split document into {len(splits)} chunks")
+        logging.debug(f"split doc into {len(splits)} chunks")
         
         return splits
         
@@ -66,11 +53,9 @@ def load_and_split_document(file_path: str) -> List[Document]:
         logging.error(f"Error loading document {file_path} with Docling: {e}")
         print(f"Error loading document {file_path} with Docling: {e}")
         
-        # Fallback на старые методы при ошибке
         return load_with_fallback(file_path)
 
 def load_with_fallback(file_path: str) -> List[Document]:
-    """Fallback метод для загрузки документов старыми способами"""
     try:
         file_extension = os.path.splitext(file_path)[1].lower()
         
@@ -134,16 +119,13 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
     Возвращает: (is_unique, max_similarity, similar_doc_id)
     """
     try:
-        # Загружаем и разбиваем документ
         splits = load_and_split_document(file_path)
         if not splits:
             logging.error("No content extracted from document")
             print("No content extracted from document")
             return False, 0.0, "No content extracted from document"
 
-        # Получаем эмбеддинги для всех чанков нового документа
         logging.debug(f"Generating embeddings for {len(splits)} document chunks")
-        print(f"Generating embeddings for {len(splits)} document chunks")
         new_texts = [split.page_content for split in splits if split.page_content.strip()]
         if not new_texts:
             logging.error("No valid text content in document chunks")
@@ -154,7 +136,6 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
         logging.debug(f"Generated {len(new_embeddings)} embeddings with shape {np.array(new_embeddings).shape}")
         print(f"Generated {len(new_embeddings)} embeddings with shape {np.array(new_embeddings).shape}")
 
-        # Проверяем размерность каждого эмбеддинга
         for i, emb in enumerate(new_embeddings):
             emb_array = np.array(emb, dtype=np.float32)
             if emb_array.shape != (384,):
@@ -162,7 +143,6 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
                 print(f"Invalid embedding shape for chunk {i}: {emb_array.shape}")
                 return False, 0.0, f"Invalid embedding shape for chunk {i}"
 
-        # Получаем все существующие документы из ChromaDB
         existing_docs = vectorstore.get(include=["embeddings", "metadatas"])
         logging.debug(f"Found {len(existing_docs['embeddings'])} existing embeddings in ChromaDB")
         print(f"Found {len(existing_docs['embeddings'])} existing embeddings in ChromaDB")
@@ -171,7 +151,6 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
             print("No existing documents in ChromaDB")
             return True, 0.0, "No existing documents in ChromaDB"
 
-        # Проверяем размерность существующих эмбеддингов
         valid_existing_embeddings = []
         valid_metadatas = []
         for i, emb in enumerate(existing_docs['embeddings']):
@@ -188,14 +167,12 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
             print("No valid existing embeddings in ChromaDB after filtering")
             return True, 0.0, "No valid existing embeddings in ChromaDB"
 
-        # Вычисляем максимальное косинусное сходство
         max_similarity = 0.0
         similar_doc_id = None
         for i, existing_embedding in enumerate(valid_existing_embeddings):
             for j, new_embedding in enumerate(new_embeddings):
                 new_embedding = np.array(new_embedding, dtype=np.float32)
-                # Косинусное сходство
-                dot_product = float(np.dot(new_embedding, existing_embedding))  # Ensure scalar
+                dot_product = float(np.dot(new_embedding, existing_embedding))
                 norm_new = float(np.linalg.norm(new_embedding))
                 norm_existing = float(np.linalg.norm(existing_embedding))
                 if norm_new == 0 or norm_existing == 0:
@@ -218,7 +195,6 @@ def check_document_uniqueness(file_path: str, similarity_threshold: float = 0.8)
                     logging.debug(f"New max similarity: {max_similarity} with file_id {similar_doc_id}")
                     print(f"New max similarity: {max_similarity} with file_id {similar_doc_id}")
 
-        # Документ считается уникальным, если максимальное сходство ниже порога
         is_unique = max_similarity < similarity_threshold
         logging.info(f"Document uniqueness check result: is_unique={is_unique}, max_similarity={max_similarity}, similar_doc_id={similar_doc_id}")
         print(f"Document uniqueness check result: is_unique={is_unique}, max_similarity={max_similarity}, similar_doc_id={similar_doc_id}")
