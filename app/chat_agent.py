@@ -9,7 +9,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from api.langchain_utils import get_chat_agent, SimpleChatHistory
 
 def init_chat_agent():
-    """Инициализирует чат-агента в session_state"""
     if 'chat_agent' not in st.session_state:
         st.session_state.chat_agent = get_chat_agent()
     if 'chat_history' not in st.session_state:
@@ -28,7 +27,6 @@ def toggle_chat():
         st.session_state.user_input = ""
 
 def send_message():
-    """Отправляет сообщение чат-агенту"""
     user_input = st.session_state.get('user_input_field', '').strip()
     print(st.session_state.get('user_input_field', ''))
     if not user_input:

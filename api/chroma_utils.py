@@ -82,16 +82,12 @@ def index_document_to_chroma(file_path: str, file_id: int) -> bool:
     try:
         splits = load_and_split_document(file_path)
         if not splits:
-            logging.error(f"No splits generated for file_id {file_id}")
-            print(f"No splits generated for file_id {file_id}")
             return False
 
         for split in splits:
             split.metadata['file_id'] = file_id
 
         vectorstore.add_documents(splits)
-        logging.info(f"Successfully indexed document with file_id {file_id}")
-        print(f"Successfully indexed document with file_id {file_id}")
         return True
     except Exception as e:
         logging.error(f"Error indexing document with file_id {file_id}: {e}")

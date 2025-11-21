@@ -13,7 +13,6 @@ DB_USER = os.getenv("DB_USER", "devert007")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "kislyCat.03")
 
 def get_db_connection():
-    """Создает и возвращает подключение к PostgreSQL"""
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -313,7 +312,6 @@ def check_filename_uniqueness(filename: str, client_id: int = None) -> Tuple[boo
         return False, f"Error: {str(e)}"
 
 def initialize_database():
-    """Инициализирует все таблицы в базе данных"""
     create_clients_table()
     create_application_logs()
     create_document_store()
@@ -321,9 +319,9 @@ def initialize_database():
     
     client_id = create_default_client()
     if client_id:
-        print(f"✅ База данных инициализирована. Клиент по умолчанию: {client_id}")
+        print(f" База данных инициализирована. Клиент по умолчанию: {client_id}")
     else:
-        print("❌ Не удалось создать клиента по умолчанию")
+        print(" Не удалось создать клиента по умолчанию")
     
     print("Database tables initialized successfully")
 

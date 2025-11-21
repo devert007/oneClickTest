@@ -12,7 +12,6 @@ from typing import List, Dict, Any
 
 
 class SimpleChatHistory(BaseChatMessageHistory):
-    """Простая реализация истории чата для агента"""
     
     def __init__(self):
         self.messages = []
@@ -35,7 +34,6 @@ class SimpleChatHistory(BaseChatMessageHistory):
         self._messages = value
 
 def get_chat_agent():
-    """Создает чат-агента для обсуждения системы OneClickTest"""
     try:
         llm = ChatOllama(
             model="lakomoor/vikhr-llama-3.2-1b-instruct:1b",
@@ -129,7 +127,6 @@ def get_rag_chain():
         
     except Exception as e:
         logging.error(f"Ошибка создания RAG цепи: {e}")
-        # Простая fallback цепочка
         class FallbackChain:
             def invoke(self, input_dict):
                 return {"answer": "Извините, система временно недоступна. Пожалуйста, попробуйте позже."}
@@ -139,6 +136,6 @@ def get_rag_chain():
 try:
     llm = ChatOllama(model="lakomoor/vikhr-llama-3.2-1b-instruct:1b")
     test_response = llm.invoke("Привет")
-    print("✅ Модель Vikhr доступна!")
+    print("Модель Vikhr доступна!")
 except Exception as e:
-    print(f"❌ Модель Vikhr недоступна: {e}")
+    print(f"Модель Vikhr недоступна: {e}")
