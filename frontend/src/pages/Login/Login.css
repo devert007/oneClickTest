@@ -1,0 +1,250 @@
+﻿/* Глобальные переменные для цветовой схемы */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --button-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-dark: #2c3e50;
+    --text-light: #7f8c8d;
+    --input-border: #e1e8ed;
+    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--primary-gradient);
+    position: relative;
+    overflow: hidden;
+    animation: gradientShift 8s ease infinite; /* Дыхание фона */
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    50% {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+}
+
+.login-page::before { /* Лёгкий overlay для фокуса */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 1;
+}
+
+.login-container {
+    background: white;
+    padding: 50px 40px; /* Больше воздуха */
+    border-radius: 16px; /* Мягче углы */
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 420px; /* Немного шире */
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease-out;
+    transform-style: preserve-3d;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+    .login-header h1 {
+        color: var(--text-dark);
+        margin-bottom: 12px;
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+
+        .login-header h1::after { /* Декоративная иконка под заголовком */
+            content: '🔐';
+            display: block;
+            font-size: 3rem;
+            margin-top: -10px;
+            opacity: 0.8;
+        }
+
+    .login-header p {
+        color: var(--text-light);
+        font-size: 1rem;
+        margin: 0;
+    }
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Больше пространства */
+}
+
+    /* Стили для input'ов (предполагая <input type="text/email/password">) */
+    .login-form input {
+        width: 100%;
+        padding: 15px 18px;
+        border: 2px solid var(--input-border);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: #f8f9fa;
+    }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .login-form input::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+
+        /* Убрали :invalid — теперь без красных рамок */
+        /* Если нужно кастомные ошибки, добавьте класс .error через JS */
+        .login-form input.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            background: #fdf2f2;
+        }
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background: var(--button-gradient);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+    .login-btn::before { /* Ripple-эффект */
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+        transform: translate(-50%, -50%);
+    }
+
+    .login-btn:active::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .login-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .login-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+}
+
+    .login-footer a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+    }
+
+        .login-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .login-footer a:hover {
+            color: #2980b9;
+        }
+
+            .login-footer a:hover::after {
+                width: 100%;
+            }
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .login-page {
+        padding: 20px;
+    }
+
+    .login-container {
+        padding: 30px 25px;
+        margin: 0 10px;
+    }
+
+    .login-header h1 {
+        font-size: 1.75rem;
+    }
+
+        .login-header h1::after {
+            font-size: 2.5rem;
+        }
+
+    .login-form input,
+    .login-btn {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+    }
+}
