@@ -6,7 +6,6 @@ from typing import Optional
 class ModelName(str, Enum):
     GPT4_O = "gpt-4o"
     GPT4_O_MINI = "gpt-4o-mini"
-    LLAMA3_2 = "llama3.2"
     VIKHR = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"
 
 class DifficultyLevel(str, Enum):
