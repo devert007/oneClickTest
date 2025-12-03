@@ -109,14 +109,18 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages([
     ("human", "{input}"),
 ])
 
-def get_rag_chain():
+def get_rag_chain(model_name):
     """Создает RAG цепочку для Vikhr модели"""
     try:
+        print(f"🎯 Создание RAG цепи для модели: {model_name}")
+        
         llm = ChatOllama(
             model="lakomoor/vikhr-llama-3.2-1b-instruct:1b",
             temperature=0.3,
             num_predict=2000
         )
+        
+        print("✅ LLM инициализирован")
         
         qa_prompt = ChatPromptTemplate.from_messages([
             ("system", "Ты профессиональный генератор тестов. Создавай вопросы строго на основе предоставленного контекста."),
@@ -125,18 +129,35 @@ def get_rag_chain():
             ("human", "{input}")
         ])
         
+        print("✅ Промпт создан")
+        
+        # Проверим, что retriever работает
+        print(f"🔍 Проверка retriever...")
+        test_docs = retriever.get_relevant_documents("test")
+        print(f"✅ Retriever работает, найдено {len(test_docs)} документов")
+        
         history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
+        print("✅ History aware retriever создан")
+        
         question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
+        print("✅ Question answer chain создан")
+        
         rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+        print("✅ RAG цепь успешно создана")
         
         return rag_chain
         
     except Exception as e:
+        print(f"❌ КРИТИЧЕСКАЯ ОШИБКА при создании RAG цепи: {e}")
+        import traceback
+        traceback.print_exc()
+        
         logging.error(f"Ошибка создания RAG цепи: {e}")
         # Простая fallback цепочка
         class FallbackChain:
             def invoke(self, input_dict):
-                return {"answer": "Извините, система временно недоступна. Пожалуйста, попробуйте позже."}
+                print(f"⚠️ Используется FallbackChain для запроса: {input_dict.get('input', '')[:100]}...")
+                return {"answer": f"Извините, система временно недоступна. Ошибка: {str(e)}"}
         
         return FallbackChain()
 

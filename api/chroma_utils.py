@@ -1,6 +1,6 @@
 from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredHTMLLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings  # Обновленный импорт
+from langchain_community.embeddings import HuggingFaceEmbeddings  # Обновленный импорт
 from langchain_chroma import Chroma
 from typing import List, Tuple
 from langchain_core.documents import Document

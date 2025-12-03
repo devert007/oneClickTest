@@ -11,7 +11,7 @@ const CreateTest = () => {
         difficulty: 'Для средних классов',
         questionType: 'multiple_choice',
         includeAnswers: true,
-        model: 'llama3.2',
+        model: 'lakomoor/vikhr-llama-3.2-1b-instruct:1b',
         xmlSubject: '',
         xmlTopic: '',
         xmlQuestionCount: 0
@@ -42,7 +42,7 @@ const CreateTest = () => {
     ];
 
     const models = [
-        { value: 'llama3.2', label: '🦙 Llama 3.2' }
+        { value: 'lakomoor/vikhr-llama-3.2-1b-instruct:1b', label: '🦙 Llama 3.2' }
     ];
 
     useEffect(() => {
@@ -139,7 +139,11 @@ const CreateTest = () => {
 
         setIsGenerating(true);
         setGeneratedTest(null);
+        const generationTimeout = setTimeout(() => {
+        
+            alert('Генерация занимает больше времени, чем ожидалось. Пожалуйста, подождите... Это может занять несколько минут для больших документов.');
 
+    }, 20000); 
         try {
             const requestData = {
                 question_count: testParams.questionCount,
@@ -161,7 +165,7 @@ const CreateTest = () => {
 
             const result = await testGenerationAPI.generateTest(requestData);
             console.log('📥 Received result:', result);
-
+            clearTimeout(generationTimeout);
             setGeneratedTest(result);
 
             if (result.parameters) {
@@ -171,6 +175,7 @@ const CreateTest = () => {
             console.error('Error generating test:', error);
             alert(`Ошибка при генерации теста: ${error.message}`);
         } finally {
+            clearTimeout(generationTimeout);
             setIsGenerating(false);
         }
     };

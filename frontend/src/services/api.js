@@ -150,7 +150,9 @@ export const testPDFAPI = {
 // Сервис для генерации тестов
 export const testGenerationAPI = {
     generateTest: async (testData) => {
-        const response = await api.post('/generate-test', testData);
+        const response = await api.post('/generate-test', testData, {
+                timeout: 300000, // 5 минут вместо 30 секунд
+            });
         return response.data;
     },
 

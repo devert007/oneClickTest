@@ -202,7 +202,7 @@ def generate_test_api(document_id: int, question_count: int, difficulty: str, qu
             "difficulty": difficulty,
             "question_type": question_type
         }
-        
+        print(data)
         response = requests.post("http://localhost:8000/generate-test", json=data)
         if response.status_code == 200:
             return response.json()

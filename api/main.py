@@ -141,74 +141,48 @@ def generate_test(request: TestGenerationRequest):
         print(f"Generating test with params: {request.dict()}") 
         
         # Получаем XML вопросы если указаны параметры
-        xml_questions_content = ""
-        xml_questions_count = 0
-        
-        if request.xml_subject and request.xml_question_count > 0:
-            print(f"Getting XML tasks for subject: {request.xml_subject}, topic: {request.xml_topic}")
-            xml_tasks = get_tasks(
-                subject=request.xml_subject,
-                topic=request.xml_topic if request.xml_topic else None,
-                difficulty=request.difficulty.value,  # Используем .value для enum
-                task_type=request.question_type.value,  # Используем .value для enum
-                limit=request.xml_question_count
-            )
-            
-            print(f"Found {len(xml_tasks)} XML tasks")
-            
-            if xml_tasks:
-                xml_questions_count = len(xml_tasks)
-                xml_questions_content = "# Вопросы из базы данных\n\n"
-                for i, task in enumerate(xml_tasks, 1):
-                    xml_questions_content += f"## Вопрос {i}\n{task.question}\n\n"
-                    if request.include_answers:
-                        xml_questions_content += f"**Ответ:** {task.answer}\n\n"
-
-        # Генерируем вопросы через AI если указан документ
+      
+         
         ai_questions_content = ""
-        ai_questions_count = 0
+        ai_questions_count = request.question_count
         
-        if request.document_id and request.question_count > xml_questions_count:
-            ai_questions_count = request.question_count - xml_questions_count
-            document_text = get_document_text(request.document_id)
+        
+        document_text = get_document_text(request.document_id)
+
+        print(document_text)
+        if document_text and ai_questions_count > 0:
+            prompt = f"""
+            Сгенерируйте тест на основе документа.
+            Требования:
+            - ТОЛЬКО это количество вопросов: {ai_questions_count}
+            - Уровень сложности: {request.difficulty}
+            - Формат вопросов: {request.question_type}
+            - {"Включать ответы" if request.include_answers else "Не включать ответы"}
+            - Используй ТОЛЬКО предоставленный текст документа
             
-            if document_text and ai_questions_count > 0:
-                prompt = f"""
-                Сгенерируйте тест на основе документа.
-                Требования:
-                - ТОЛЬКО это количество вопросов: {ai_questions_count}
-                - Уровень сложности: {request.difficulty}
-                - Формат вопросов: {request.question_type}
-                - {"Включать ответы" if request.include_answers else "Не включать ответы"}
-                - Используй ТОЛЬКО предоставленный текст документа
-                
-                Текст документа:
-                {document_text}
-                
-                Сгенерируй тест строго по требованиям.
-                """
-                
-                chat_history = get_chat_history(session_id)
-                rag_chain = get_rag_chain(request.model.value)
-                
-                ai_response = rag_chain.invoke({
-                    "input": prompt,
-                    "chat_history": chat_history
-                })
-                ai_questions_content = ai_response['answer']
+            Текст документа:
+            {document_text}
+            
+            Сгенерируй тест строго по требованиям.
+            """
+            print(prompt)
+            chat_history = get_chat_history(session_id)
+            rag_chain = get_rag_chain(request.model.value)
+            
+            ai_response = rag_chain.invoke({
+                "input": prompt,
+                "chat_history": chat_history
+            })
+            ai_questions_content = ai_response['answer']
 
        # Объединяем содержимое
-        if xml_questions_content and ai_questions_content:
-            combined_content = xml_questions_content + "\n\n# Сгенерированные вопросы\n\n" + ai_questions_content
-        elif xml_questions_content:
-            combined_content = xml_questions_content
-        else:
-            combined_content = ai_questions_content
+        
+        combined_content = ai_questions_content
 
         # Логируем генерацию теста
         insert_application_logs(
             session_id, 
-            f"Generate test: {request.question_count} questions, {xml_questions_count} from XML", 
+            f"Generate test: {request.question_count} questions", 
             combined_content, 
             request.model.value
         )
@@ -222,7 +196,7 @@ def generate_test(request: TestGenerationRequest):
                 "question_type": request.question_type.value,
                 "include_answers": request.include_answers,
                 "document_id": request.document_id,
-                "xml_question_count": xml_questions_count,
+                "xml_question_count": "",
                 "ai_question_count": ai_questions_count,
                 "xml_subject": request.xml_subject,
                 "xml_topic": request.xml_topic

@@ -7,11 +7,11 @@ const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [sessionId, setSessionId] = useState('');
-    const [selectedModel, setSelectedModel] = useState('llama3.2');
+    const [selectedModel, setSelectedModel] = useState('lakomoor/vikhr-llama-3.2-1b-instruct:1b');
     const messagesEndRef = useRef(null);
 
     const models = [
-        { value: 'llama3.2', label: '🦙 Llama 3.2' }
+        { value: 'lakomoor/vikhr-llama-3.2-1b-instruct:1b', label: '🦙 Llama 3.2' }
     ];
 
     // Генерируем session_id при монтировании
