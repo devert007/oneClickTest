@@ -72,14 +72,6 @@ const Profile = () => {
                 <div className="profile-card">
                     <div className="profile-header">
                         <h3>Личная информация</h3>
-                        {!isEditing && (
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="btn btn-primary"
-                            >
-                                ✏️ Редактировать
-                            </button>
-                        )}
                     </div>
 
                     {message && (
@@ -167,24 +159,6 @@ const Profile = () => {
                             </div>
                         </form>
                     )}
-                </div>
-
-                <div className="profile-stats">
-                    <h3>Статистика аккаунта</h3>
-                    <div className="stats-grid">
-                        <div className="stat-item">
-                            <div className="stat-value">0</div>
-                            <div className="stat-label">Загружено документов</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">0</div>
-                            <div className="stat-label">Создано тестов</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">0</div>
-                            <div className="stat-label">Активных сессий</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

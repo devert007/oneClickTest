@@ -27,7 +27,7 @@ def get_db_connection():
         return conn
     except Exception as e:
         print(f"❌ Ошибка подключения к БД: {e}")
-    raise
+    raise e
 
 
 def create_application_logs():

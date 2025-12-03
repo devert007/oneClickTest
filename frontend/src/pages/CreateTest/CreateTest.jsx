@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { documentAPI, testGenerationAPI, testPDFAPI } from '../../services/api';
-import XmlQuestionSelector from '../XmlQuestionSelector';
 import './CreateTest.css';
 
 const CreateTest = () => {
@@ -11,10 +10,8 @@ const CreateTest = () => {
         difficulty: 'Для средних классов',
         questionType: 'multiple_choice',
         includeAnswers: true,
-        model: 'llama3.2',
-        xmlSubject: '',
-        xmlTopic: '',
-        xmlQuestionCount: 0
+        model: 'vikhr',
+        // Убраны XML параметры
     });
     const [generatedTest, setGeneratedTest] = useState(null);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -42,7 +39,7 @@ const CreateTest = () => {
     ];
 
     const models = [
-        { value: 'llama3.2', label: '🦙 Llama 3.2' }
+        { value: 'vikhr', label: '⚡ Vikhr' }
     ];
 
     useEffect(() => {
@@ -127,13 +124,8 @@ const CreateTest = () => {
     };
 
     const generateTest = async () => {
-        if (!selectedDocument && testParams.xmlQuestionCount === 0) {
-            alert('Пожалуйста, выберите документ или добавьте вопросы из базы данных');
-            return;
-        }
-
-        if (testParams.xmlQuestionCount > testParams.questionCount) {
-            alert('Количество вопросов из базы не может превышать общее количество вопросов');
+        if (!selectedDocument) {
+            alert('Пожалуйста, выберите документ для генерации теста');
             return;
         }
 
@@ -147,9 +139,6 @@ const CreateTest = () => {
                 question_type: testParams.questionType,
                 include_answers: testParams.includeAnswers,
                 model: testParams.model,
-                xml_subject: testParams.xmlSubject || null,
-                xml_topic: testParams.xmlTopic || null,
-                xml_question_count: testParams.xmlQuestionCount,
                 session_id: `session_${Date.now()}`
             };
 
@@ -164,9 +153,6 @@ const CreateTest = () => {
 
             setGeneratedTest(result);
 
-            if (result.parameters) {
-                console.log(`Statistics: ${result.parameters.xml_question_count} XML questions, ${result.parameters.ai_question_count} AI questions`);
-            }
         } catch (error) {
             console.error('Error generating test:', error);
             alert(`Ошибка при генерации теста: ${error.message}`);
@@ -338,7 +324,7 @@ const CreateTest = () => {
                             <div className="form-group">
                                 <label htmlFor="document-select">
                                     Документ для тестирования:
-                                    <span className="optional"> (обязательно для AI-вопросов)</span>
+                                    <span className="optional"> (обязательно)</span>
                                 </label>
 
                                 {/* Выбор существующего документа */}
@@ -456,7 +442,7 @@ const CreateTest = () => {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="total-question-count">Общее количество вопросов:</label>
+                                <label htmlFor="total-question-count">Количество вопросов:</label>
                                 <input
                                     id="total-question-count"
                                     type="number"
@@ -468,8 +454,8 @@ const CreateTest = () => {
                                         questionCount: parseInt(e.target.value)
                                     }))}
                                     className="form-control"
-                                    title="Общее количество вопросов в тесте от 1 до 50"
-                                    aria-label="Общее количество вопросов в тесте"
+                                    title="Количество вопросов в тесте от 1 до 50"
+                                    aria-label="Количество вопросов в тесте"
                                     placeholder="Введите число от 1 до 50"
                                 />
                             </div>
@@ -538,39 +524,6 @@ const CreateTest = () => {
                             </div>
                         </div>
 
-                        {/* Секция XML вопросов */}
-                        <div className="xml-section">
-                            <XmlQuestionSelector
-                                selectedSubject={testParams.xmlSubject}
-                                selectedTopic={testParams.xmlTopic}
-                                selectedDifficulty={testParams.difficulty}
-                                selectedQuestionType={testParams.questionType}
-                                questionCount={testParams.xmlQuestionCount}
-                                onSubjectChange={(subject) => {
-                                    console.log('Subject changed:', subject);
-                                    setTestParams(prev => ({
-                                        ...prev,
-                                        xmlSubject: subject,
-                                        xmlTopic: '' // Сбрасываем тему при смене предмета
-                                    }));
-                                }}
-                                onTopicChange={(topic) => {
-                                    console.log('Topic changed:', topic);
-                                    setTestParams(prev => ({
-                                        ...prev,
-                                        xmlTopic: topic
-                                    }));
-                                }}
-                                onQuestionCountChange={(count) => {
-                                    console.log('Question count changed:', count);
-                                    setTestParams(prev => ({
-                                        ...prev,
-                                        xmlQuestionCount: count
-                                    }));
-                                }}
-                            />
-                        </div>
-
                         <div className="form-check">
                             <input
                                 type="checkbox"
@@ -591,7 +544,7 @@ const CreateTest = () => {
 
                         <button
                             onClick={generateTest}
-                            disabled={isGenerating || (!selectedDocument && testParams.xmlQuestionCount === 0)}
+                            disabled={isGenerating || !selectedDocument}
                             className="btn btn-primary generate-btn"
                             title="Сгенерировать тест с выбранными параметрами"
                             aria-label="Сгенерировать тест"
@@ -599,9 +552,9 @@ const CreateTest = () => {
                             {isGenerating ? '🔄 Генерация...' : '⚡ Сгенерировать тест'}
                         </button>
 
-                        {documents.length === 0 && testParams.xmlQuestionCount === 0 && (
+                        {documents.length === 0 && (
                             <div className="warning-message">
-                                ⚠️ Для генерации тестов необходимо загрузить документы или выбрать вопросы из базы данных
+                                ⚠️ Для генерации тестов необходимо загрузить документ
                             </div>
                         )}
                     </div>
@@ -612,9 +565,7 @@ const CreateTest = () => {
                                 <h3>Сгенерированный тест</h3>
                                 <div className="result-stats">
                                     <p>
-                                        📊 Всего вопросов: {generatedTest.parameters.question_count}
-                                        {generatedTest.parameters.xml_question_count > 0 &&
-                                            ` (${generatedTest.parameters.xml_question_count} из базы, ${generatedTest.parameters.ai_question_count} сгенерировано)`}
+                                        📊 Всего вопросов: {testParams.questionCount}
                                     </p>
                                 </div>
                                 <div className="result-actions">
