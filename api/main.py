@@ -15,6 +15,100 @@ import logging
 import shutil
 from typing import Optional,Tuple
 from fastapi.middleware.cors import CORSMiddleware
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from io import BytesIO
+import tempfile
+
+def markdown_to_pdf(markdown_text, filename="test.pdf"):
+    """Конвертирует Markdown текст в PDF файл"""
+    try:
+        # Создаем PDF в памяти
+        buffer = BytesIO()
+        
+        try:
+            # Попробуем зарегистрировать Arial (нужен файл arial.ttf в директории)
+            pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+            font_name = "Arial"
+        except:
+            # Используем стандартный шрифт
+            font_name = "Helvetica"
+        
+        # Создаем canvas
+        p = canvas.Canvas(buffer, pagesize=letter)
+        p.setFont(font_name, 12)
+        
+        # Разбиваем текст на строки
+        lines = markdown_text.split("\n")
+        y = 750
+        line_height = 20
+        page_number = 1
+        
+        # Добавляем заголовок страницы
+        p.drawString(50, 780, f"Тест: {filename}")
+        p.drawString(500, 780, f"Страница {page_number}")
+        p.line(50, 775, 550, 775)
+        y -= 40  # Отступ после заголовка
+        
+        for line in lines:
+            # Пропускаем пустые строки
+            if not line.strip():
+                y -= line_height
+                continue
+                
+            # Обрабатываем длинные строки
+            words = line.split()
+            current_line = []
+            line_width = 0
+            
+            for word in words:
+                word_width = len(word) * 7  # Примерная ширина символа
+                if line_width + word_width > 500:  # Ширина страницы
+                    # Рисуем текущую строку
+                    p.drawString(50, y, " ".join(current_line))
+                    y -= line_height
+                    current_line = [word]
+                    line_width = word_width
+                else:
+                    current_line.append(word)
+                    line_width += word_width + 7  # +7 за пробел
+            
+            # Рисуем последнюю строку
+            if current_line:
+                p.drawString(50, y, " ".join(current_line))
+                y -= line_height
+            
+            # Проверка на конец страницы
+            if y < 50:
+                p.showPage()
+                page_number += 1
+                p.setFont(font_name, 12)
+                # Заголовок новой страницы
+                p.drawString(50, 780, f"Тест: {filename} (продолжение)")
+                p.drawString(500, 780, f"Страница {page_number}")
+                p.line(50, 775, 550, 775)
+                y = 750 - 40  # Отступ после заголовка
+        
+        p.save()
+        buffer.seek(0)
+        print(f"✅ PDF создан: {filename}, размер: {len(buffer.getvalue())} байт")
+        return buffer
+        
+    except Exception as e:
+        print(f"❌ Error converting markdown to PDF: {e}")
+        # Возвращаем простой PDF в случае ошибки
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer, pagesize=letter)
+        p.setFont("Helvetica", 12)
+        p.drawString(100, 700, "Тест")
+        p.drawString(100, 680, f"Ошибка при создании PDF: {str(e)[:50]}")
+        p.save()
+        buffer.seek(0)
+        return buffer
+   
+
 
 # Добавляем путь к папке app в Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'app'))
@@ -286,19 +380,126 @@ def chat(query_input: QueryInput):
 
 
 @app.post("/upload-test-pdf")
-def upload_test_pdf(
+@app.post("/upload-test-pdf")
+async def upload_test_pdf(
     file: UploadFile = File(...),
     document_id: Optional[int] = Form(None),
     session_id: Optional[str] = Form(None)
 ):
-    file_extension = os.path.splitext(file.filename)[1].lower()
-    if file_extension != '.pdf':
-        raise HTTPException(status_code=400, detail="Only PDF files are allowed for test uploads.")
+    """Загружает тестовый PDF или конвертирует Markdown в PDF"""
+    try:
+        # Читаем содержимое файла
+        file_content = await file.read()
+        
+        # Определяем тип файла по расширению
+        file_extension = os.path.splitext(file.filename)[1].lower()
+        
+        print(f"📥 Загрузка тестового файла: {file.filename}, расширение: {file_extension}")
+        
+        pdf_content = None
+        final_filename = file.filename
+        
+        if file_extension == '.md':
+            # Декодируем Markdown текст
+            markdown_text = file_content.decode('utf-8', errors='ignore')
+            print(f"📝 Markdown текст (первые 500 символов): {markdown_text[:500]}...")
+            
+            # Конвертируем в PDF
+            pdf_buffer = markdown_to_pdf(markdown_text, file.filename)
+            pdf_content = pdf_buffer.read()
+            
+            # Обновляем имя файла
+            final_filename = file.filename.replace('.md', '.pdf')
+            print(f"✅ Markdown конвертирован в PDF: {final_filename}")
+            
+        elif file_extension == '.pdf':
+            # Уже PDF файл
+            pdf_content = file_content
+            print(f"✅ Получен готовый PDF: {file.filename}")
+            
+        else:
+            raise HTTPException(
+                status_code=400, 
+                detail="Поддерживаются только PDF и Markdown (.md) файлы"
+            )
+        
+        if not pdf_content or len(pdf_content) == 0:
+            raise HTTPException(
+                status_code=400, 
+                detail="Пустой PDF контент после конвертации"
+            )
+        
+        # Сохраняем в базу данных
+        file_id = insert_test_pdf_record(
+            filename=final_filename,
+            document_id=document_id,
+            session_id=session_id or "default_session",
+            pdf_content=pdf_content
+        )
+        
+        print(f"🎉 Test PDF сохранен в БД: ID={file_id}, filename={final_filename}")
+        
+        return {
+            "message": f"Test PDF {final_filename} has been successfully uploaded.",
+            "file_id": file_id,
+            "filename": final_filename
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"❌ Error uploading test PDF: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Ошибка при загрузке тестового PDF: {str(e)}"
+        )
 
-    pdf_content = file.file.read()
-    file_id = insert_test_pdf_record(file.filename, document_id, session_id, pdf_content)
-    return {"message": f"Test PDF {file.filename} has been successfully uploaded.", "file_id": file_id}
-
+@app.post("/save-test")
+async def save_test_endpoint(
+    test_content: str = Form(...),
+    filename: str = Form("test.md"),
+    document_id: Optional[int] = Form(None),
+    session_id: Optional[str] = Form(None)
+):
+    """Специальный эндпоинт для сохранения сгенерированных тестов"""
+    try:
+        print(f"💾 Сохранение теста: {filename}, длина контента: {len(test_content)} символов")
+        
+        # Конвертируем Markdown в PDF
+        pdf_buffer = markdown_to_pdf(test_content, filename)
+        pdf_content = pdf_buffer.read()
+        
+        # Обновляем имя файла
+        pdf_filename = filename.replace('.md', '.pdf')
+        
+        if not pdf_content or len(pdf_content) == 0:
+            raise HTTPException(
+                status_code=400, 
+                detail="Ошибка при создании PDF: пустой контент"
+            )
+        
+        # Сохраняем в базу данных
+        file_id = insert_test_pdf_record(
+            filename=pdf_filename,
+            document_id=document_id,
+            session_id=session_id or f"session_{uuid.uuid4()}",
+            pdf_content=pdf_content
+        )
+        
+        print(f"✅ Тест сохранен: ID={file_id}, filename={pdf_filename}")
+        
+        return {
+            "message": "Test saved successfully",
+            "file_id": file_id,
+            "filename": pdf_filename
+        }
+        
+    except Exception as e:
+        logging.error(f"❌ Error saving test: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Ошибка при сохранении теста: {str(e)}"
+        )
 @app.get("/list-docs", response_model=list[DocumentInfo])
 def list_documents():
     return get_all_documents()

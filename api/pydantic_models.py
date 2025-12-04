@@ -19,7 +19,7 @@ class QuestionType(str, Enum):
 class QueryInput(BaseModel):
     question: str
     session_id: str = Field(default=None)
-    model: ModelName = Field(default=ModelName.LLAMA3_2)
+    model: ModelName = Field(default=ModelName.VIKHR)
 
 class QueryResponse(BaseModel):
     answer: str
@@ -48,7 +48,7 @@ class TestGenerationRequest(BaseModel):
     question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
     include_answers: bool = Field(default=True)
     session_id: Optional[str] = Field(default=None)
-    model: ModelName = Field(default=ModelName.LLAMA3_2)
+    model: ModelName = Field(default=ModelName.VIKHR)
     #поля для XML вопросов из БД
     xml_subject: Optional[str] = Field(default=None)
     xml_topic: Optional[str] = Field(default=None)

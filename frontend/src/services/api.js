@@ -151,23 +151,64 @@ export const testPDFAPI = {
 export const testGenerationAPI = {
     generateTest: async (testData) => {
         const response = await api.post('/generate-test', testData, {
-                timeout: 300000, // 5 минут вместо 30 секунд
-            });
+            timeout: 300000,
+        });
         return response.data;
     },
 
-    // Сохранение теста
+    // Сохранение теста через новый эндпоинт
     saveTest: async (testContent, filename, documentId = null, sessionId = null) => {
-        // Создаем Blob из текста теста
-        const blob = new Blob([testContent], { type: 'text/markdown' });
-        const file = new File([blob], filename, { type: 'text/markdown' });
+        try {
+            console.log('💾 Сохранение теста через /save-test:', { 
+                filename, 
+                documentId, 
+                contentLength: testContent.length 
+            });
+            
+            const formData = new FormData();
+            formData.append('test_content', testContent);
+            formData.append('filename', filename);
+            if (documentId) formData.append('document_id', documentId);
+            if (sessionId) formData.append('session_id', sessionId);
 
-        // Используем существующий метод uploadTestPDF
-        const result = await testPDFAPI.uploadTestPDF(file, documentId, sessionId);
-        return result;
+            const response = await api.post('/save-test', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                timeout: 60000,
+            });
+            
+            console.log('✅ Тест сохранен через /save-test:', response.data);
+            return response.data;
+            
+        } catch (error) {
+            console.error('❌ Ошибка при сохранении через /save-test:', error);
+            
+            // Если новый метод не работает, пробуем старый через uploadTestPDF
+            console.log('🔄 Пробуем альтернативный метод сохранения...');
+            return await testGenerationAPI.saveTestOld(testContent, filename, documentId, sessionId);
+        }
+    },
+
+    // Старый метод для обратной совместимости
+    saveTestOld: async (testContent, filename, documentId = null, sessionId = null) => {
+        try {
+            console.log('📤 Используем старый метод сохранения через uploadTestPDF');
+            
+            // Создаем Markdown файл
+            const blob = new Blob([testContent], { type: 'text/markdown' });
+            const file = new File([blob], filename, { type: 'text/markdown' });
+
+            // Используем существующий uploadTestPDF
+            const result = await testPDFAPI.uploadTestPDF(file, documentId, sessionId);
+            console.log('✅ Тест сохранен через старый метод:', result);
+            return result;
+        } catch (error) {
+            console.error('❌ Ошибка в старом методе сохранения:', error);
+            throw error;
+        }
     }
 };
-
 export const chatAPI = {
     sendMessage: async (messageData) => {
         try {

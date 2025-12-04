@@ -191,36 +191,80 @@ const CreateTest = () => {
     };
 
     // Обновленная функция saveTest чтобы возвращать file_id
-    const saveTest = async () => {
-        if (!generatedTest) return;
+   const saveTest = async () => {
+    if (!generatedTest) {
+        alert('Нет сгенерированного теста для сохранения');
+        return;
+    }
 
-        try {
-            const filename = `test_${Date.now()}.md`;
-            const documentId = selectedDocument ? parseInt(selectedDocument) : null;
+    try {
+        const filename = `test_${Date.now()}.md`;
+        const documentId = selectedDocument ? parseInt(selectedDocument) : null;
+        const sessionId = generatedTest.session_id || `session_${Date.now()}`;
 
-            const result = await testGenerationAPI.saveTest(
-                generatedTest.test_content,
-                filename,
-                documentId,
-                generatedTest.session_id
-            );
-
-            // Сохраняем file_id для последующего скачивания
-            const savedTestWithId = {
-                ...generatedTest,
-                savedFileId: result.file_id,
-                savedFilename: filename
-            };
-            setGeneratedTest(savedTestWithId);
-
-            alert('Тест успешно сохранен! Теперь можно скачать через бэкенд.');
-            await loadSavedTests();
-
-        } catch (error) {
-            console.error('Error saving test:', error);
-            alert(`Ошибка при сохранении теста: ${error.message}`);
+        // Показываем уведомление о начале сохранения
+        setIsGenerating(true);
+        const saveButton = document.querySelector('.btn-success');
+        if (saveButton) {
+            saveButton.textContent = '💾 Сохранение...';
+            saveButton.disabled = true;
         }
-    };
+
+        // Используем основной метод сохранения
+        const result = await testGenerationAPI.saveTest(
+            generatedTest.test_content,
+            filename,
+            documentId,
+            sessionId
+        );
+
+        // Сохраняем информацию для последующего скачивания
+        const savedTestWithId = {
+            ...generatedTest,
+            savedFileId: result.file_id,
+            savedFilename: result.filename || filename.replace('.md', '.pdf')
+        };
+        setGeneratedTest(savedTestWithId);
+
+        // Восстанавливаем кнопку
+        if (saveButton) {
+            saveButton.textContent = '💾 Сохранить тест';
+            saveButton.disabled = false;
+        }
+        
+        setIsGenerating(false);
+        
+        // Показываем успешное сообщение
+        alert(`✅ Тест успешно сохранен!\nID: ${result.file_id}\nФайл: ${result.filename}`);
+        
+        // Обновляем список сохраненных тестов
+        await loadSavedTests();
+
+    } catch (error) {
+        console.error('❌ Error saving test:', error);
+        
+        // Восстанавливаем кнопку в случае ошибки
+        const saveButton = document.querySelector('.btn-success');
+        if (saveButton) {
+            saveButton.textContent = '💾 Сохранить тест';
+            saveButton.disabled = false;
+        }
+        
+        setIsGenerating(false);
+        
+        // Более информативное сообщение об ошибке
+        let errorMessage = 'Ошибка при сохранении теста';
+        if (error.message.includes('timeout')) {
+            errorMessage = 'Превышено время ожидания при сохранении. Попробуйте еще раз.';
+        } else if (error.message.includes('Network Error')) {
+            errorMessage = 'Проблемы с подключением к серверу. Проверьте интернет-соединение.';
+        } else {
+            errorMessage = `Ошибка: ${error.message}`;
+        }
+        
+        alert(errorMessage);
+    }
+};
 
     // Функция для скачивания через бэкенд
     const handleDownloadFromBackend = async () => {
@@ -241,30 +285,61 @@ const CreateTest = () => {
 
     // Функция для прямого сохранения и скачивания
     const handleSaveAndDownload = async () => {
-        if (!generatedTest) return;
+    if (!generatedTest) {
+        alert('Нет сгенерированного теста');
+        return;
+    }
 
-        try {
-            const filename = `test_${Date.now()}.md`;
-            const documentId = selectedDocument ? parseInt(selectedDocument) : null;
+    try {
+        const filename = `test_${Date.now()}.md`;
+        const documentId = selectedDocument ? parseInt(selectedDocument) : null;
+        const sessionId = generatedTest.session_id || `session_${Date.now()}`;
 
-            const result = await testGenerationAPI.saveTest(
-                generatedTest.test_content,
-                filename,
-                documentId,
-                generatedTest.session_id
-            );
-
-            // Сразу скачиваем через бэкенд
-            await downloadTestFromBackend(result.file_id, filename.replace('.md', '.pdf'));
-
-            alert('Тест сохранен и скачан через бэкенд!');
-            await loadSavedTests();
-
-        } catch (error) {
-            console.error('Error in save and download:', error);
-            alert(`Ошибка: ${error.message}`);
+        // Показываем уведомление о начале процесса
+        setIsGenerating(true);
+        const saveDownloadButton = document.querySelector('.btn-info');
+        if (saveDownloadButton) {
+            saveDownloadButton.textContent = '💾📥 Сохранение...';
+            saveDownloadButton.disabled = true;
         }
-    };
+
+        // Сохраняем тест
+        const result = await testGenerationAPI.saveTest(
+            generatedTest.test_content,
+            filename,
+            documentId,
+            sessionId
+        );
+
+        // Сразу скачиваем через бэкенд
+        await downloadTestFromBackend(result.file_id, result.filename);
+
+        // Восстанавливаем кнопку
+        if (saveDownloadButton) {
+            saveDownloadButton.textContent = '💾📥 Сохранить и скачать';
+            saveDownloadButton.disabled = false;
+        }
+        
+        setIsGenerating(false);
+        
+        alert('✅ Тест успешно сохранен и скачан!');
+        await loadSavedTests();
+
+    } catch (error) {
+        console.error('❌ Error in save and download:', error);
+        
+        // Восстанавливаем кнопку
+        const saveDownloadButton = document.querySelector('.btn-info');
+        if (saveDownloadButton) {
+            saveDownloadButton.textContent = '💾📥 Сохранить и скачать';
+            saveDownloadButton.disabled = false;
+        }
+        
+        setIsGenerating(false);
+        
+        alert(`Ошибка: ${error.message}`);
+    }
+};
 
     // Клиентское скачивание (старое)
     const downloadTest = (testContent, filename = `test_${Date.now()}.md`) => {
