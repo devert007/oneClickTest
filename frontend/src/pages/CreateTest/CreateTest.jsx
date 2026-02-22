@@ -47,9 +47,7 @@ const CreateTest = () => {
 		questionType: "multiple_choice",
 		includeAnswers: true,
 		model: "lakomoor/vikhr-llama-3.2-1b-instruct:1b",
-		xmlSubject: "",
-		xmlTopic: "",
-		xmlQuestionCount: 0,
+		// XML fields removed
 	});
 	const [generatedTest, setGeneratedTest] = useState(null);
 	const [isGenerating, setIsGenerating] = useState(false);

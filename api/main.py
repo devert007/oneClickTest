@@ -118,8 +118,6 @@ def markdown_to_pdf(markdown_text, filename="test.pdf"):
 # Добавляем путь к папке app в Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'app'))
 
-from xml_utils import load_tasks_from_xml, get_tasks, get_preview_tasks
-
 logging.basicConfig(filename='app.log', level=logging.INFO)
 
 
@@ -141,32 +139,7 @@ def read_root():
 def health_check():
     return {"status": "healthy", "service": "OneClickTest API"}
 
-@app.get("/xml-subjects")
-def get_xml_subjects():
-    """Получить список всех предметов из XML базы"""
-    try:
-        tasks_dict = load_tasks_from_xml()
-        subjects = list(tasks_dict.keys())
-        print(f"Found subjects: {subjects}") 
-        return {"subjects": subjects}
-    except Exception as e:
-        logging.error(f"Error getting XML subjects: {e}")
-        raise HTTPException(status_code=500, detail=f"Error getting XML subjects: {str(e)}")
-
-@app.get("/xml-topics/{subject}")
-def get_xml_topics(subject: str):
-    """Получить список тем для указанного предмета"""
-    try:
-        tasks_dict = load_tasks_from_xml()
-        if subject not in tasks_dict:
-            print(f"Subject '{subject}' not found")
-            return {"topics": []}
-        topics = list(tasks_dict[subject].keys())
-        print(f"Found topics for {subject}: {topics}") 
-        return {"topics": topics}
-    except Exception as e:
-        logging.error(f"Error getting XML topics: {e}")
-        raise HTTPException(status_code=500, detail=f"Error getting XML topics: {str(e)}")
+# XML-based endpoints removed — XML functionality deprecated and deleted
 
 @app.get("/difficulty-levels")
 def get_difficulty_levels():
@@ -178,59 +151,9 @@ def get_question_types():
     """Получить доступные типы вопросов"""
     return [{"value": qtype.value, "label": qtype.value} for qtype in QuestionType]
 
-@app.get("/available-xml-questions")
-def get_available_xml_questions(
-    subject: str, 
-    topic: Optional[str] = None,
-    difficulty: Optional[str] = None,
-    question_type: Optional[str] = None
-):
-    """Получить количество доступных вопросов по параметрам"""
-    try:
-        tasks = get_tasks(
-            subject=subject,
-            topic=topic,
-            difficulty=difficulty,
-            task_type=question_type
-        )
-        return {"available_questions": len(tasks)}
-    except Exception as e:
-        logging.error(f"Error counting available XML questions: {e}")
-        raise HTTPException(status_code=500, detail=f"Error counting available XML questions: {str(e)}")
+# XML-based endpoints removed — XML functionality deprecated and deleted
 
-@app.get("/xml-questions-preview")
-def preview_xml_questions(
-    subject: str,
-    topic: Optional[str] = None,
-    difficulty: Optional[str] = None,
-    question_type: Optional[str] = None,
-    limit: int = 3
-):
-    """Получить предпросмотр реальных вопросов из XML базы"""
-    try:
-        tasks = get_tasks(
-            subject=subject,
-            topic=topic,
-            difficulty=difficulty,
-            task_type=question_type,
-            limit=limit
-        )
-        
-        preview_tasks = []
-        for task in tasks:
-            preview_tasks.append({
-                "question": task.question,
-                "type": task.type,
-                "difficulty": task.difficulty,
-                "answer": task.answer,
-                "subject": task.subject,
-                "topic": task.topic
-            })
-        
-        return {"preview_tasks": preview_tasks}
-    except Exception as e:
-        logging.error(f"Error previewing XML questions: {e}")
-        raise HTTPException(status_code=500, detail=f"Error previewing XML questions: {str(e)}")
+# XML-based endpoints removed — XML functionality deprecated and deleted
 
 # Новый эндпоинт для генерации тестов
 @app.post("/generate-test")
@@ -240,7 +163,7 @@ def generate_test(request: TestGenerationRequest):
         
         print(f"Generating test with params: {request.dict()}") 
         
-        # Получаем XML вопросы если указаны параметры
+        # XML support removed; generating AI-based questions only
       
          
         ai_questions_content = ""
@@ -358,10 +281,7 @@ def generate_test(request: TestGenerationRequest):
                 "question_type": request.question_type.value,
                 "include_answers": request.include_answers,
                 "document_id": request.document_id,
-                "xml_question_count": "",
-                "ai_question_count": ai_questions_count,
-                "xml_subject": request.xml_subject,
-                "xml_topic": request.xml_topic
+                "ai_question_count": ai_questions_count
             }
         }
         
@@ -447,7 +367,6 @@ def chat(query_input: QueryInput):
     return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
 
 
-@app.post("/upload-test-pdf")
 @app.post("/upload-test-pdf")
 async def upload_test_pdf(
     file: UploadFile = File(...),

@@ -1,7 +1,6 @@
 import streamlit as st
 from api_utils import upload_document, get_api_response, list_documents, upload_test_pdf,check_document_uniqueness,get_document_text
 import uuid
-from xml_utils import load_tasks_from_xml, get_tasks,get_preview_tasks
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -152,28 +151,7 @@ def show_generate_page():
     question_format = st.radio("Формат вопросов", ["Вопрос с выбором ответа", "Вопрос без выбора ответа"])
 
     st.header("3. Добавить задачи из базы")
-
-    tasks_dict = load_tasks_from_xml()
-    subjects = list(tasks_dict.keys()) if tasks_dict else []
-    selected_subject = st.selectbox("Выберите предмет", options=[""] + subjects)
-    selected_topic = None
-    xml_tasks_count = 0
-
-    if selected_subject:
-        topics = list(tasks_dict[selected_subject].keys())
-        selected_topic = st.selectbox("Выберите тему", options=[""] + topics)
-        xml_unlock_tasks_count = get_preview_tasks(
-            subject=selected_subject,
-            topic=selected_topic if selected_topic else None,
-            difficulty=difficulty,
-            task_type=question_format
-        )
-        xml_tasks_count = st.number_input(
-            "Количество доступных задач по вашим настройкам из XML", 
-            min_value=1 if xml_unlock_tasks_count > 0 else 0, 
-            max_value=xml_unlock_tasks_count, 
-            value=1 if xml_unlock_tasks_count > 0 else 0
-        )
+    st.info("Поддержка XML-базы задач удалена в этой сборке.")
     
     st.header("4. Сгенерировать тест")
     
@@ -183,8 +161,8 @@ def show_generate_page():
     answers = []
     
     if st.button("Создать тест"):
-        if 'uploaded_file_id' not in st.session_state and not selected_subject:
-            st.error("Выберите документ или предмет для генерации теста!")
+        if 'uploaded_file_id' not in st.session_state:
+            st.error("Выберите документ для генерации теста!")
             return
 
         # Используем правильное имя модели из доступных вариантов
@@ -250,34 +228,8 @@ def show_generate_page():
                     st.error("Ошибка при генерации теста AI")
                     test_content = ""
 
-        # Add XML tasks
-        if selected_subject and xml_tasks_count > 0:
-            xml_tasks = get_tasks(
-                subject=selected_subject,
-                topic=selected_topic if selected_topic else None,
-                difficulty=difficulty,
-                task_type=question_format,
-                limit=xml_tasks_count
-            )
-            
-            for i, task in enumerate(xml_tasks, 1):
-                xml_questions.append(f"{i}. {task.question}\n")
-                answers.append(f"[{i}]. {task.answer}\n")
-
-        # Combine questions and answers
-        
-            # Добавление XML вопросов
-        if xml_questions:
-            xml_section = "\n\n".join(xml_questions)
-            if test_content:
-                test_content = test_content + "\n\n" + xml_section
-            else:
-                test_content = xml_section
-        
-        # Добавление ответов
-        if answers:
-            answers_section = "\n".join(answers)
-            test_content = test_content + "\n\nОТВЕТЫ:\n" + answers_section
+        # (XML tasks removed) Combine questions and answers if any
+        # No XML tasks to add — only AI-generated content will be included
 
         # Сохранение в session_state
         st.session_state.generated_test = test_content

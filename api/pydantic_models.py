@@ -50,10 +50,7 @@ class TestGenerationRequest(BaseModel):
     include_answers: bool = Field(default=True)
     session_id: Optional[str] = Field(default=None)
     model: ModelName = Field(default=ModelName.VIKHR)
-    #поля для XML вопросов из БД
-    xml_subject: Optional[str] = Field(default=None)
-    xml_topic: Optional[str] = Field(default=None)
-    xml_question_count: int = Field(default=0, ge=0, le=20)
+    # XML fields removed — XML support deprecated
 
 class TestGenerationResponse(BaseModel):
     test_content: str

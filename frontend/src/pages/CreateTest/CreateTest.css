@@ -162,14 +162,7 @@
         box-shadow: none;
     }
 
-.xml-section {
-    margin: 30px 0;
-    padding: 25px;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-    border-radius: 12px;
-    border: 1px solid #e1e5ff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
+/* XML-specific styles removed */
 
 .test-result {
     background: white;
@@ -290,7 +283,7 @@
     font-weight: 500;
 }
 
-/* Стили для сохраненных тестов */
+/* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ */
 .saved-tests {
     background: white;
     padding: 30px;
@@ -384,7 +377,7 @@
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
     }
 
-/* Адаптивность */
+/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
 @media (max-width: 768px) {
     .create-test {
         padding: 15px;
