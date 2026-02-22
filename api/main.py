@@ -13,6 +13,8 @@ import sys
 import uuid
 import logging
 import shutil
+import json
+import requests
 from typing import Optional,Tuple
 from fastapi.middleware.cors import CORSMiddleware
 from reportlab.lib.pagesizes import letter
@@ -21,6 +23,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from io import BytesIO
 import tempfile
+from utils import parse_and_validate_test_json
+from fastapi import Request
+
 
 def markdown_to_pdf(markdown_text, filename="test.pdf"):
     """Конвертирует Markdown текст в PDF файл"""
@@ -116,6 +121,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'app'))
 from xml_utils import load_tasks_from_xml, get_tasks, get_preview_tasks
 
 logging.basicConfig(filename='app.log', level=logging.INFO)
+
 
 app = FastAPI()
 
@@ -245,32 +251,94 @@ def generate_test(request: TestGenerationRequest):
 
         print(document_text)
         if document_text and ai_questions_count > 0:
-            prompt = f"""
-            Сгенерируйте тест на основе документа.
-            Требования:
-            - ТОЛЬКО это количество вопросов: {ai_questions_count}
-            - Уровень сложности: {request.difficulty}
-            - Формат вопросов: {request.question_type}
-            - {"Включать ответы" if request.include_answers else "Не включать ответы"}
-            - Используй ТОЛЬКО предоставленный текст документа
-            
-            Текст документа:
-            {document_text}
-            
-            Сгенерируй тест строго по требованиям.
-            """
-            print(prompt)
-            chat_history = get_chat_history(session_id)
-            rag_chain = get_rag_chain(request.model.value)
-            
-            ai_response = rag_chain.invoke({
-                "input": prompt,
-                "chat_history": chat_history
-            })
-            ai_questions_content = ai_response['answer']
-
+                answer_field = '"answer": "Правильный ответ"' if request.include_answers else ''
+                prompt = f"""
+                Сгенерируй тест на основе текста документа.
+                ВАЖНО: Используй ТОЛЬКО информацию, которая есть в предоставленном тексте. НЕ галюцинируй!
+                
+                Текст документа:
+                {document_text}
+                
+                ТРЕБОВАНИЯ:
+                - Сгенерируй РОВНО {ai_questions_count} РАЗНЫХ вопросов
+                - КАЖДЫЙ вопрос должен быть УНИКАЛЬНЫМ и охватывать РАЗНЫЕ части документа
+                - ЗАПРЕЩЕНО создавать одинаковые или похожие вопросы
+                - ЗАПРЕЩЕНО повторяться
+                - Уровень сложности: {request.difficulty}
+                - Формат вопросов: {request.question_type}
+                - {"Включать ответы" if request.include_answers else "Не включать ответы"}
+                
+                ПРАВИЛА ЭКСТРАКЦИИ ИНФОРМАЦИИ:
+                - Извлекай факты, данные, цифры, имена, события из текста
+                - Если информации недостаточно для {ai_questions_count} разных вопросов, используй разные аспекты одной информации
+                - Проверь что каждый ответ базируется только на тексте документа
+                - НЕ добавляй внешние знания или предположения
+                
+                ПРАВИЛА ДЛЯ ВАРИАНТОВ ОТВЕТОВ:
+                - Создавай правдоподобные неправильные ответы (которые похожи на правильные)
+                - Убедись что правильный ответ явно указан в документе
+                - Минимум 3 варианта ответа на вопрос
+                
+                ФОРМАТ JSON (строго соблюдать):
+                {{
+                  "questions": [
+                    {{
+                      "question": "Первый уникальный вопрос из документа",
+                      "choices": ["Вариант А из документа", "Вариант Б похожий но неправильный", "Вариант В похожий но неправильный"],
+                      "answer": "Вариант А из документа"
+                    }},
+                    {{
+                      "question": "Второй СОВЕРШЕННО ДРУГОЙ вопрос про другую часть",
+                      "choices": ["Ответ 1", "Ответ 2", "Ответ 3"],
+                      "answer": "Ответ 1"
+                    }}
+                  ]
+                }}
+                
+                ПРИМЕРЫ РАЗНЫХ вопросов (они разные!):
+                1. Факты: "Когда произошло событие?"
+                2. Определения: "Что такое понятие X?"
+                3. Причины: "Почему произошло Y?"
+                4. Характеристики: "Какие свойства имеет объект Z?"
+                5. Последовательность: "Какой порядок действий?"
+                
+                ФИНАЛЬНАЯ ПРОВЕРКА:
+                - Все данные из документа ✓
+                - Все вопросы разные ✓
+                - JSON корректный и парсируемый ✓
+                - Без комментариев, только JSON ✓
+                - БЕЗ markdown кода (без ```, без ```json, без ```python) ✓
+                - Ровно {ai_questions_count} вопросов ✓
+                
+                ВАЖНО: Возвращай ТОЛЬКО чистый JSON, начинающийся с {{ и заканчивающийся }}
+                БЕЗ каких-либо комментариев, объяснений, markdown блоков или дополнительного текста!
+                """
+                print(prompt)
+                chat_history = get_chat_history(session_id)
+                rag_chain = get_rag_chain(request.model.value)
+    
+                ai_response = rag_chain.invoke({
+                        "input": prompt,
+                        "chat_history": chat_history
+                })
+                ai_questions_content = ai_response['answer']
+                
+                # Валидация и парсинг JSON ответа
+                try:
+                    test_data = parse_and_validate_test_json(
+                        ai_questions_content,
+                        ai_questions_count,
+                        request.include_answers
+                    )
+                    # Преобразуем обратно в JSON для сохранения
+                    ai_questions_content = json.dumps(test_data, ensure_ascii=False, indent=2)
+                    
+                except ValueError as e:
+                    logging.error(f"Error validating test JSON: {e}")
+                    raise HTTPException(status_code=500, detail=f"Ошибка валидации теста: {str(e)}")
+                
        # Объединяем содержимое
-        
+        print(f"AI Questions Content: {ai_questions_content}")
         combined_content = ai_questions_content
 
         # Логируем генерацию теста
@@ -500,6 +568,40 @@ async def save_test_endpoint(
             status_code=500, 
             detail=f"Ошибка при сохранении теста: {str(e)}"
         )
+
+
+# Прокси-эндпоинт для Google Apps Script — обходит CORS, выполняя запрос с сервера
+@app.post("/proxy-google-form")
+async def proxy_google_form(request: Request):
+    """Принимает JSON от фронтенда и пересылает его на Google Apps Script с сервера.
+    Тело запроса: { "test": <object с тестом> }
+    Опционально можно задать переменную окружения GOOGLE_SCRIPT_URL или передать script_url в теле.
+    """
+    try:
+        body = await request.json()
+    except Exception as e:
+        logging.error(f"proxy_google_form: invalid json body: {e}")
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+
+    test_payload = body.get("test") or body.get("testJson") or body
+    script_url = body.get("script_url") or os.environ.get("GOOGLE_SCRIPT_URL")
+
+    if not script_url:
+        logging.error("proxy_google_form: GOOGLE_SCRIPT_URL not configured")
+        raise HTTPException(status_code=500, detail="GOOGLE_SCRIPT_URL not configured on server")
+
+    try:
+        logging.info(f"Proxying request to Google Script: {script_url}")
+        resp = requests.post(script_url, json=test_payload, timeout=15)
+        resp.raise_for_status()
+        try:
+            data = resp.json()
+        except Exception:
+            data = resp.text
+        return {"status": "ok", "script_response": data}
+    except requests.exceptions.RequestException as e:
+        logging.error(f"proxy_google_form: request to Google Script failed: {e}")
+        raise HTTPException(status_code=502, detail=f"Failed to call Google Script: {str(e)}")
 @app.get("/list-docs", response_model=list[DocumentInfo])
 def list_documents():
     return get_all_documents()

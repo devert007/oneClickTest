@@ -2,6 +2,7 @@
 from enum import Enum
 from datetime import datetime
 from typing import Optional
+from typing import List, Optional
 
 class ModelName(str, Enum):
     GPT4_O = "gpt-4o"
@@ -58,3 +59,13 @@ class TestGenerationResponse(BaseModel):
     test_content: str
     session_id: str
     parameters: dict
+
+class TestQuestion(BaseModel):
+    question: str
+    choices: List[str]
+    answer: Optional[str] = True  # если include_answers=True
+
+class TestContent(BaseModel):
+    questions: List[TestQuestion]
+
+

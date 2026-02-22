@@ -4,3 +4,11 @@ chroma_db/
 temp_*
 api/.env
 *.log
+app.log
+__pycache__/
+app/__pycache__/
+api/__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
