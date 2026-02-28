@@ -18,23 +18,23 @@ const CreateTest = () => {
 			// Парсим JSON теста
 			const testJson = JSON.parse(generatedTest.test_content);
 
-            const result = await googleFormAPI.sendTestToGoogleForm(testJson);
+			const result = await googleFormAPI.sendTestToGoogleForm(testJson);
 
-            // Новый код — берём ответ от Apps Script
-            const scriptResp = result.script_response || result;   // на случай если структура изменится
+			// Новый код — берём ответ от Apps Script
+			const scriptResp = result.script_response || result; // на случай если структура изменится
 
-            if (scriptResp.success && scriptResp.formUrl) {
-            setGoogleFormStatus(
-                `✅ Google Форма создана!\n\n` +
-                `<strong>Ссылка:</strong> <a href="${scriptResp.formUrl}" target="_blank" rel="noopener noreferrer">📝 Открыть форму</a>`
-            );
+			if (scriptResp.success && scriptResp.formUrl) {
+				setGoogleFormStatus(
+					`✅ Google Форма создана!\n\n` +
+						`<strong>Ссылка:</strong> <a href="${scriptResp.formUrl}" target="_blank" rel="noopener noreferrer">📝 Открыть форму</a>`,
+				);
 
-            // Дополнительно можно сохранить ссылку в состояние
-            setGeneratedTest(prev => ({
-                ...prev,
-                googleFormUrl: scriptResp.formUrl
-            }));
-        }
+				// Дополнительно можно сохранить ссылку в состояние
+				setGeneratedTest((prev) => ({
+					...prev,
+					googleFormUrl: scriptResp.formUrl,
+				}));
+			}
 		} catch (error) {
 			setGoogleFormStatus("❌ Ошибка при отправке в Google Apps Script");
 			alert("Ошибка при отправке в Google Apps Script: " + error.message);
@@ -788,19 +788,19 @@ const CreateTest = () => {
 										{googleFormStatus}
 									</div>
 								)}
-                                {generatedTest?.googleFormUrl && (
-                                    <div style={{ marginTop: "15px" }}>
-                                        <a 
-                                        href={generatedTest.googleFormUrl} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="btn btn-success"
-                                        style={{ fontSize: "1.1em", padding: "12px 24px" }}
-                                        >
-                                         Открыть Google Форму
-                                        </a>
-                                    </div>
-                                    )}
+								{generatedTest?.googleFormUrl && (
+									<div style={{ marginTop: "15px" }}>
+										<a
+											href={generatedTest.googleFormUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="btn btn-success"
+											style={{ fontSize: "1.1em", padding: "12px 24px" }}
+										>
+											Открыть Google Форму
+										</a>
+									</div>
+								)}
 
 								{/* Информация о сохраненном тесте */}
 								{generatedTest?.savedFileId && (
