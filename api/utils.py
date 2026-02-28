@@ -23,28 +23,6 @@ def parse_and_validate_test_json(llm_response: str, question_count: int, include
         ValueError: Если JSON некорректен или не соответствует требованиям
     """
     print(llm_response)
-    return {
-            "questions": [
-                    {
-                            "question": "Первый уникальный вопрос из документа",
-                            "choices": [
-                                    "Вариант А из документа",
-                                    "Вариант Б похожий но неправильный",
-                                    "Вариант В похожий но неправильный"
-                            ],
-                            "answer": "Вариант А из документа"
-                    },
-                    {
-                            "question": "Второй СОВЕРШЕННО ДРУГОЙ вопрос про другую часть",
-                            "choices": [
-                                    "Ответ 1",
-                                    "Ответ 2",
-                                    "Ответ 3"
-                            ],
-                            "answer": "Ответ 1"
-                    }
-            ]
-    }
     try:
         # Очищаем ответ от лишних пробелов
         content = llm_response.strip()

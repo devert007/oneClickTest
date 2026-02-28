@@ -116,8 +116,8 @@ def get_rag_chain(model_name):
         
         llm = ChatOllama(
             model="lakomoor/vikhr-llama-3.2-1b-instruct:1b",
-            temperature=0.3,
-            num_predict=2000
+            temperature=0.2,
+            num_predict=4096,
         )
         
         print("✅ LLM инициализирован")

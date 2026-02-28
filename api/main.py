@@ -175,72 +175,19 @@ def generate_test(request: TestGenerationRequest):
         ai_questions_count = request.question_count
         
         
-        document_text = get_document_text(request.document_id)
+        doc_response = get_document_text(request.document_id)
+        document_text = doc_response.get("text", "") if isinstance(doc_response, dict) else ""
 
-        print(document_text)
+        print(f"Document length: {len(document_text)} chars")
         if document_text and ai_questions_count > 0:
-                answer_field = '"answer": "Правильный ответ"' if request.include_answers else ''
-                prompt = f"""
-                Сгенерируй тест на основе текста документа.
-                ВАЖНО: Используй ТОЛЬКО информацию, которая есть в предоставленном тексте. НЕ галюцинируй!
-                
-                Текст документа:
-                {document_text}
-                
-                ТРЕБОВАНИЯ:
-                - Сгенерируй РОВНО {ai_questions_count} РАЗНЫХ вопросов
-                - КАЖДЫЙ вопрос должен быть УНИКАЛЬНЫМ и охватывать РАЗНЫЕ части документа
-                - ЗАПРЕЩЕНО создавать одинаковые или похожие вопросы
-                - ЗАПРЕЩЕНО повторяться
-                - Уровень сложности: {request.difficulty}
-                - Формат вопросов: {request.question_type}
-                - {"Включать ответы" if request.include_answers else "Не включать ответы"}
-                
-                ПРАВИЛА ЭКСТРАКЦИИ ИНФОРМАЦИИ:
-                - Извлекай факты, данные, цифры, имена, события из текста
-                - Если информации недостаточно для {ai_questions_count} разных вопросов, используй разные аспекты одной информации
-                - Проверь что каждый ответ базируется только на тексте документа
-                - НЕ добавляй внешние знания или предположения
-                
-                ПРАВИЛА ДЛЯ ВАРИАНТОВ ОТВЕТОВ:
-                - Создавай правдоподобные неправильные ответы (которые похожи на правильные)
-                - Убедись что правильный ответ явно указан в документе
-                - Минимум 3 варианта ответа на вопрос
-                
-                ФОРМАТ JSON (строго соблюдать):
-                {{
-                  "questions": [
-                    {{
-                      "question": "Первый уникальный вопрос из документа",
-                      "choices": ["Вариант А из документа", "Вариант Б похожий но неправильный", "Вариант В похожий но неправильный"],
-                      "answer": "Вариант А из документа"
-                    }},
-                    {{
-                      "question": "Второй СОВЕРШЕННО ДРУГОЙ вопрос про другую часть",
-                      "choices": ["Ответ 1", "Ответ 2", "Ответ 3"],
-                      "answer": "Ответ 1"
-                    }}
-                  ]
-                }}
-                
-                ПРИМЕРЫ РАЗНЫХ вопросов (они разные!):
-                1. Факты: "Когда произошло событие?"
-                2. Определения: "Что такое понятие X?"
-                3. Причины: "Почему произошло Y?"
-                4. Характеристики: "Какие свойства имеет объект Z?"
-                5. Последовательность: "Какой порядок действий?"
-                
-                ФИНАЛЬНАЯ ПРОВЕРКА:
-                - Все данные из документа ✓
-                - Все вопросы разные ✓
-                - JSON корректный и парсируемый ✓
-                - Без комментариев, только JSON ✓
-                - БЕЗ markdown кода (без ```, без ```json, без ```python) ✓
-                - Ровно {ai_questions_count} вопросов ✓
-                
-                ВАЖНО: Возвращай ТОЛЬКО чистый JSON, начинающийся с {{ и заканчивающийся }}
-                БЕЗ каких-либо комментариев, объяснений, markdown блоков или дополнительного текста!
-                """
+                from test_generation_prompts import build_few_shot_prompt
+                prompt = build_few_shot_prompt(
+                    document_text=document_text,
+                    question_count=ai_questions_count,
+                    difficulty=request.difficulty.value,
+                    question_type=request.question_type.value,
+                    include_answers=request.include_answers,
+                )
                 print(prompt)
                 chat_history = get_chat_history(session_id)
                 rag_chain = get_rag_chain(request.model.value)
@@ -250,20 +197,28 @@ def generate_test(request: TestGenerationRequest):
                         "chat_history": chat_history
                 })
                 ai_questions_content = ai_response['answer']
-                
-                # Валидация и парсинг JSON ответа
-                try:
-                    test_data = parse_and_validate_test_json(
-                        ai_questions_content,
-                        ai_questions_count,
-                        request.include_answers
-                    )
-                    # Преобразуем обратно в JSON для сохранения
-                    ai_questions_content = json.dumps(test_data, ensure_ascii=False, indent=2)
-                    
-                except ValueError as e:
-                    logging.error(f"Error validating test JSON: {e}")
-                    raise HTTPException(status_code=500, detail=f"Ошибка валидации теста: {str(e)}")
+
+                # Валидация и парсинг JSON ответа (с retry при ошибке)
+                for attempt in range(2):
+                    try:
+                        test_data = parse_and_validate_test_json(
+                            ai_questions_content,
+                            ai_questions_count,
+                            request.include_answers
+                        )
+                        ai_questions_content = json.dumps(test_data, ensure_ascii=False, indent=2)
+                        break
+                    except ValueError as e:
+                        if attempt == 0:
+                            logging.warning(f"Parse error (attempt 1), retrying with same prompt: {e}")
+                            ai_response = rag_chain.invoke({
+                                "input": prompt,
+                                "chat_history": chat_history
+                            })
+                            ai_questions_content = ai_response['answer']
+                        else:
+                            logging.error(f"Error validating test JSON: {e}")
+                            raise HTTPException(status_code=500, detail=f"Ошибка валидации теста: {str(e)}")
                 
        # Объединяем содержимое
         print(f"AI Questions Content: {ai_questions_content}")
