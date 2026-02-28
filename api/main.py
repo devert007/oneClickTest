@@ -25,6 +25,7 @@ from io import BytesIO
 import tempfile
 from utils import parse_and_validate_test_json
 from fastapi import Request
+from google_auth import router as google_auth_router
 
 
 def markdown_to_pdf(markdown_text, filename="test.pdf"):
@@ -125,11 +126,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(google_auth_router)
 
 @app.get("/")
 def read_root():

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout/Layout';
@@ -9,6 +9,7 @@ import MyDocuments from './pages/MyDocuments/MyDocuments';
 import MyTests from './pages/MyTests/MyTests';
 import Profile from './pages/Profile/Profile';
 import Chat from './pages/Chat/Chat'
+import AuthCallback from './pages/AuthCallback/AuthCallback';
 import PropTypes from 'prop-types';
 import './App.css';
 
@@ -36,6 +37,7 @@ function App() {
                 <div className="App">
                     <Routes>
                         <Route path="/login" element={<Login />} />
+                        <Route path="/auth/callback" element={<AuthCallback />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/" element={
                             <ProtectedRoute>

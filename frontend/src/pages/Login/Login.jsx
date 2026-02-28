@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Login.css';
@@ -40,6 +40,26 @@ const Login = () => {
         } catch {
             setError('Ошибка входа. Проверьте email и пароль.');
         } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        setError('');
+        setLoading(true);
+        try {
+            const response = await fetch('http://localhost:8000/auth/google/login');
+            if (!response.ok) {
+                throw new Error('Не удалось получить ссылку для входа через Google');
+            }
+            const data = await response.json();
+            if (!data.auth_url) {
+                throw new Error('Некорректный ответ сервера авторизации');
+            }
+            window.location.href = data.auth_url;
+        } catch (err) {
+            console.error('Ошибка входа через Google:', err);
+            setError(err.message || 'Ошибка входа через Google');
             setLoading(false);
         }
     };
@@ -87,6 +107,15 @@ const Login = () => {
                         className="btn btn-primary login-btn"
                     >
                         {loading ? 'Вход...' : 'Войти'}
+                    </button>
+
+                    <button
+                        type="button"
+                        disabled={loading}
+                        className="btn btn-secondary login-btn google-btn"
+                        onClick={handleGoogleLogin}
+                    >
+                        {loading ? 'Переход к Google...' : 'Войти через Google'}
                     </button>
                 </form>
 

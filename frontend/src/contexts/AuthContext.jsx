@@ -14,13 +14,11 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
-    const [authLoading, setAuthLoading] = useState(true); // Переименовали loading в authLoading
+    const [authLoading, setAuthLoading] = useState(true);
 
     useEffect(() => {
-        // Проверка токена при загрузке
         const token = localStorage.getItem('token');
         if (token) {
-            // Здесь можно добавить проверку токена на бэкенде
             setIsAuthenticated(true);
             const userData = localStorage.getItem('user');
             if (userData) {
@@ -31,7 +29,6 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const register = (userData) => {
-        // Заглушка для регистрации
         localStorage.setItem('token', 'fake-token');
         localStorage.setItem('user', JSON.stringify(userData));
         setIsAuthenticated(true);
@@ -39,11 +36,42 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = (userData) => {
-        // Заглушка для входа
         localStorage.setItem('token', 'fake-token');
         localStorage.setItem('user', JSON.stringify(userData));
         setIsAuthenticated(true);
         setUser(userData);
+    };
+
+    const loginWithToken = (token) => {
+        try {
+            localStorage.setItem('token', token);
+
+            const payloadPart = token.split('.')[1];
+            let parsedUser = null;
+            if (payloadPart) {
+                const decoded = JSON.parse(
+                    atob(payloadPart.replace(/-/g, '+').replace(/_/g, '/'))
+                );
+                parsedUser = {
+                    id: decoded.sub,
+                    email: decoded.email,
+                    name: decoded.name,
+                    picture: decoded.picture,
+                };
+                localStorage.setItem('user', JSON.stringify(parsedUser));
+            }
+
+            setIsAuthenticated(true);
+            setUser(parsedUser);
+        } catch (e) {
+            console.error('?????? ??????? JWT ??????:', e);
+            // ? ?????? ?????? ??? ????? ??????? ???????????? ????????????????
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setIsAuthenticated(false);
+            setUser(null);
+            throw e;
+        }
     };
 
     const logout = () => {
@@ -56,10 +84,11 @@ export const AuthProvider = ({ children }) => {
     const value = {
         isAuthenticated,
         user,
-        loading: authLoading, // Используем переименованную переменную
+        loading: authLoading,
         register,
         login,
-        logout
+        logout,
+        loginWithToken,
     };
 
     return (
