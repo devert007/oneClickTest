@@ -166,7 +166,7 @@ def show_generate_page():
             return
 
         # Используем правильное имя модели из доступных вариантов
-        model_name = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"  # Основная русская модель
+        model_name = "bambucha/saiga-llama3:8b"  # Основная русская модель
 
         # Adjust question count for AI generation
         ai_question_count = question_count

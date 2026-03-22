@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { documentAPI, testGenerationAPI, testPDFAPI } from "../../services/api";
 import { googleFormAPI } from "../../services/googleFormAPI";
 import "./CreateTest.css";
@@ -46,8 +46,7 @@ const CreateTest = () => {
 		difficulty: "Для средних классов",
 		questionType: "multiple_choice",
 		includeAnswers: true,
-		model: "lakomoor/vikhr-llama-3.2-1b-instruct:1b",
-		// XML fields removed
+		model: "openai/gpt-oss-120b",
 	});
 	const [generatedTest, setGeneratedTest] = useState(null);
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -75,7 +74,8 @@ const CreateTest = () => {
 	];
 
 	const models = [
-		{ value: "lakomoor/vikhr-llama-3.2-1b-instruct:1b", label: "🦙 Llama 3.2" },
+		{ value: "openai/gpt-oss-120b", label: "⚡ GPT-OSS 120B (Groq)" },
+		{ value: "bambucha/saiga-llama3:8b", label: "🦙 Llama 3 8B (Локальная)" },
 	];
 
 	useEffect(() => {

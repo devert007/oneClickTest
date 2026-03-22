@@ -1,13 +1,12 @@
-﻿from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from enum import Enum
 from datetime import datetime
 from typing import Optional
 from typing import List, Optional
 
 class ModelName(str, Enum):
-    GPT4_O = "gpt-4o"
-    GPT4_O_MINI = "gpt-4o-mini"
-    VIKHR = "lakomoor/vikhr-llama-3.2-1b-instruct:1b"
+    GROQ_GPT_OSS = "openai/gpt-oss-120b"
+    VIKHR = "bambucha/saiga-llama3:8b"
 
 class DifficultyLevel(str, Enum):
     EASY = "Для средних классов"
@@ -20,7 +19,7 @@ class QuestionType(str, Enum):
 class QueryInput(BaseModel):
     question: str
     session_id: str = Field(default=None)
-    model: ModelName = Field(default=ModelName.VIKHR)
+    model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
 
 class QueryResponse(BaseModel):
     answer: str
@@ -49,7 +48,7 @@ class TestGenerationRequest(BaseModel):
     question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
     include_answers: bool = Field(default=True)
     session_id: Optional[str] = Field(default=None)
-    model: ModelName = Field(default=ModelName.VIKHR)
+    model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
     # XML fields removed — XML support deprecated
 
 class TestGenerationResponse(BaseModel):

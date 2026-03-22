@@ -22501,3 +22501,505 @@ INFO:root:Извлеченный JSON (первые 300 символов): {
       "question": "Что означает 'язык разметки'?",
       "choices": ["Язык программирования", "Язык в
 INFO:root:✅ JSON валиден: 5 вопросов успешно распарсено
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=True&expand=False HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 None
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:groq._base_client:Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-f58fe6d3-22db-4c83-a925-97c484b3436c', 'json_data': {'messages': [{'role': 'user', 'content': 'Привет'}], 'model': 'openai/gpt-oss-120b', 'max_tokens': 4096, 'n': 1, 'reasoning_effort': None, 'reasoning_format': None, 'service_tier': 'on_demand', 'stop': None, 'stream': False, 'temperature': 0.2}}
+DEBUG:groq._base_client:Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+DEBUG:httpcore.connection:connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=None socket_options=None
+DEBUG:httpcore.connection:connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7be3fab83970>
+DEBUG:httpcore.connection:start_tls.started ssl_context=<ssl.SSLContext object at 0x7be3fa9f1f40> server_hostname='api.groq.com' timeout=None
+DEBUG:httpcore.connection:start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7be3fab837c0>
+DEBUG:httpcore.http11:send_request_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_headers.complete
+DEBUG:httpcore.http11:send_request_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_body.complete
+DEBUG:httpcore.http11:receive_response_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 22 Mar 2026 15:51:41 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'999'), (b'x-ratelimit-remaining-tokens', b'7926'), (b'x-ratelimit-reset-requests', b'1m26.4s'), (b'x-ratelimit-reset-tokens', b'554ms'), (b'x-request-id', b'req_01kmb3xd9afjfay1z8vznnp85y'), (b'set-cookie', b'__cf_bm=ydwAyP0TBLQHlN88YI2TOs8u.rhJ2zmnWBJFUfUb9xE-1774194701.5920334-1.0.1.1-Wh7o09QY2hZnmMV0rrmznWxpZbC0Gc9P.gJphs0UH.RXMukvPDIsCNzCbccG6bc8bzvx.B.82yapray4pz52MexZ3LFtJl7mUswgTo6WQJCWwE3yYMMfD04Bb8XkQx.f; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:21:41 GMT'), (b'via', b'1.1 google'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'cf-cache-status', b'DYNAMIC'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9e065bf4fee5b627-WAW'), (b'alt-svc', b'h3=":443"; ma=86400')])
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+DEBUG:httpcore.http11:receive_response_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_body.complete
+DEBUG:httpcore.http11:response_closed.started
+DEBUG:httpcore.http11:response_closed.complete
+DEBUG:groq._base_client:HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 22 Mar 2026 15:51:41 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '999', 'x-ratelimit-remaining-tokens': '7926', 'x-ratelimit-reset-requests': '1m26.4s', 'x-ratelimit-reset-tokens': '554ms', 'x-request-id': 'req_01kmb3xd9afjfay1z8vznnp85y', 'set-cookie': '__cf_bm=ydwAyP0TBLQHlN88YI2TOs8u.rhJ2zmnWBJFUfUb9xE-1774194701.5920334-1.0.1.1-Wh7o09QY2hZnmMV0rrmznWxpZbC0Gc9P.gJphs0UH.RXMukvPDIsCNzCbccG6bc8bzvx.B.82yapray4pz52MexZ3LFtJl7mUswgTo6WQJCWwE3yYMMfD04Bb8XkQx.f; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:21:41 GMT', 'via': '1.1 google', 'strict-transport-security': 'max-age=15552000', 'cf-cache-status': 'DYNAMIC', 'content-encoding': 'gzip', 'cf-ray': '9e065bf4fee5b627-WAW', 'alt-svc': 'h3=":443"; ma=86400'})
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:132]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[134:146]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[148:219]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[223:32182]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:65536]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:31106]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=True&expand=False HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 None
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:groq._base_client:Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-9672cedd-9f2c-4318-8042-6d8babb7135e', 'json_data': {'messages': [{'role': 'user', 'content': 'Привет'}], 'model': 'openai/gpt-oss-120b', 'max_tokens': 4096, 'n': 1, 'reasoning_effort': None, 'reasoning_format': None, 'service_tier': 'on_demand', 'stop': None, 'stream': False, 'temperature': 0.2}}
+DEBUG:groq._base_client:Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+DEBUG:httpcore.connection:connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=None socket_options=None
+DEBUG:httpcore.connection:connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7e8aab0b54b0>
+DEBUG:httpcore.connection:start_tls.started ssl_context=<ssl.SSLContext object at 0x7e8aaaeeda40> server_hostname='api.groq.com' timeout=None
+DEBUG:httpcore.connection:start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7e8aab0b5300>
+DEBUG:httpcore.http11:send_request_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_headers.complete
+DEBUG:httpcore.http11:send_request_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_body.complete
+DEBUG:httpcore.http11:receive_response_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 22 Mar 2026 16:04:01 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'999'), (b'x-ratelimit-remaining-tokens', b'7926'), (b'x-ratelimit-reset-requests', b'1m26.4s'), (b'x-ratelimit-reset-tokens', b'554ms'), (b'x-request-id', b'req_01kmb4kzybem1sq8bw77hfyvfr'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'set-cookie', b'__cf_bm=dR4iZizMWEmPXlLiW0ynIxiLd52ALKTsHeqMVUqWz1s-1774195441.5980322-1.0.1.1-8mqRrwMfe8OOR1fEJiR04WBohjkMKASg_.aheF3_hn1ikkFT5PDT5WQ3VCXWjOPHpvQ9aRGvnM2RYjaaR3h.m29Sa.zxv1id_NMjVENA0gcCSRlMD_KZGtDrabQLjQqf; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:34:01 GMT'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9e066e05f8bd7fba-WAW'), (b'alt-svc', b'h3=":443"; ma=86400')])
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+DEBUG:httpcore.http11:receive_response_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_body.complete
+DEBUG:httpcore.http11:response_closed.started
+DEBUG:httpcore.http11:response_closed.complete
+DEBUG:groq._base_client:HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 22 Mar 2026 16:04:01 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '999', 'x-ratelimit-remaining-tokens': '7926', 'x-ratelimit-reset-requests': '1m26.4s', 'x-ratelimit-reset-tokens': '554ms', 'x-request-id': 'req_01kmb4kzybem1sq8bw77hfyvfr', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=dR4iZizMWEmPXlLiW0ynIxiLd52ALKTsHeqMVUqWz1s-1774195441.5980322-1.0.1.1-8mqRrwMfe8OOR1fEJiR04WBohjkMKASg_.aheF3_hn1ikkFT5PDT5WQ3VCXWjOPHpvQ9aRGvnM2RYjaaR3h.m29Sa.zxv1id_NMjVENA0gcCSRlMD_KZGtDrabQLjQqf; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:34:01 GMT', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9e066e05f8bd7fba-WAW', 'alt-svc': 'h3=":443"; ma=86400'})
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:132]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[134:146]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[148:219]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[223:32182]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:65536]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:31106]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:132]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[134:146]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[148:219]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[223:97718]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:65536]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:113922]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device_name: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config_sentence_transformers.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/README.md HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/modules.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/sentence_bert_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/tokenizer_config.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=True&expand=False HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/c9745ed1d9f207416be6d2e6f8de32d1f16199bf/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/sentence-transformers/all-MiniLM-L6-v2 HTTP/1.1" 200 None
+DEBUG:chromadb.config:Starting component System
+DEBUG:chromadb.config:Starting component Posthog
+DEBUG:groq._base_client:Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-c8b109d1-436e-4819-bf40-73ecf7d10fad', 'json_data': {'messages': [{'role': 'user', 'content': 'Привет'}], 'model': 'openai/gpt-oss-120b', 'max_tokens': 4096, 'n': 1, 'reasoning_effort': None, 'reasoning_format': None, 'service_tier': 'on_demand', 'stop': None, 'stream': False, 'temperature': 0.2}}
+DEBUG:groq._base_client:Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+DEBUG:httpcore.connection:connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=None socket_options=None
+DEBUG:httpcore.connection:connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x780e751bb9d0>
+DEBUG:httpcore.connection:start_tls.started ssl_context=<ssl.SSLContext object at 0x780e74ff5ec0> server_hostname='api.groq.com' timeout=None
+DEBUG:httpcore.connection:start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x780e751bb820>
+DEBUG:httpcore.http11:send_request_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_headers.complete
+DEBUG:httpcore.http11:send_request_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_body.complete
+DEBUG:httpcore.http11:receive_response_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 22 Mar 2026 16:07:21 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'999'), (b'x-ratelimit-remaining-tokens', b'7926'), (b'x-ratelimit-reset-requests', b'1m26.4s'), (b'x-ratelimit-reset-tokens', b'554ms'), (b'x-request-id', b'req_01kmb4t2mdf64t8q45x073t7q0'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'set-cookie', b'__cf_bm=k4YDuBtwssMoQYz3hKLu95n1t_mbr5wzLfnDm4jsVR4-1774195640.959639-1.0.1.1-GkZvUgOQJrUTrra2prxKlLHFhFS8mR8Zo2sgOuP4ywZDoywWe2elPnT0XKI.yFoi1I9BDzc2loX6bsgxUnkA_bTKHAH_EbCMExRI.188gE.oTyNEo8fW1U5W_qAHb.y6; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:37:21 GMT'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9e0672e3fb87d614-WAW'), (b'alt-svc', b'h3=":443"; ma=86400')])
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+DEBUG:httpcore.http11:receive_response_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_body.complete
+DEBUG:httpcore.http11:response_closed.started
+DEBUG:httpcore.http11:response_closed.complete
+DEBUG:groq._base_client:HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 22 Mar 2026 16:07:21 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '999', 'x-ratelimit-remaining-tokens': '7926', 'x-ratelimit-reset-requests': '1m26.4s', 'x-ratelimit-reset-tokens': '554ms', 'x-request-id': 'req_01kmb4t2mdf64t8q45x073t7q0', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=k4YDuBtwssMoQYz3hKLu95n1t_mbr5wzLfnDm4jsVR4-1774195640.959639-1.0.1.1-GkZvUgOQJrUTrra2prxKlLHFhFS8mR8Zo2sgOuP4ywZDoywWe2elPnT0XKI.yFoi1I9BDzc2loX6bsgxUnkA_bTKHAH_EbCMExRI.188gE.oTyNEo8fW1U5W_qAHb.y6; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:37:21 GMT', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9e0672e3fb87d614-WAW', 'alt-svc': 'h3=":443"; ma=86400'})
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:132]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[134:146]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[148:219]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[223:97718]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:85122]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:132]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[134:146]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[148:219]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[223:32203]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:244973]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:root:File mrzvis__1_ (5).docx saved, size: 788953 bytes
+INFO:docling.datamodel.document:detected formats: [<InputFormat.DOCX: 'docx'>]
+INFO:docling.document_converter:Going to convert document batch...
+INFO:docling.document_converter:Initializing pipeline for SimplePipeline with options hash 2d9476a27fcaef36a7b7dc80210d99aa
+INFO:docling.models.factories.base_factory:Loading plugin 'docling_defaults'
+INFO:docling.models.factories:Registered picture descriptions: ['picture_description_vlm_engine', 'vlm', 'api']
+INFO:docling.pipeline.base_pipeline:Processing document temp_68c5fd3f-e315-4517-81e8-ca4d274e62a6_mrzvis__1_ (5).docx
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 7097
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 14412
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 7097
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 23141
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 11946
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 8290
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 81469
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 102261
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 66658
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 64293
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 117741
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 77798
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 41 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 62 76965
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 6218
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 3026
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 19591
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 30578
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 25288
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 16030
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'sRGB' 41 1
+DEBUG:PIL.PngImagePlugin:STREAM b'gAMA' 54 4
+DEBUG:PIL.PngImagePlugin:STREAM b'pHYs' 70 9
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 91 29290
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.docx.latex.omml:Missing fPr element in fraction, using default formatting
+DEBUG:docling.backend.msword_backend:Ignoring element in DOCX with tag: sectPr
+INFO:docling.document_converter:Finished converting document temp_68c5fd3f-e315-4517-81e8-ca4d274e62a6_mrzvis__1_ (5).docx in 0.49 sec.
+ERROR:root:Error indexing document with file_id 19: 'ConversionResult' object has no attribute 'documents'
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:138]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[140:152]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[154:169]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[173:32181]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:65536]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:94336]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:22193]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[57:76]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[78:138]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[140:152]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[154:169]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[173:32202]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:256000]
+DEBUG:python_multipart.multipart:Calling on_part_data with data[0:155804]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+INFO:root:File Мрзис 2 тест.pdf saved, size: 3515833 bytes
+INFO:docling.datamodel.document:detected formats: [<InputFormat.PDF: 'pdf'>]
+INFO:docling.document_converter:Going to convert document batch...
+INFO:docling.document_converter:Initializing pipeline for StandardPdfPipeline with options hash da8ee54367e24a411bb95591847bb457
+INFO:docling.models.factories.base_factory:Loading plugin 'docling_defaults'
+INFO:docling.models.factories:Registered ocr engines: ['auto', 'easyocr', 'ocrmac', 'rapidocr', 'tesserocr', 'tesseract']
+INFO:docling.utils.accelerator_utils:Accelerator device: 'cpu'
+INFO:docling.models.stages.ocr.auto_ocr_model:Auto OCR model selected rapidocr with onnxruntime.
+INFO:docling.models.factories.base_factory:Loading plugin 'docling_defaults'
+INFO:docling.models.factories:Registered layout engines: ['layout_object_detection', 'docling_layout_default', 'docling_experimental_table_crops_layout']
+INFO:docling.utils.accelerator_utils:Accelerator device: 'cpu'
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/docling-project/docling-layout-heron/revision/main HTTP/1.1" 200 982
+DEBUG:docling_ibm_models.layoutmodel.layout_predictor:LayoutPredictor settings: {'model_name': 'RTDetrV2ForObjectDetection', 'safe_tensors_file': '/home/devert007/.cache/huggingface/hub/models--docling-project--docling-layout-heron/snapshots/8f39ad3c0b4c58e9c2d2c84a38465abf757272d8/model.safetensors', 'device': 'cpu', 'num_threads': 4, 'image_size': {'height': 640, 'width': 640}, 'threshold': 0.3}
+INFO:docling.models.factories.base_factory:Loading plugin 'docling_defaults'
+INFO:docling.models.factories:Registered table structure engines: ['docling_tableformer']
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/docling-project/docling-models/revision/v2.3.0 HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): huggingface.co:443
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /docling-project/docling-models/resolve/fc0f2d45e2218ea24bce5045f58a389aed16dc23/model_artifacts/tableformer/fast/tableformer_fast.safetensors HTTP/1.1" 302 0
+DEBUG:filelock:Attempting to acquire lock 132002196146640 on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/3119563aab5a7c96fda4d621119b63fd8806272b86c30936d15507616422f718.lock
+DEBUG:filelock:Lock 132002196146640 acquired on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/3119563aab5a7c96fda4d621119b63fd8806272b86c30936d15507616422f718.lock
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "HEAD /docling-project/docling-models/resolve/fc0f2d45e2218ea24bce5045f58a389aed16dc23/model_artifacts/tableformer/accurate/tableformer_accurate.safetensors HTTP/1.1" 302 0
+DEBUG:filelock:Attempting to acquire lock 132002196147264 on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9.lock
+DEBUG:filelock:Lock 132002196147264 acquired on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9.lock
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/docling-project/docling-models/xet-read-token/fc0f2d45e2218ea24bce5045f58a389aed16dc23 HTTP/1.1" 200 365
+DEBUG:urllib3.connectionpool:https://huggingface.co:443 "GET /api/models/docling-project/docling-models/xet-read-token/fc0f2d45e2218ea24bce5045f58a389aed16dc23 HTTP/1.1" 200 365
+ERROR:root:Error generating test: 500: 404: Document not found
+INFO:root:Groq LLM создан: openai/gpt-oss-120b
+DEBUG:groq._base_client:Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-2dc36eb3-efce-4f47-bcbe-3bb55623ff3b', 'json_data': {'messages': [{'role': 'system', 'content': 'Ты профессиональный генератор тестов. Создавай вопросы строго на основе предоставленного контекста.\n\nКонтекст:\nМаркетинг программных продуктов и услуг\n\nПЗ 1. \n\nПрактические задания выполняются командами по 2-3 студента. Каждая из команд представляет собой «стартап» в ИТ-сфере, планирующий вывести на рынок новый программный продукт и/или услугу.\n\nПостановка задачи: подготовить понятную и убедительную концепцию программного продукта для потенциального инвестора. \n\nРазработать модель Canvas/ Canvas Lean\n\nЭтапы работы:\xa0\n\n1. Краткое описание программного продукта/услуги (конкретные выполняемые функции/работы программного продукта или ИТ-услуги).\n\n2. Описание потенциальной целевой аудитории (регион проживания, пол, возраст, сфера деятельности, образ жизни и т. п.).\n\n3.\xa0Описание потребностей, которые будут удовлетворяться новым программным продуктом/услугой.\n\n4. Перечень существующих на рынке аналогов-конкурентов (с указанием их функций, стоимости, достоинств и недостатков).\n\n3. Построение карты позиционирования нового продукта на фоне уже представленных на рынке аналогов.\n\n4. Принятие решения о модели монетизации и ценовой стратегии программного продукта.\n\nРезультат: понимание ожидаемого места продукта на рынке, особенностей его позиционирования и планируемых путей монетизации.\n\n\n\nПЗ 4. \n\nПостановка задачи: подготовить бизнес-требования к программному продукту, определить его границы и осуществить предварительное планирование этапов разработки.\n\nЭтапы работы:\n\n1. Определение бизнес-требований:\n\n- исходные данные;\n\n- бизнес-возможности;\n\n- бизнес-цели;\n\n- потребности и цели пользователя;\n\n- критерии успеха;\n\n- бизнес-риски;\n\n- положение об образе продукта;\n\n- бизнес-предположения и зависимости.\n\n2. Определение объема и границ:\n\n- ключевые функции;\n\n- объем первого выпуска;\n\n- объем второго выпуска;\n\n- ограничения и исключения.\n\n3. Определение бизнес-контекста:\n\n- профили заинтересованных лиц;'}, {'role': 'user', 'content': 'Сгенерируй тест по тексту. Следуй формату примера.\n\nТЕКСТ:\nМаркетинг программных продуктов и услуг\n\nПЗ 1. \n\nПрактические задания выполняются командами по 2-3 студента. Каждая из команд представляет собой «стартап» в ИТ-сфере, планирующий вывести на рынок новый программный продукт и/или услугу.\n\nПостановка задачи: подготовить понятную и убедительную концепцию программного продукта для потенциального инвестора. \n\nРазработать модель Canvas/ Canvas Lean\n\nЭтапы работы:\xa0\n\n1. Краткое описание программного продукта/услуги (конкретные выполняемые функции/работы программного продукта или ИТ-услуги).\n\n2. Описание потенциальной целевой аудитории (регион проживания, пол, возраст, сфера деятельности, образ жизни и т. п.).\n\n3.\xa0Описание потребностей, которые будут удовлетворяться новым программным продуктом/услугой.\n\n4. Перечень существующих на рынке аналогов-конкурентов (с указанием их функций, стоимости, достоинств и недостатков).\n\n4. Перечень существующих на рынке аналогов-конкурентов (с указанием их функций, стоимости, достоинств и недостатков).\xa0\n\n5. Описание предполагаемых конкурентных преимуществ продукта/услуги (чем конкретно он выделяется на фоне описанных в п. 4 конкурентов).\n\nРезультат: готовая концепция программного продукта.\n\n\n\nПЗ 2. \n\nПостановка задачи: рассмотреть различные подходы к классификации бизнес-моделей и найти не менее десяти примеров белорусских ИТ-компаний, работающих по этим моделям.\n\nРезультат: сравнительный анализ бизнес-моделей.\n\n\n\nПЗ 3. \n\nПостановка задачи: провести необходимые исследования и принять решение о модели монетизации программного продукта.\n\nЭтапы работы:\xa0\n\n1. Определение сегментов, которые будут являться целевыми для программного продукта.\n\n2. Анализ конкурентов, представленных в этих сегментах (включая построение карт сравнения: список основных конкурентов, критерии для сравнения, позиции вашего программного продукта по сравнению с конкурирующими продуктами).\n\n3. Построение карты позиционирования нового продукта на фоне уже представленных на рынке аналогов.\n\n4. Принятие решения о модели монетизации и ценовой стратегии программного продукта.\n\nРезультат: понимание ожидаемого места продукта на рынке, особенностей его позиционирования и планируемых путей монетизации.\n\n\n\nПЗ 4. \n\nПостановка задачи: подготовить бизнес-требования к программному продукту, определить его границы и осуществить предварительное планирование этапов разработки.\n\nЭтапы работы:\n\n1. Определение бизнес-требований:\n\n- исходные данные;\n\n- бизнес-возможности;\n\n- бизнес-цели;\n\n- потребности и цели пользователя;\n\n- критерии успеха;\n\n- бизнес-риски;\n\n- положение об образе продукта;\n\n- бизнес-предположения и зависимости.\n\n2. Определение объема и границ:\n\n- ключевые функции;\n\n- объем первого выпуска;\n\n- объем второго выпуска;\n\n- ограничения и исключения.\n\n3. Определение бизнес-контекста:\n\n- профили заинтересованных лиц;\n\n- ключевые функции;\n\n- объем первого выпуска;\n\n- объем второго выпуска;\n\n- ограничения и исключения.\n\n3. Определение бизнес-контекста:\n\n- профили заинтересованных лиц;\n\n- детали поставки: доступ пользователей, аппаратное и программное обеспечение.\n\nРезультат: документ, определяющий границы и образ продукта.\n\n\n\nПЗ 5. \n\nПостановка задачи: определить цену программного продукта или ИТ-услуги на основе использования концепции справедливой цены.\n\nЭтапы работы:\xa0\n\n1. Определение драйверов экономической ценности продукта.\n\n2. Построение карты ценности продукта.\n\n3. Выбор и обоснование справедливой цены на продукт.\n\nРезультат: построенная в MsExcel карта ценности продукта и выбранный уровень справедливой цены.\n\nПЗ 6. \n\nПостановка задачи: подобрать и обосновать выбор оптимального канала распределения программного продукта.\n\nЭтапы работы:\xa0\n\n1. Составление списка возможных каналов распределения.\n\n2. Определение преимуществ и недостатков каждого из каналов.\n\n3. Выбор оптимального канала.\n\nЭтапы работы:\xa0\n\n1. Составление списка возможных каналов распределения.\n\n2. Определение преимуществ и недостатков каждого из каналов.\n\n3. Выбор оптимального канала.\n\nРезультат: оптимальный канал (несколько каналов) распределения программного продукта.\n\n\n\nПЗ 7. \n\nПостановка задачи: определить цели, содержание и способы «доставки» истории программного продукта.\n\nЭтапы работы:\xa0\n\n1. Определение цели написания истории.\n\n2. Выбор действующих лиц.\n\n3. Выбор сюжета.\n\n4. Подбор декораций.\n\n5. Создание готовой истории или нескольких историй.\n\n6. Выбор оптимальных медиа-каналов для донесения созданной истории.\n\nРезультат: готовая история программного продукта.\n\n\n\nПЗ 8. \n\nПостановка задачи: разработать план маркетинговой деятельности по выводу нового программного продукта или ИТ-услуги на рынок в понятной и убедительной для потенциального инвестора форме.\n\nЭтапы работы:\xa0\n\n1. Разработка плана маркетинговой деятельности по выводу программного продукта на рынок.\n\nЭтапы работы:\xa0\n\n1. Разработка плана маркетинговой деятельности по выводу программного продукта на рынок.\n\n2. Оценка объема человеческих ресурсов, требуемых для его выполнения.\n\n3. Оценка бюджета, требуемого для его выполнения.\n\nРезультат: план маркетинговой деятельности по выводу программного продукта на рынок.\n\n\n\nПЗ 8. \n\nПостановка задачи: осуществить экономическое обоснование командного проекта, по которому выполнялись все предыдущие задания.\xa0\n\nЭтапы работы:\xa0\n\n1. Оценка затрат на разработку.\n\n2. Оценка экономического эффекта.\n\n3. Расчет показателей экономической эффективности.\n\n4. Общий вывод об экономической целесообразности проекта.\xa0\n\nРезультат: экономическое обоснование программного продукта.\n\nФорма представления результата: пошагово в форме мультимедийной презентации в учебной аудитории, как ответы на поставленные выше вопросы с итоговой рекомендацией инвестору.\n\nТребуется: 5 вопросов. Сложность: Для средних классов. Ответы: да.\n\nПример (на основе абзаца "Python — язык программирования. Создан в 1991 году."):\n{"questions": [\n  {"question": "В каком году создан Python?", "choices": ["1989", "1991", "1995", "2000"], "answer": "1991"},\n  {"question": "Python — это:", "choices": ["язык разметки", "язык программирования", "операционная система"], "answer": "язык программирования"}\n]}\n\n\nТвой JSON (только JSON):'}], 'model': 'openai/gpt-oss-120b', 'max_tokens': 4096, 'n': 1, 'reasoning_effort': None, 'reasoning_format': None, 'service_tier': 'on_demand', 'stop': None, 'stream': False, 'temperature': 0.2}}
+DEBUG:groq._base_client:Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+DEBUG:httpcore.connection:connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=None socket_options=None
+DEBUG:httpcore.connection:connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x780e28089720>
+DEBUG:httpcore.connection:start_tls.started ssl_context=<ssl.SSLContext object at 0x780e28067c40> server_hostname='api.groq.com' timeout=None
+DEBUG:httpcore.connection:start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x780e2802dc30>
+DEBUG:httpcore.http11:send_request_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_headers.complete
+DEBUG:httpcore.http11:send_request_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:send_request_body.complete
+DEBUG:httpcore.http11:receive_response_headers.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 22 Mar 2026 16:08:46 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'998'), (b'x-ratelimit-remaining-tokens', b'5903'), (b'x-ratelimit-reset-requests', b'2m52.8s'), (b'x-ratelimit-reset-tokens', b'15.727s'), (b'x-request-id', b'req_01kmb4wmd7eh19ct80ftjhz2y3'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'set-cookie', b'__cf_bm=SfYfAPz45zg5r6HtHxtpynYaAOCBxrCDYEzrfez2XDs-1774195724.5820265-1.0.1.1-Ygyg7pVXSjEatL3Sll8uSQ6utVqEHK1pAfq3N6Ssolnb_SUvfqtyetCSoW65C43_xja1wj0zY7yshNvGkAcJ95XwhEWLLRIbbIQNaKjrWqLo3fU0aIzwLspp6qe1KOUw; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:38:46 GMT'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9e0674eea9a3aef1-WAW'), (b'alt-svc', b'h3=":443"; ma=86400')])
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+DEBUG:httpcore.http11:receive_response_body.started request=<Request [b'POST']>
+DEBUG:httpcore.http11:receive_response_body.complete
+DEBUG:httpcore.http11:response_closed.started
+DEBUG:httpcore.http11:response_closed.complete
+DEBUG:groq._base_client:HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 22 Mar 2026 16:08:46 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '998', 'x-ratelimit-remaining-tokens': '5903', 'x-ratelimit-reset-requests': '2m52.8s', 'x-ratelimit-reset-tokens': '15.727s', 'x-request-id': 'req_01kmb4wmd7eh19ct80ftjhz2y3', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=SfYfAPz45zg5r6HtHxtpynYaAOCBxrCDYEzrfez2XDs-1774195724.5820265-1.0.1.1-Ygyg7pVXSjEatL3Sll8uSQ6utVqEHK1pAfq3N6Ssolnb_SUvfqtyetCSoW65C43_xja1wj0zY7yshNvGkAcJ95XwhEWLLRIbbIQNaKjrWqLo3fU0aIzwLspp6qe1KOUw; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 22 Mar 2026 16:38:46 GMT', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9e0674eea9a3aef1-WAW', 'alt-svc': 'h3=":443"; ma=86400'})
+INFO:root:Начало ответа до парсинга: {
+  "questions": [
+    {
+      "question": "В ПЗ 1 необходимо подготовить концепцию программного про
+INFO:root:Конец ответа до парсинга:  виде мультимедийной презентации?",
+      "choices": ["да", "нет"],
+      "answer": "да"
+    }
+  ]
+}
+INFO:root:Извлеченный JSON (первые 300 символов): {
+  "questions": [
+    {
+      "question": "В ПЗ 1 необходимо подготовить концепцию программного продукта для потенциального инвестора?",
+      "choices": ["да", "нет"],
+      "answer": "да"
+    },
+    {
+      "question": "В ПЗ 3 требуется построить карту позиционирования продукта относительно конку
+INFO:root:✅ JSON валиден: 5 вопросов успешно распарсено
+INFO:root:Proxying request to Google Script: https://script.google.com/macros/s/AKfycbxFxkVPUicjMeHT-Qn2lIuSd-S9he7esbPoOOBj8-pK0biy7VgLQ-N8bLlLJI6xjKVt/exec
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): script.google.com:443
+DEBUG:filelock:Attempting to release lock 132002196146640 on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/3119563aab5a7c96fda4d621119b63fd8806272b86c30936d15507616422f718.lock
+DEBUG:filelock:Lock 132002196146640 released on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/3119563aab5a7c96fda4d621119b63fd8806272b86c30936d15507616422f718.lock
+DEBUG:urllib3.connectionpool:https://script.google.com:443 "POST /macros/s/AKfycbxFxkVPUicjMeHT-Qn2lIuSd-S9he7esbPoOOBj8-pK0biy7VgLQ-N8bLlLJI6xjKVt/exec HTTP/1.1" 302 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): script.googleusercontent.com:443
+DEBUG:urllib3.connectionpool:https://script.googleusercontent.com:443 "GET /macros/echo?user_content_key=AWDtjMWb2cijWT3dQkymLS399xKURr0xwbseyHqaDwpXufUs4qBa2jD9KW7t0CUHlms4cooeZNn-Mc_Wj5GyIQuzi-PJq0-Vm1AtnOkDift5z668nqtS09VMnbgQRXFHB_yZ0jW94YuM5mfd09swEtNjBLjlAKsI1n1gKh3OtbvvcmaLNXfse6LPxsZ_HW2-Zf5avgQ2C8xW4_MscLDmvqbhlyljXCvVAesip1twUX77vd6r8-LYgxgJYdlWW2FQa1T1eenIndBFNm5G9tF2szzaNB7Il-11-w&lib=MCmEKlFHoGQm3wKPciTN8DDIA2gQQzN3M HTTP/1.1" 200 None
+DEBUG:filelock:Attempting to release lock 132002196147264 on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9.lock
+DEBUG:filelock:Lock 132002196147264 released on /home/devert007/.cache/huggingface/hub/.locks/models--docling-project--docling-models/2a7d6c924b3cd12fb99a09280ca9c33a89c5d60b93253617d2e088c1a40374d9.lock
+INFO:docling.utils.accelerator_utils:Accelerator device: 'cpu'
+DEBUG:httpcore.connection:close.started
+DEBUG:httpcore.connection:close.complete
+INFO:docling.pipeline.base_pipeline:Processing document temp_3c0e3359-6c9e-4fac-baaa-1529234b1e92_Мрзис 2 тест.pdf
+DEBUG:pypdfium2._lazy:Evaluating lazy import 'PIL.Image' ...
+INFO:docling.document_converter:Finished converting document temp_3c0e3359-6c9e-4fac-baaa-1529234b1e92_Мрзис 2 тест.pdf in 112.23 sec.
+ERROR:root:Error indexing document with file_id 20: 'ConversionResult' object has no attribute 'documents'

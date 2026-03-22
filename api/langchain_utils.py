@@ -1,50 +1,98 @@
 # langchain_utils.py
-from langchain_community.chat_models import ChatOllama
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.chains import create_history_aware_retriever, create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from chroma_utils import vectorstore
+import os
 import logging
+from dotenv import load_dotenv
 
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain.schema import BaseChatMessageHistory
-from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.runnables import RunnablePassthrough
+from chroma_utils import vectorstore
+
 from typing import List, Dict, Any
 
+load_dotenv()
 
-class SimpleChatHistory(BaseChatMessageHistory):
-    """Простая реализация истории чата для агента"""
-    
-    def __init__(self):
-        self.messages = []
-    
-    def add_user_message(self, message: str) -> None:
-        self.messages.append(HumanMessage(content=message))
-    
-    def add_ai_message(self, message: str) -> None:
-        self.messages.append(AIMessage(content=message))
-    
-    def clear(self) -> None:
-        self.messages.clear()
-    
-    @property
-    def messages(self) -> List[Dict[str, Any]]:
-        return self._messages
-    
-    @messages.setter
-    def messages(self, value: List[Dict[str, Any]]) -> None:
-        self._messages = value
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+USE_LOCAL_MODEL = os.getenv("USE_LOCAL_MODEL", "false").lower() == "true"
 
-def get_chat_agent():
+# ---------------------------------------------------------------------------
+# LLM Factory — Groq (primary) + Ollama (fallback)
+# ---------------------------------------------------------------------------
+
+GROQ_MODELS = {
+    "openai/gpt-oss-120b": "GPT-OSS 120B (Groq)",
+}
+
+LOCAL_MODEL = "bambucha/saiga-llama3:8b"
+
+
+def create_groq_llm(model_name: str = "openai/gpt-oss-120b",
+                     temperature: float = 0.2,
+                     max_tokens: int = 4096):
+    """Создает LLM через Groq API (удаленная модель)."""
+    from langchain_groq import ChatGroq
+
+    if not GROQ_API_KEY:
+        raise ValueError("GROQ_API_KEY не задан в .env")
+
+    return ChatGroq(
+        model=model_name,
+        api_key=GROQ_API_KEY,
+        temperature=temperature,
+        max_tokens=max_tokens,
+    )
+
+
+def create_local_llm(temperature: float = 0.2,
+                      max_tokens: int = 4096):
+    """Создает LLM через локальный Ollama (fallback)."""
+    from langchain_community.chat_models import ChatOllama
+
+    return ChatOllama(
+        model=LOCAL_MODEL,
+        temperature=temperature,
+        num_predict=max_tokens,
+    )
+
+
+def create_llm(model_name: str = "openai/gpt-oss-120b",
+               temperature: float = 0.2,
+               max_tokens: int = 4096):
+    """
+    Фабрика LLM.
+    - USE_LOCAL_MODEL=true → всегда Ollama.
+    - Модель из GROQ_MODELS → Groq, при ошибке fallback на Ollama.
+    - Иначе → Ollama.
+    """
+    if USE_LOCAL_MODEL:
+        logging.info("USE_LOCAL_MODEL=true → локальная модель Ollama")
+        return create_local_llm(temperature, max_tokens)
+
+    if model_name == LOCAL_MODEL:
+        return create_local_llm(temperature, max_tokens)
+
+    if model_name in GROQ_MODELS:
+        try:
+            llm = create_groq_llm(model_name, temperature, max_tokens)
+            logging.info(f"Groq LLM создан: {model_name}")
+            return llm
+        except Exception as e:
+            logging.warning(f"Groq недоступен ({e}), переключение на Ollama")
+            return create_local_llm(temperature, max_tokens)
+
+    return create_local_llm(temperature, max_tokens)
+
+
+# ---------------------------------------------------------------------------
+# Chat Agent
+# ---------------------------------------------------------------------------
+
+def get_chat_agent(model_name: str = "openai/gpt-oss-120b"):
     """Создает чат-агента для обсуждения системы OneClickTest"""
     try:
-        llm = ChatOllama(
-            model="lakomoor/vikhr-llama-3.2-1b-instruct:1b",
-            temperature=0.3,
-            num_predict=1000
-        )
-        
-        # Системный промпт для агента поддержки
+        llm = create_llm(model_name, temperature=0.3, max_tokens=1000)
+
         system_prompt = """
         Ты - AI-ассистент системы OneClickTest. Ты помогаешь пользователям разобраться с функционалом платформы.
         
@@ -54,47 +102,37 @@ def get_chat_agent():
         - Загрузка учебных материалов (PDF, DOCX)
         - Автоматическая генерация тестов с помощью AI
         - Настройка параметров теста (сложность, тип вопросов, количество)
-        - Интеграция с базой задач XML
         - Экспорт тестов в различные форматы (PDF, Word, Markdown)
         - Управление документами и историей тестов
         
-        Твои задачи:
-        1. Отвечать на вопросы о функционале системы
-        2. Объяснять процесс работы с платформой
-        3. Помогать с настройками генерации тестов
-        4. Рассказывать о возможностях интеграции с XML базой задач
-        5. Объяснять форматы экспорта и их особенности
-        
-        Будь вежливым, полезным и конкретным в ответах. Если не знаешь ответа - предложи обратиться к документации или попробовать соответствующий раздел интерфейса.
+        Будь вежливым, полезным и конкретным в ответах.
         """
-        
+
         prompt = ChatPromptTemplate.from_messages([
             ("system", system_prompt),
             MessagesPlaceholder("chat_history"),
             ("human", "{input}")
         ])
-        
-        # Создаем цепочку для чата
+
         chat_chain = prompt | llm
-        
         return chat_chain
-        
+
     except Exception as e:
         logging.error(f"Ошибка создания чат-агента: {e}")
-        
+
         class FallbackChatAgent:
             def invoke(self, input_dict):
                 return AIMessage(content="Извините, чат-агент временно недоступен. Пожалуйста, попробуйте позже.")
-        
+
         return FallbackChatAgent()
-    
 
 
-
+# ---------------------------------------------------------------------------
+# RAG Chain (реализована через LCEL, без langchain.chains)
+# ---------------------------------------------------------------------------
 
 retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 
-# Русский системный промпт для Vikhr модели
 contextualize_q_system_prompt = (
     "Учитывая историю чата и последний вопрос пользователя, "
     "который может ссылаться на контекст в истории чата, "
@@ -109,62 +147,85 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages([
     ("human", "{input}"),
 ])
 
-def get_rag_chain(model_name):
-    """Создает RAG цепочку для Vikhr модели"""
+qa_prompt = ChatPromptTemplate.from_messages([
+    ("system",
+     "Ты профессиональный генератор тестов. "
+     "Создавай вопросы строго на основе предоставленного контекста.\n\n"
+     "Контекст:\n{context}"),
+    MessagesPlaceholder("chat_history"),
+    ("human", "{input}")
+])
+
+
+def get_rag_chain(model_name: str = "openai/gpt-oss-120b"):
+    """Создает RAG цепочку с указанной моделью (Groq или Ollama fallback)."""
     try:
-        print(f"🎯 Создание RAG цепи для модели: {model_name}")
-        
-        llm = ChatOllama(
-            model="lakomoor/vikhr-llama-3.2-1b-instruct:1b",
-            temperature=0.2,
-            num_predict=4096,
-        )
-        
-        print("✅ LLM инициализирован")
-        
-        qa_prompt = ChatPromptTemplate.from_messages([
-            ("system", "Ты профессиональный генератор тестов. Создавай вопросы строго на основе предоставленного контекста."),
-            ("system", "Контекст: {context}"),
-            MessagesPlaceholder("chat_history"),
-            ("human", "{input}")
-        ])
-        
-        print("✅ Промпт создан")
-        
-        # Проверим, что retriever работает
-        print(f"🔍 Проверка retriever...")
-        test_docs = retriever.get_relevant_documents("test")
-        print(f"✅ Retriever работает, найдено {len(test_docs)} документов")
-        
-        history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
-        print("✅ History aware retriever создан")
-        
-        question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
-        print("✅ Question answer chain создан")
-        
-        rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
-        print("✅ RAG цепь успешно создана")
-        
-        return rag_chain
-        
+        print(f"Создание RAG цепи для модели: {model_name}")
+
+        llm = create_llm(model_name, temperature=0.2, max_tokens=4096)
+        print(f"LLM инициализирован: {type(llm).__name__}")
+
+        contextualize_chain = contextualize_q_prompt | llm | StrOutputParser()
+        answer_chain = qa_prompt | llm | StrOutputParser()
+
+        class RAGChain:
+            """RAG цепочка: переформулирование → поиск → генерация ответа."""
+
+            def invoke(self, input_dict):
+                user_input = input_dict.get("input", "")
+                chat_history = input_dict.get("chat_history", [])
+
+                # Переформулируем вопрос с учетом истории
+                if chat_history:
+                    query = contextualize_chain.invoke({
+                        "input": user_input,
+                        "chat_history": chat_history
+                    })
+                else:
+                    query = user_input
+
+                # Получаем релевантные документы
+                docs = retriever.invoke(query)
+                context = "\n\n".join(d.page_content for d in docs)
+
+                # Генерируем ответ
+                answer = answer_chain.invoke({
+                    "context": context,
+                    "chat_history": chat_history,
+                    "input": user_input
+                })
+
+                return {"answer": answer}
+
+        print("RAG цепь успешно создана")
+        return RAGChain()
+
     except Exception as e:
-        print(f"❌ КРИТИЧЕСКАЯ ОШИБКА при создании RAG цепи: {e}")
+        print(f"КРИТИЧЕСКАЯ ОШИБКА при создании RAG цепи: {e}")
         import traceback
         traceback.print_exc()
-        
         logging.error(f"Ошибка создания RAG цепи: {e}")
-        # Простая fallback цепочка
+
         class FallbackChain:
             def invoke(self, input_dict):
-                print(f"⚠️ Используется FallbackChain для запроса: {input_dict.get('input', '')[:100]}...")
                 return {"answer": f"Извините, система временно недоступна. Ошибка: {str(e)}"}
-        
+
         return FallbackChain()
 
-# Проверка доступности модели при импорте
+
+# ---------------------------------------------------------------------------
+# Startup check
+# ---------------------------------------------------------------------------
 try:
-    llm = ChatOllama(model="lakomoor/vikhr-llama-3.2-1b-instruct:1b")
-    test_response = llm.invoke("Привет")
-    print("✅ Модель Vikhr доступна!")
+    if USE_LOCAL_MODEL:
+        from langchain_community.chat_models import ChatOllama
+        _test_llm = ChatOllama(model=LOCAL_MODEL)
+        _test_resp = _test_llm.invoke("Привет")
+        print("Локальная модель Ollama доступна!")
+    else:
+        _test_llm = create_groq_llm()
+        _test_resp = _test_llm.invoke("Привет")
+        print(f"Groq модель доступна! Ответ: {_test_resp.content[:80]}...")
 except Exception as e:
-    print(f"❌ Модель Vikhr недоступна: {e}")
+    print(f"Предупреждение при проверке модели: {e}")
+    print("Модель будет инициализирована при первом запросе.")

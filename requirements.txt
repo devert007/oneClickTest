@@ -2,6 +2,7 @@ langchain
 langchain-core
 langchain_community
 langchain_chroma
+langchain-groq
 docx2txt
 pypdf
 python-multipart
@@ -12,3 +13,4 @@ streamlit
 pdfkit
 markdown
 docling
+python-dotenv
