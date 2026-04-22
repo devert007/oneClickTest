@@ -1,250 +1,249 @@
-﻿/* Глобальные переменные для цветовой схемы */
-:root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --button-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --text-dark: #2c3e50;
-    --text-light: #7f8c8d;
-    --input-border: #e1e8ed;
-    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    color: var(--text-dark);
-}
-
-.login-page {
+/* ── Auth Page (shared between Login & Register) ────────── */
+.auth-page {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--primary-gradient);
+    background: var(--clr-dark);
     position: relative;
     overflow: hidden;
-    animation: gradientShift 8s ease infinite; /* Дыхание фона */
+    padding: 20px;
 }
 
-@keyframes gradientShift {
-    0%, 100% {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    50% {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    }
-}
-
-.login-page::before { /* Лёгкий overlay для фокуса */
-    content: '';
+.auth-bg-shapes {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.05);
-    z-index: 1;
+    inset: 0;
+    pointer-events: none;
 }
 
-.login-container {
-    background: white;
-    padding: 50px 40px; /* Больше воздуха */
-    border-radius: 16px; /* Мягче углы */
+.auth-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+}
+
+.auth-shape-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--clr-primary);
+    top: -150px;
+    right: -100px;
+    animation: drift 12s ease-in-out infinite alternate;
+}
+
+.auth-shape-2 {
+    width: 350px;
+    height: 350px;
+    background: var(--clr-accent);
+    bottom: -100px;
+    left: -80px;
+    animation: drift 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(30px, -20px); }
+}
+
+.auth-card {
+    background: var(--bg-card);
+    padding: 48px 40px;
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-xl);
     width: 100%;
-    max-width: 420px; /* Немного шире */
+    max-width: 420px;
     position: relative;
     z-index: 2;
-    animation: fadeInUp 0.8s ease-out;
-    transform-style: preserve-3d;
+    animation: fadeUp 0.6s ease-out;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.login-header {
+.auth-header {
     text-align: center;
-    margin-bottom: 35px;
+    margin-bottom: 32px;
 }
 
-    .login-header h1 {
-        color: var(--text-dark);
-        margin-bottom: 12px;
-        font-size: 2rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        position: relative;
-    }
+.auth-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto 16px;
+}
 
-        .login-header h1::after { /* Декоративная иконка под заголовком */
-            content: '🔐';
-            display: block;
-            font-size: 3rem;
-            margin-top: -10px;
-            opacity: 0.8;
-        }
+.auth-header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+}
 
-    .login-header p {
-        color: var(--text-light);
-        font-size: 1rem;
-        margin: 0;
-    }
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
 
-.login-form {
+/* ── Form ───────────────────────────────────────────────── */
+.auth-form {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Больше пространства */
+    gap: 20px;
 }
 
-    /* Стили для input'ов (предполагая <input type="text/email/password">) */
-    .login-form input {
-        width: 100%;
-        padding: 15px 18px;
-        border: 2px solid var(--input-border);
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: var(--transition);
-        background: #f8f9fa;
-    }
+.auth-field label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+}
 
-        .login-form input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: white;
-            transform: translateY(-1px);
-        }
+.auth-input-wrap {
+    position: relative;
+}
 
-        .login-form input::placeholder {
-            color: var(--text-light);
-            opacity: 0.7;
-        }
+.auth-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
 
-        /* Убрали :invalid — теперь без красных рамок */
-        /* Если нужно кастомные ошибки, добавьте класс .error через JS */
-        .login-form input.error {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
-            background: #fdf2f2;
-        }
-
-.login-btn {
+.auth-form input {
     width: 100%;
-    padding: 15px;
+    padding: 14px 14px 14px 44px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: var(--bg-page);
+    transition: var(--transition);
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--clr-accent);
+    box-shadow: 0 0 0 3px rgba(160, 148, 242, 0.12);
+    background: var(--bg-card);
+}
+
+.auth-form input::placeholder {
+    color: var(--text-muted);
+}
+
+.auth-error {
+    padding: 12px 14px;
+    background: rgba(217, 61, 26, 0.08);
+    color: var(--clr-danger);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--clr-danger);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.auth-submit-btn {
+    width: 100%;
+    padding: 14px;
     font-size: 1rem;
     font-weight: 600;
     border: none;
-    border-radius: 8px;
-    background: var(--button-gradient);
+    border-radius: var(--radius-md);
     color: white;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    background-image: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-accent) 50%, var(--clr-primary) 100%);
+    transition: background-position 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 16px rgba(87, 79, 140, 0.3);
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+    background-position: 100% 50%;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(87, 79, 140, 0.4);
+}
+
+.auth-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.auth-google-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
     transition: var(--transition);
-    position: relative;
-    overflow: hidden;
 }
 
-    .login-btn::before { /* Ripple-эффект */
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
-        transform: translate(-50%, -50%);
-    }
+.auth-google-btn:hover:not(:disabled) {
+    border-color: var(--clr-accent);
+    background: rgba(160, 148, 242, 0.04);
+}
 
-    .login-btn:active::before {
-        width: 300px;
-        height: 300px;
-    }
+.auth-google-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-    .login-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .login-btn:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-.login-footer {
+/* ── Footer ─────────────────────────────────────────────── */
+.auth-footer {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 24px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
-    .login-footer a {
-        color: #3498db;
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-        position: relative;
-    }
+.auth-footer a {
+    color: var(--clr-accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
 
-        .login-footer a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #3498db;
-            transition: width 0.3s ease;
-        }
+.auth-footer a:hover {
+    color: var(--clr-primary);
+}
 
-        .login-footer a:hover {
-            color: #2980b9;
-        }
+.spin {
+    animation: spin 1s linear infinite;
+}
 
-            .login-footer a:hover::after {
-                width: 100%;
-            }
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
-/* Адаптивность */
 @media (max-width: 480px) {
-    .login-page {
-        padding: 20px;
+    .auth-card {
+        padding: 32px 24px;
     }
 
-    .login-container {
-        padding: 30px 25px;
-        margin: 0 10px;
-    }
-
-    .login-header h1 {
-        font-size: 1.75rem;
-    }
-
-        .login-header h1::after {
-            font-size: 2.5rem;
-        }
-
-    .login-form input,
-    .login-btn {
-        padding: 14px 16px;
-        font-size: 0.95rem;
+    .auth-header h1 {
+        font-size: 1.5rem;
     }
 }

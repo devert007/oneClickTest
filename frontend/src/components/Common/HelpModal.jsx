@@ -1,73 +1,89 @@
-﻿import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { X, FileText, Zap, FolderOpen, Download, MessageCircle } from 'lucide-react';
 import './HelpModal.css';
 
 const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
+    const sections = [
+        {
+            icon: <FileText size={20} />,
+            title: 'Загрузка материалов',
+            items: [
+                'Поддержка форматов: PDF, DOCX',
+                'Документы индексируются в векторную базу ChromaDB'
+            ]
+        },
+        {
+            icon: <Zap size={20} />,
+            title: 'Генерация тестов',
+            items: [
+                'Настройка: количество вопросов, сложность, формат',
+                'AI-модели для генерации',
+                'Извлечение ключевых концепций из документов'
+            ]
+        },
+        {
+            icon: <FolderOpen size={20} />,
+            title: 'Управление контентом',
+            items: [
+                'Просмотр истории документов',
+                'Удаление материалов',
+                'Архивация сгенерированных тестов'
+            ]
+        },
+        {
+            icon: <Download size={20} />,
+            title: 'Экспорт результатов',
+            items: [
+                'Скачивание в Markdown и PDF',
+                'Создание Google Форм',
+                'Поддержка кириллицы'
+            ]
+        },
+        {
+            icon: <MessageCircle size={20} />,
+            title: 'AI-чат',
+            items: [
+                'Вопросы по загруженным документам',
+                'Сохранение истории чата',
+                'RAG-поиск по контенту'
+            ]
+        }
+    ];
+
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>OneClickTest - Справка</h2>
-                    <button className="close-button" onClick={onClose}>×</button>
+        <div className="help-overlay" onClick={onClose}>
+            <div className="help-modal" onClick={e => e.stopPropagation()}>
+                <div className="help-modal-header">
+                    <h2>О платформе</h2>
+                    <button className="help-close" onClick={onClose}><X size={20} /></button>
                 </div>
 
-                <div className="modal-body">
-                    <div className="help-content">
-                        <p>
-                            <strong>OneClickTest</strong> - интеллектуальная платформа для автоматизированного создания тестов
-                            на основе учебных материалов, с интеграцией AI и поддержкой полного цикла работы с контентом.
-                        </p>
+                <div className="help-modal-body">
+                    <p className="help-intro">
+                        <strong>OneClickTest</strong> — интеллектуальная платформа для автоматизации создания тестов
+                        на основе учебных материалов с использованием AI.
+                    </p>
 
-                        <h3>Основное назначение:</h3>
-                        <p>
-                            Автоматизация процесса создания тестовых заданий из загруженных документов (лекций, методичек, статей)
-                            с использованием современных технологий AI (RAG-модели) и возможностью управления учебными материалами.
-                        </p>
-
-                        <h3>Ключевые функции:</h3>
-
-                        <h4>Загрузка материалов</h4>
-                        <ul>
-                            <li>Поддержка форматов: PDF, DOCX</li>
-                            <li>Документы индексируются в векторную базу ChromaDB для семантического поиска</li>
-                        </ul>
-
-                        <h4>Генерация тестов</h4>
-                        <ul>
-                            <li>Настройка параметров: количество вопросов, сложность, формат (множественный выбор/открытые вопросы)</li>
-                            <li>Интеграция с AI-моделями (Llama3.2)</li>
-                            <li>Автоматическое извлечение ключевых концепций из документов</li>
-                        </ul>
-
-                        <h4>Управление контентом</h4>
-                        <ul>
-                            <li>Просмотр истории загруженных документов</li>
-                            <li>Удаление материалов</li>
-                            <li>Архивация сгенерированных тестов</li>
-                        </ul>
-
-                        <h4>Экспорт результатов</h4>
-                        <ul>
-                            <li>Скачивание в форматах: Markdown, PDF</li>
-                            <li>Автоматическое форматирование с поддержкой кириллицы</li>
-                            <li>Генерация PDF с помощью ReportLab</li>
-                        </ul>
-
-                        <h4>Сессионная работа</h4>
-                        <ul>
-                            <li>Сохранение истории чата</li>
-                            <li>Привязка тестов к сессиям и документам</li>
-                            <li>Многопользовательская поддержка через систему session_id</li>
-                        </ul>
+                    <div className="help-sections">
+                        {sections.map((s, i) => (
+                            <div key={i} className="help-section">
+                                <div className="help-section-icon">{s.icon}</div>
+                                <div>
+                                    <h4>{s.title}</h4>
+                                    <ul>
+                                        {s.items.map((item, j) => <li key={j}>{item}</li>)}
+                                    </ul>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                <div className="modal-footer">
-                    <button onClick={onClose} className="btn btn-primary">
-                        Закрыть
-                    </button>
+                <div className="help-modal-footer">
+                    <button onClick={onClose} className="btn btn-primary">Закрыть</button>
                 </div>
             </div>
         </div>

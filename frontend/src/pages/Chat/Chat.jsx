@@ -1,222 +1,188 @@
 import React, { useState, useEffect, useRef } from "react";
 import { chatAPI } from "../../services/api";
+import { Send, Trash2, Bot, UserIcon, AlertCircle, Sparkles } from "lucide-react";
 import "./Chat.css";
 
 const Chat = () => {
-	const [messages, setMessages] = useState([]);
-	const [inputMessage, setInputMessage] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	const [sessionId, setSessionId] = useState("");
-	const [selectedModel, setSelectedModel] = useState(
-		"openai/gpt-oss-120b",
-	);
-	const messagesEndRef = useRef(null);
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [sessionId, setSessionId] = useState("");
+    const messagesEndRef = useRef(null);
 
-	const models = [
-		{ value: "openai/gpt-oss-120b", label: "⚡ GPT-OSS 120B (Groq)" },
-		{ value: "bambucha/saiga-llama3:8b", label: "🦙 Llama 3 8B (Локальная)" },
-	];
+    useEffect(() => {
+        const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        setSessionId(newSessionId);
+    }, []);
 
-	// Генерируем session_id при монтировании
-	useEffect(() => {
-		const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-		setSessionId(newSessionId);
-	}, []);
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
-	// Скролл к последнему сообщению
-	useEffect(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+        if (!inputMessage.trim()) return;
 
-	const handleSendMessage = async (e) => {
-		e.preventDefault();
+        const userMessage = {
+            id: Date.now(),
+            role: "user",
+            content: inputMessage,
+            timestamp: new Date(),
+        };
 
-		if (!inputMessage.trim()) return;
+        setMessages((prev) => [...prev, userMessage]);
+        setInputMessage("");
+        setIsLoading(true);
 
-		const userMessage = {
-			id: Date.now(),
-			role: "user",
-			content: inputMessage,
-			timestamp: new Date(),
-		};
+        try {
+            const response = await chatAPI.sendMessage({
+                question: inputMessage,
+                session_id: sessionId,
+                model: "openai/gpt-oss-120b",
+            });
 
-		// Добавляем сообщение пользователя в историю
-		setMessages((prev) => [...prev, userMessage]);
-		setInputMessage("");
-		setIsLoading(true);
+            const assistantMessage = {
+                id: Date.now() + 1,
+                role: "assistant",
+                content: response.answer,
+                timestamp: new Date(),
+            };
 
-		try {
-			// Отправляем сообщение на сервер
-			const response = await chatAPI.sendMessage({
-				question: inputMessage,
-				session_id: sessionId,
-				model: selectedModel,
-			});
+            setMessages((prev) => [...prev, assistantMessage]);
+        } catch (error) {
+            console.error("Error sending message:", error);
+            const errorMessage = {
+                id: Date.now() + 1,
+                role: "error",
+                content: `Ошибка: ${error.message}`,
+                timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, errorMessage]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-			// Добавляем ответ ассистента в историю
-			const assistantMessage = {
-				id: Date.now() + 1,
-				role: "assistant",
-				content: response.answer,
-				timestamp: new Date(),
-				model: response.model,
-			};
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage(e);
+        }
+    };
 
-			setMessages((prev) => [...prev, assistantMessage]);
-		} catch (error) {
-			console.error("Error sending message:", error);
+    const clearChat = () => {
+        setMessages([]);
+        const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        setSessionId(newSessionId);
+    };
 
-			// Добавляем сообщение об ошибке
-			const errorMessage = {
-				id: Date.now() + 1,
-				role: "error",
-				content: `Ошибка: ${error.message}`,
-				timestamp: new Date(),
-			};
+    const formatTime = (timestamp) => {
+        return new Date(timestamp).toLocaleTimeString("ru-RU", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    };
 
-			setMessages((prev) => [...prev, errorMessage]);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+    return (
+        <div className="chat-container">
+            <div className="chat-toolbar">
+                <button onClick={clearChat} className="chat-clear-btn">
+                    <Trash2 size={16} />
+                    <span>Очистить</span>
+                </button>
+            </div>
 
-	const handleKeyPress = (e) => {
-		if (e.key === "Enter" && !e.shiftKey) {
-			e.preventDefault();
-			handleSendMessage(e);
-		}
-	};
+            <div className="chat-messages">
+                {messages.length === 0 ? (
+                    <div className="chat-empty">
+                        <div className="chat-empty-icon">
+                            <Sparkles size={40} />
+                        </div>
+                        <h3>Начните диалог</h3>
+                        <p>Задайте вопрос AI-ассистенту по вашим документам</p>
+                        <div className="chat-suggestions">
+                            {[
+                                "Объясни основные концепции из документа",
+                                "Кратко суммируй ключевые моменты",
+                                "Какие темы затрагивает документ?"
+                            ].map((s, i) => (
+                                <button
+                                    key={i}
+                                    className="chat-suggestion"
+                                    onClick={() => setInputMessage(s)}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    messages.map((message) => (
+                        <div key={message.id} className={`chat-msg chat-msg--${message.role}`}>
+                            <div className="chat-msg-avatar">
+                                {message.role === "user" ? (
+                                    <UserIcon size={18} />
+                                ) : message.role === "assistant" ? (
+                                    <Bot size={18} />
+                                ) : (
+                                    <AlertCircle size={18} />
+                                )}
+                            </div>
+                            <div className="chat-msg-body">
+                                <div className="chat-msg-meta">
+                                    <span className="chat-msg-sender">
+                                        {message.role === "user" ? "Вы" : message.role === "assistant" ? "AI" : "Ошибка"}
+                                    </span>
+                                    <span className="chat-msg-time">{formatTime(message.timestamp)}</span>
+                                </div>
+                                <div className="chat-msg-text">{message.content}</div>
+                            </div>
+                        </div>
+                    ))
+                )}
+                {isLoading && (
+                    <div className="chat-msg chat-msg--assistant">
+                        <div className="chat-msg-avatar">
+                            <Bot size={18} />
+                        </div>
+                        <div className="chat-msg-body">
+                            <div className="chat-msg-meta">
+                                <span className="chat-msg-sender">AI</span>
+                            </div>
+                            <div className="chat-msg-text">
+                                <div className="typing-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
 
-	const clearChat = () => {
-		setMessages([]);
-		const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-		setSessionId(newSessionId);
-	};
-
-	const formatTime = (timestamp) => {
-		return new Date(timestamp).toLocaleTimeString("ru-RU", {
-			hour: "2-digit",
-			minute: "2-digit",
-		});
-	};
-
-	return (
-		<div className="chat-container">
-			<div className="chat-header">
-				<h2>💬 Чат с AI</h2>
-				<div className="chat-controls">
-					<select
-						value={selectedModel}
-						onChange={(e) => setSelectedModel(e.target.value)}
-						className="model-select"
-					>
-						{models.map((model) => (
-							<option key={model.value} value={model.value}>
-								{model.label}
-							</option>
-						))}
-					</select>
-					<button onClick={clearChat} className="btn-clear">
-						🗑️ Очистить чат
-					</button>
-				</div>
-			</div>
-
-			<div className="chat-messages">
-				{messages.length === 0 ? (
-					<div className="empty-chat">
-						<div className="welcome-message">
-							<h3>Добро пожаловать в чат!</h3>
-							<p>
-								Задайте вопрос AI-ассистенту и получите ответ на основе ваших
-								документов.
-							</p>
-							<div className="examples">
-								<strong>Примеры вопросов:</strong>
-								<ul>
-									<li>Объясни основные концепции из документа</li>
-									<li>Создай вопросы для тестирования по этой теме</li>
-									<li>Кратко суммируй ключевые моменты</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				) : (
-					messages.map((message) => (
-						<div key={message.id} className={`message ${message.role}`}>
-							<div className="message-content">
-								<div className="message-header">
-									<span className="message-role">
-										{message.role === "user"
-											? "👤 Вы"
-											: message.role === "assistant"
-												? "🤖 AI"
-												: "❌ Ошибка"}
-									</span>
-									<span className="message-time">
-										{formatTime(message.timestamp)}
-									</span>
-								</div>
-								<div className="message-text">{message.content}</div>
-								{message.model && (
-									<div className="message-model">
-										Модель:{" "}
-										{models.find((m) => m.value === message.model)?.label ||
-											message.model}
-									</div>
-								)}
-							</div>
-						</div>
-					))
-				)}
-				{isLoading && (
-					<div className="message assistant">
-						<div className="message-content">
-							<div className="message-header">
-								<span className="message-role">🤖 AI</span>
-							</div>
-							<div className="message-text loading">
-								<div className="typing-indicator">
-									<span></span>
-									<span></span>
-									<span></span>
-								</div>
-							</div>
-						</div>
-					</div>
-				)}
-				<div ref={messagesEndRef} />
-			</div>
-
-			<form onSubmit={handleSendMessage} className="chat-input-form">
-				<div className="input-container">
-					<textarea
-						value={inputMessage}
-						onChange={(e) => setInputMessage(e.target.value)}
-						onKeyPress={handleKeyPress}
-						placeholder="Введите ваш вопрос..."
-						className="message-input"
-						rows="3"
-						disabled={isLoading}
-					/>
-					<button
-						type="submit"
-						className="send-button"
-						disabled={!inputMessage.trim() || isLoading}
-					>
-						{isLoading ? "🔄" : "📤"}
-					</button>
-				</div>
-				<div className="input-hint">
-					Нажмите Enter для отправки, Shift+Enter для новой строки
-				</div>
-			</form>
-
-			<div className="chat-info">
-				<small>Session ID: {sessionId}</small>
-			</div>
-		</div>
-	);
+            <form onSubmit={handleSendMessage} className="chat-input-area">
+                <div className="chat-input-wrap">
+                    <textarea
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Напишите сообщение..."
+                        className="chat-textarea"
+                        rows="1"
+                        disabled={isLoading}
+                    />
+                    <button
+                        type="submit"
+                        className="chat-send-btn"
+                        disabled={!inputMessage.trim() || isLoading}
+                    >
+                        <Send size={18} />
+                    </button>
+                </div>
+                <p className="chat-hint">Enter — отправить, Shift+Enter — новая строка</p>
+            </form>
+        </div>
+    );
 };
 
 export default Chat;

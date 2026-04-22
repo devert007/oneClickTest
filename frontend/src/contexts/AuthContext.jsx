@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -28,50 +29,20 @@ export const AuthProvider = ({ children }) => {
         setAuthLoading(false);
     }, []);
 
-    const register = (userData) => {
-        localStorage.setItem('token', 'fake-token');
-        localStorage.setItem('user', JSON.stringify(userData));
+    const register = async ({ email, name }) => {
+        const { token, user: serverUser } = await authAPI.emailLogin(email, name);
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(serverUser));
         setIsAuthenticated(true);
-        setUser(userData);
+        setUser(serverUser);
     };
 
-    const login = (userData) => {
-        localStorage.setItem('token', 'fake-token');
-        localStorage.setItem('user', JSON.stringify(userData));
+    const login = async ({ email, name }) => {
+        const { token, user: serverUser } = await authAPI.emailLogin(email, name);
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(serverUser));
         setIsAuthenticated(true);
-        setUser(userData);
-    };
-
-    const loginWithToken = (token) => {
-        try {
-            localStorage.setItem('token', token);
-
-            const payloadPart = token.split('.')[1];
-            let parsedUser = null;
-            if (payloadPart) {
-                const decoded = JSON.parse(
-                    atob(payloadPart.replace(/-/g, '+').replace(/_/g, '/'))
-                );
-                parsedUser = {
-                    id: decoded.sub,
-                    email: decoded.email,
-                    name: decoded.name,
-                    picture: decoded.picture,
-                };
-                localStorage.setItem('user', JSON.stringify(parsedUser));
-            }
-
-            setIsAuthenticated(true);
-            setUser(parsedUser);
-        } catch (e) {
-            console.error('?????? ??????? JWT ??????:', e);
-            // ? ?????? ?????? ??? ????? ??????? ???????????? ????????????????
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            setIsAuthenticated(false);
-            setUser(null);
-            throw e;
-        }
+        setUser(serverUser);
     };
 
     const logout = () => {
@@ -88,7 +59,6 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
-        loginWithToken,
     };
 
     return (
@@ -98,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-// Добавляем PropTypes для children
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ PropTypes пїЅпїЅпїЅ children
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired
 };

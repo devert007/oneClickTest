@@ -1,15 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { UserPlus, Mail, User, Loader2 } from 'lucide-react';
 import './Register.css';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
+    const [formData, setFormData] = useState({ name: '', email: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -17,120 +13,72 @@ const Register = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }));
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
-        if (formData.password !== formData.confirmPassword) {
-            setError('Пароли не совпадают');
-            return;
-        }
-
-        if (formData.password.length < 6) {
-            setError('Пароль должен содержать минимум 6 символов');
-            return;
-        }
-
         setLoading(true);
-
         try {
-            const userData = {
-                id: 1,
-                name: formData.name,
-                email: formData.email
-            };
-
-            register(userData);
+            await register({ email: formData.email, name: formData.name });
             navigate('/');
-        } catch {
-            setError('Ошибка регистрации. Попробуйте еще раз.');
+        } catch (err) {
+            setError(err.message || 'Ошибка регистрации. Попробуйте ещё раз.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="register-page">
-            <div className="register-container">
-                <div className="register-header">
+        <div className="auth-page">
+            <div className="auth-bg-shapes">
+                <div className="auth-shape auth-shape-1" />
+                <div className="auth-shape auth-shape-2" />
+            </div>
+            <div className="auth-card">
+                <div className="auth-header">
+                    <div className="auth-logo">
+                        <UserPlus size={28} />
+                    </div>
                     <h1>OneClickTest</h1>
-                    <p>Создайте новый аккаунт</p>
+                    <p>Создайте аккаунт</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="register-form">
-                    {error && <div className="error-message">{error}</div>}
+                <form onSubmit={handleSubmit} className="auth-form">
+                    {error && <div className="auth-error">{error}</div>}
 
-                    <div className="form-group">
+                    <div className="auth-field">
                         <label htmlFor="name">Имя</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            placeholder="Введите ваше имя"
-                        />
+                        <div className="auth-input-wrap">
+                            <User size={18} className="auth-input-icon" />
+                            <input
+                                type="text" id="name" name="name"
+                                value={formData.name} onChange={handleChange}
+                                required placeholder="Введите имя"
+                            />
+                        </div>
                     </div>
 
-                    <div className="form-group">
+                    <div className="auth-field">
                         <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            placeholder="Введите ваш email"
-                        />
+                        <div className="auth-input-wrap">
+                            <Mail size={18} className="auth-input-icon" />
+                            <input
+                                type="email" id="email" name="email"
+                                value={formData.email} onChange={handleChange}
+                                required placeholder="Введите email"
+                            />
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Пароль</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                            placeholder="Введите пароль (минимум 6 символов)"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="confirmPassword">Подтвердите пароль</label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            required
-                            placeholder="Повторите пароль"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn btn-primary register-btn"
-                    >
-                        {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+                    <button type="submit" disabled={loading} className="auth-submit-btn">
+                        {loading ? <><Loader2 size={18} className="spin" /> Регистрация...</> : 'Зарегистрироваться'}
                     </button>
                 </form>
 
-                <div className="register-footer">
-                    <p>
-                        Уже есть аккаунт? <Link to="/login">Войдите</Link>
-                    </p>
+                <div className="auth-footer">
+                    <p>Уже есть аккаунт? <Link to="/login">Войдите</Link></p>
                 </div>
             </div>
         </div>

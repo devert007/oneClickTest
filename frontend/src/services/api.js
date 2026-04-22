@@ -1,5 +1,5 @@
-﻿import axios from "axios";
-const API_BASE_URL = "http://localhost:8000";
+import axios from "axios";
+const API_BASE_URL = "http://localhost:8001";
 
 const api = axios.create({
 	baseURL: API_BASE_URL,
@@ -31,6 +31,15 @@ api.interceptors.response.use(
 		throw new Error(message);
 	},
 );
+
+api.interceptors.request.use((config) => {
+	const token = localStorage.getItem("token");
+	if (token) {
+		config.headers = config.headers || {};
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+	return config;
+});
 
 // Сервис для документов
 export const documentAPI = {
@@ -161,6 +170,13 @@ export const testGenerationAPI = {
 		return response.data;
 	},
 
+	generateMaterialAndTest: async (payload) => {
+		const response = await api.post("/generate-material-and-test", payload, {
+			timeout: 600000,
+		});
+		return response.data;
+	},
+
 	// Сохранение теста через новый эндпоинт
 	saveTest: async (
 		testContent,
@@ -255,6 +271,13 @@ export const chatAPI = {
 
 			throw new Error(errorMessage);
 		}
+	},
+};
+
+export const authAPI = {
+	emailLogin: async (email, name) => {
+		const response = await api.post("/auth/email/login", { email, name });
+		return response.data;
 	},
 };
 

@@ -1,110 +1,116 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response
-from pydantic import BaseModel, Field
-from pydantic_models import QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest, TestPDFInfo, TestGenerationRequest, TestGenerationResponse, DifficultyLevel, QuestionType
-from langchain_utils import get_rag_chain
-from db_utils import (
-    insert_application_logs, get_chat_history, get_all_documents, insert_document_record, 
-    delete_document_record, insert_test_pdf_record, get_all_test_pdfs, delete_test_pdf_record,
-    get_test_pdf_content,check_filename_uniqueness
+"""
+OneClickTest API — FastAPI-сервер с LangGraph Agentic RAG.
+
+Архитектура:
+    Все AI-запросы проходят через граф агентов (agents/graph.py):
+    Orchestrator → RAG Agent | Vision Agent | Test Generator | Chat Agent
+"""
+
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response, Request
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic_models import (
+    QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest,
+    TestPDFInfo, TestGenerationRequest, TestGenerationResponse,
+    DifficultyLevel, QuestionType, ImageAnalysisResponse,
+    MaterialAndTestRequest,
 )
-from chroma_utils import vectorstore,index_document_to_chroma, delete_doc_from_chroma,check_document_uniqueness, load_and_split_document
+from langchain_utils import create_llm
+from agents.graph import run_agent
+from db_utils import (
+    insert_application_logs, get_chat_history, get_all_documents,
+    insert_document_record, delete_document_record, insert_test_pdf_record,
+    get_all_test_pdfs, delete_test_pdf_record, get_test_pdf_content,
+    check_filename_uniqueness,
+)
+from chroma_utils import (
+    vectorstore, index_document_to_chroma, delete_doc_from_chroma,
+    check_document_uniqueness, load_and_split_document,
+)
+from tools.search_documents import get_document_text_by_id
+from parse_test_to_md import test_json_to_markdown
 import os
 import sys
 import uuid
+import base64
+import json
 import logging
 import shutil
-import json
 import requests
-from typing import Optional,Tuple
-from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
+from jose import jwt, JWTError
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from io import BytesIO
-import tempfile
-from utils import parse_and_validate_test_json
-from fastapi import Request
-from google_auth import router as google_auth_router
+from email_auth import router as email_auth_router
 
+
+# ── Вспомогательные функции ────────────────────────────────────────
 
 def markdown_to_pdf(markdown_text, filename="test.pdf"):
-    """Конвертирует Markdown текст в PDF файл"""
+    """Конвертирует Markdown текст в PDF файл."""
     try:
-        # Создаем PDF в памяти
         buffer = BytesIO()
-        
+
         try:
-            # Попробуем зарегистрировать Arial (нужен файл arial.ttf в директории)
             pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
             font_name = "Arial"
-        except:
-            # Используем стандартный шрифт
+        except Exception:
             font_name = "Helvetica"
-        
-        # Создаем canvas
+
         p = canvas.Canvas(buffer, pagesize=letter)
         p.setFont(font_name, 12)
-        
-        # Разбиваем текст на строки
+
         lines = markdown_text.split("\n")
         y = 750
         line_height = 20
         page_number = 1
-        
-        # Добавляем заголовок страницы
+
         p.drawString(50, 780, f"Тест: {filename}")
         p.drawString(500, 780, f"Страница {page_number}")
         p.line(50, 775, 550, 775)
-        y -= 40  # Отступ после заголовка
-        
+        y -= 40
+
         for line in lines:
-            # Пропускаем пустые строки
             if not line.strip():
                 y -= line_height
                 continue
-                
-            # Обрабатываем длинные строки
+
             words = line.split()
             current_line = []
             line_width = 0
-            
+
             for word in words:
-                word_width = len(word) * 7  # Примерная ширина символа
-                if line_width + word_width > 500:  # Ширина страницы
-                    # Рисуем текущую строку
+                word_width = len(word) * 7
+                if line_width + word_width > 500:
                     p.drawString(50, y, " ".join(current_line))
                     y -= line_height
                     current_line = [word]
                     line_width = word_width
                 else:
                     current_line.append(word)
-                    line_width += word_width + 7  # +7 за пробел
-            
-            # Рисуем последнюю строку
+                    line_width += word_width + 7
+
             if current_line:
                 p.drawString(50, y, " ".join(current_line))
                 y -= line_height
-            
-            # Проверка на конец страницы
+
             if y < 50:
                 p.showPage()
                 page_number += 1
                 p.setFont(font_name, 12)
-                # Заголовок новой страницы
                 p.drawString(50, 780, f"Тест: {filename} (продолжение)")
                 p.drawString(500, 780, f"Страница {page_number}")
                 p.line(50, 775, 550, 775)
-                y = 750 - 40  # Отступ после заголовка
-        
+                y = 750 - 40
+
         p.save()
         buffer.seek(0)
-        print(f"✅ PDF создан: {filename}, размер: {len(buffer.getvalue())} байт")
         return buffer
-        
+
     except Exception as e:
-        print(f"❌ Error converting markdown to PDF: {e}")
-        # Возвращаем простой PDF в случае ошибки
+        logging.error(f"Error converting markdown to PDF: {e}")
         buffer = BytesIO()
         p = canvas.Canvas(buffer, pagesize=letter)
         p.setFont("Helvetica", 12)
@@ -113,16 +119,18 @@ def markdown_to_pdf(markdown_text, filename="test.pdf"):
         p.save()
         buffer.seek(0)
         return buffer
-   
 
 
-# Добавляем путь к папке app в Python path
+# ── FastAPI приложение ─────────────────────────────────────────────
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'app'))
-
 logging.basicConfig(filename='app.log', level=logging.INFO)
 
-
-app = FastAPI()
+app = FastAPI(
+    title="OneClickTest API",
+    description="Agentic RAG API с LangGraph",
+    version="2.0.0",
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -135,344 +143,505 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(google_auth_router)
+app.include_router(email_auth_router)
+
+JWT_SECRET = os.getenv("JWT_SECRET", "change_me")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+
+
+def get_client_id_from_request(request: Request) -> Optional[int]:
+    """Извлекает client_id из Bearer JWT. Если токена нет — fallback на default_user."""
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return None
+
+    token = auth_header.split(" ", 1)[1].strip()
+    if not token:
+        return None
+
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        client_id = payload.get("client_id")
+        return int(client_id) if client_id is not None else None
+    except (JWTError, ValueError, TypeError):
+        return None
+
+
+# ── Служебные эндпоинты ───────────────────────────────────────────
 
 @app.get("/")
 def read_root():
-    return {"message": "OneClickTest API is running", "status": "OK"}
+    return {
+        "message": "OneClickTest API is running",
+        "version": "2.0.0",
+        "architecture": "LangGraph Agentic RAG",
+        "agents": ["orchestrator", "rag", "vision", "test_gen", "chat"],
+    }
+
 
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "service": "OneClickTest API"}
 
-# XML-based endpoints removed — XML functionality deprecated and deleted
 
 @app.get("/difficulty-levels")
 def get_difficulty_levels():
-    """Получить доступные уровни сложности"""
     return [{"value": level.value, "label": level.value} for level in DifficultyLevel]
+
 
 @app.get("/question-types")
 def get_question_types():
-    """Получить доступные типы вопросов"""
     return [{"value": qtype.value, "label": qtype.value} for qtype in QuestionType]
 
-# XML-based endpoints removed — XML functionality deprecated and deleted
 
-# XML-based endpoints removed — XML functionality deprecated and deleted
+# ── Чат (через граф агентов: Orchestrator → RAG или Chat) ──────────
 
-# Новый эндпоинт для генерации тестов
+@app.post("/chat", response_model=QueryResponse)
+def chat(query_input: QueryInput, request: Request):
+    """
+    Универсальный чат-эндпоинт.
+    Orchestrator автоматически решает: отвечать из документов (RAG)
+    или вести общий разговор (Chat).
+    """
+    session_id = query_input.session_id or str(uuid.uuid4())
+    logging.info(f"Session: {session_id}, Query: {query_input.question}, Model: {query_input.model.value}")
+
+    chat_history = get_chat_history(session_id)
+
+    client_id = get_client_id_from_request(request)
+
+    result = run_agent(
+        user_input=query_input.question,
+        session_id=session_id,
+        client_id=client_id,
+        model_name=query_input.model.value,
+        chat_history=chat_history,
+    )
+
+    answer = result["answer"]
+    insert_application_logs(session_id, query_input.question, answer, query_input.model.value)
+    logging.info(f"Session: {session_id}, Agent: {result['agent_type']}, Response: {answer[:100]}")
+
+    return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
+
+
+# ── Генерация тестов (через Test Generator Agent) ──────────────────
+
 @app.post("/generate-test")
-def generate_test(request: TestGenerationRequest):
+def generate_test(request_data: TestGenerationRequest, request: Request):
+    """
+    Генерация теста из загруженного документа.
+    Напрямую вызывает Test Generator Agent (agent_type="test_gen").
+    """
     try:
-        session_id = request.session_id or str(uuid.uuid4())
-        
-        print(f"Generating test with params: {request.dict()}") 
-        
-        # XML support removed; generating AI-based questions only
-      
-         
-        ai_questions_content = ""
-        ai_questions_count = request.question_count
-        
-        
-        doc_response = get_document_text(request.document_id)
-        document_text = doc_response.get("text", "") if isinstance(doc_response, dict) else ""
+        session_id = request_data.session_id or str(uuid.uuid4())
+        client_id = get_client_id_from_request(request)
 
-        print(f"Document length: {len(document_text)} chars")
-        if document_text and ai_questions_count > 0:
-                from test_generation_prompts import build_few_shot_prompt
-                prompt = build_few_shot_prompt(
-                    document_text=document_text,
-                    question_count=ai_questions_count,
-                    difficulty=request.difficulty.value,
-                    question_type=request.question_type.value,
-                    include_answers=request.include_answers,
-                )
-                print(prompt)
-                chat_history = get_chat_history(session_id)
-                rag_chain = get_rag_chain(request.model.value)
-    
-                ai_response = rag_chain.invoke({
-                        "input": prompt,
-                        "chat_history": chat_history
-                })
-                ai_questions_content = ai_response['answer']
+        # Получаем текст документа из ChromaDB
+        document_text = get_document_text_by_id(request_data.document_id, client_id=client_id)
+        if not document_text:
+            raise HTTPException(status_code=404, detail="Текст документа не найден")
 
-                # Валидация и парсинг JSON ответа (с retry при ошибке)
-                for attempt in range(2):
-                    try:
-                        test_data = parse_and_validate_test_json(
-                            ai_questions_content,
-                            ai_questions_count,
-                            request.include_answers
-                        )
-                        ai_questions_content = json.dumps(test_data, ensure_ascii=False, indent=2)
-                        break
-                    except ValueError as e:
-                        if attempt == 0:
-                            logging.warning(f"Parse error (attempt 1), retrying with same prompt: {e}")
-                            ai_response = rag_chain.invoke({
-                                "input": prompt,
-                                "chat_history": chat_history
-                            })
-                            ai_questions_content = ai_response['answer']
-                        else:
-                            logging.error(f"Error validating test JSON: {e}")
-                            raise HTTPException(status_code=500, detail=f"Ошибка валидации теста: {str(e)}")
-                
-       # Объединяем содержимое
-        print(f"AI Questions Content: {ai_questions_content}")
-        combined_content = ai_questions_content
+        chat_history = get_chat_history(session_id)
 
-        # Логируем генерацию теста
-        insert_application_logs(
-            session_id, 
-            f"Generate test: {request.question_count} questions", 
-            combined_content, 
-            request.model.value
+        # Запускаем граф с принудительным выбором test_gen агента
+        result = run_agent(
+            user_input="Сгенерируй тест",
+            session_id=session_id,
+            client_id=client_id,
+            model_name=request_data.model.value,
+            chat_history=chat_history,
+            agent_type="test_gen",
+            test_params={
+                "question_count": request_data.question_count,
+                "difficulty": request_data.difficulty.value,
+                "question_type": request_data.question_type.value,
+                "include_answers": request_data.include_answers,
+            },
+            document_text=document_text,
         )
-        
+
+        if result.get("error"):
+            logging.warning(f"Test generation warning: {result['error']}")
+
+        combined_content = test_json_to_markdown(result["answer"])
+        test_json = None
+        try:
+            test_json = json.loads(result["answer"])
+        except Exception:
+            test_json = None
+
+        insert_application_logs(
+            session_id,
+            f"Generate test: {request_data.question_count} questions",
+            combined_content,
+            request_data.model.value,
+        )
+
         return {
             "test_content": combined_content,
+            "test_json": test_json,
             "session_id": session_id,
             "parameters": {
-                "question_count": request.question_count,
-                "difficulty": request.difficulty.value,
-                "question_type": request.question_type.value,
-                "include_answers": request.include_answers,
-                "document_id": request.document_id,
-                "ai_question_count": ai_questions_count
-            }
+                "question_count": request_data.question_count,
+                "difficulty": request_data.difficulty.value,
+                "question_type": request_data.question_type.value,
+                "include_answers": request_data.include_answers,
+                "document_id": request_data.document_id,
+            },
         }
-        
+
+    except HTTPException:
+        raise
     except Exception as e:
         logging.error(f"Error generating test: {e}")
-        raise HTTPException(status_code=500, detail=f"Error generating test: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Ошибка генерации теста: {str(e)}")
 
+
+MATERIAL_SYSTEM_PROMPT = (
+    "Ты — опытный педагог и методист. На основе запроса пользователя создай "
+    "развёрнутый структурированный учебный материал в формате Markdown. "
+    "Пиши на том же языке, что и запрос (русский или английский). "
+    "Материал должен содержать: заголовок, введение, 3–6 тематических разделов "
+    "с определениями, примерами и ключевыми фактами, краткое резюме. "
+    "Объём — 600–1500 слов. Пиши по существу, без воды. Не задавай вопросов пользователю."
+)
+
+
+def _generate_material_from_prompt(prompt: str, model_name: str) -> str:
+    """Генерирует учебный материал (Markdown) по свободному промпту."""
+    llm = create_llm(model_name, temperature=0.4, max_tokens=4096)
+    resp = llm.invoke([
+        ("system", MATERIAL_SYSTEM_PROMPT),
+        ("human", prompt),
+    ])
+    content = getattr(resp, "content", None) or str(resp)
+    return content.strip()
+
+
+@app.post("/generate-material-and-test")
+def generate_material_and_test(request_data: MaterialAndTestRequest, request: Request):
+    """
+    По пользовательскому промпту (например, «Тест для 8 класса по биологии»):
+      1) Генерирует учебный материал через LLM.
+      2) Сохраняет материал как документ пользователя (БД + ChromaDB).
+      3) Передаёт материал в Test Generator Agent и возвращает готовый тест.
+    """
+    session_id = request_data.session_id or str(uuid.uuid4())
+    client_id = get_client_id_from_request(request)
+    model_name = request_data.model.value
+
+    prompt_text = request_data.prompt.strip()
+    if not prompt_text:
+        raise HTTPException(status_code=400, detail="Промпт пуст")
+
+    # 1) Генерация материала
+    try:
+        material_md = _generate_material_from_prompt(prompt_text, model_name)
+    except Exception as e:
+        logging.error(f"Material generation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка генерации материала: {e}")
+
+    if not material_md or len(material_md) < 50:
+        raise HTTPException(status_code=500, detail="LLM вернул пустой материал")
+
+    # 2) Сохранение материала как документа
+    temp_dir = "temp_uploads"
+    os.makedirs(temp_dir, exist_ok=True)
+    safe_slug = "".join(ch for ch in prompt_text[:40] if ch.isalnum() or ch in " _-").strip().replace(" ", "_")
+    if not safe_slug:
+        safe_slug = "ai_material"
+    filename = f"{safe_slug}_{uuid.uuid4().hex[:8]}.md"
+    temp_path = os.path.join(temp_dir, filename)
+
+    try:
+        with open(temp_path, "w", encoding="utf-8") as f:
+            f.write(material_md)
+
+        file_id = insert_document_record(filename, client_id=client_id)
+        if not file_id:
+            raise HTTPException(status_code=500, detail="Не удалось создать запись документа")
+
+        indexed = index_document_to_chroma(temp_path, file_id, client_id=client_id)
+        if not indexed:
+            delete_document_record(file_id, client_id=client_id)
+            raise HTTPException(status_code=500, detail="Не удалось проиндексировать материал")
+    finally:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except Exception as e:
+                logging.warning(f"Cannot remove temp material file: {e}")
+
+    # 3) Генерация теста на основе материала
+    chat_history = get_chat_history(session_id)
+    result = run_agent(
+        user_input="Сгенерируй тест по материалу",
+        session_id=session_id,
+        client_id=client_id,
+        model_name=model_name,
+        chat_history=chat_history,
+        agent_type="test_gen",
+        test_params={
+            "question_count": request_data.question_count,
+            "difficulty": request_data.difficulty.value,
+            "question_type": request_data.question_type.value,
+            "include_answers": request_data.include_answers,
+        },
+        document_text=material_md,
+    )
+
+    if result.get("error"):
+        logging.warning(f"Test generation warning: {result['error']}")
+
+    combined_content = test_json_to_markdown(result["answer"])
+    try:
+        test_json = json.loads(result["answer"])
+    except Exception:
+        test_json = None
+
+    insert_application_logs(
+        session_id,
+        f"Generate material+test: {prompt_text[:80]}",
+        combined_content,
+        model_name,
+    )
+
+    return {
+        "test_content": combined_content,
+        "test_json": test_json,
+        "material_content": material_md,
+        "document_id": file_id,
+        "document_filename": filename,
+        "session_id": session_id,
+        "parameters": {
+            "prompt": prompt_text,
+            "question_count": request_data.question_count,
+            "difficulty": request_data.difficulty.value,
+            "question_type": request_data.question_type.value,
+            "include_answers": request_data.include_answers,
+        },
+    }
+
+
+# ── Анализ изображений (через Vision Agent) ────────────────────────
+
+@app.post("/analyze-image", response_model=ImageAnalysisResponse)
+async def analyze_image(
+    file: UploadFile = File(...),
+    question: str = Form("Опиши это изображение подробно и извлеки весь текст."),
+    session_id: Optional[str] = Form(None),
+):
+    """
+    Анализ изображения через Vision Agent (Llama 4 Scout).
+
+    Поддерживает JPEG, PNG, GIF, WebP.
+    Можно задать конкретный вопрос по изображению.
+    """
+    session_id = session_id or str(uuid.uuid4())
+
+    allowed_types = {"image/jpeg", "image/png", "image/gif", "image/webp"}
+    if file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Неподдерживаемый тип: {file.content_type}. Допустимы: {', '.join(allowed_types)}",
+        )
+
+    try:
+        image_bytes = await file.read()
+        if not image_bytes:
+            raise HTTPException(status_code=400, detail="Пустой файл")
+
+        image_data = base64.b64encode(image_bytes).decode("utf-8")
+
+        chat_history = get_chat_history(session_id)
+
+        result = run_agent(
+            user_input=question,
+            session_id=session_id,
+            chat_history=chat_history,
+            agent_type="vision",
+            image_data=image_data,
+            image_mime_type=file.content_type,
+        )
+
+        answer = result["answer"]
+        insert_application_logs(session_id, f"[Image: {file.filename}] {question}", answer, "vision")
+
+        return ImageAnalysisResponse(
+            answer=answer,
+            session_id=session_id,
+            agent_type="vision",
+            filename=file.filename,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error analyzing image: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка анализа изображения: {str(e)}")
+
+
+# ── Загрузка документов ────────────────────────────────────────────
 
 @app.post("/upload-doc")
-def upload_and_index_document(file: UploadFile = File(...)):
+def upload_and_index_document(request: Request, file: UploadFile = File(...)):
     allowed_extensions = ['.pdf', '.docx', '.html']
     file_extension = os.path.splitext(file.filename)[1].lower()
 
     if file_extension not in allowed_extensions:
-        raise HTTPException(status_code=400, detail=f"Unsupported file type. Allowed types are: {', '.join(allowed_extensions)}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Неподдерживаемый тип файла. Допустимы: {', '.join(allowed_extensions)}",
+        )
 
-    # Создаем временную директорию если не существует
     temp_dir = "temp_uploads"
     os.makedirs(temp_dir, exist_ok=True)
     temp_file_path = os.path.join(temp_dir, f"temp_{uuid.uuid4()}_{file.filename}")
 
     try:
-        # Сохраняем файл временно с проверкой
         file_content = file.file.read()
         if len(file_content) == 0:
-            raise HTTPException(status_code=400, detail="Uploaded file is empty")
-            
+            raise HTTPException(status_code=400, detail="Загружен пустой файл")
+
         with open(temp_file_path, "wb") as buffer:
             buffer.write(file_content)
 
-        # Проверка размера файла
-        file_size = os.path.getsize(temp_file_path)
-        logging.info(f"File {file.filename} saved, size: {file_size} bytes")
-
-        # Проверка уникальности имени файла в SQLite
-        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename)
+        client_id = get_client_id_from_request(request)
+        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename, client_id=client_id)
         if not is_unique_filename:
-            logging.warning(f"Document {file.filename} already exists in SQLite.")
             raise HTTPException(
                 status_code=400,
-                detail=f"Document with filename {file.filename} already exists in the database."
+                detail=f"Документ {file.filename} уже существует в базе данных.",
             )
 
-        # Если документ уникален, продолжаем индексацию
-        file_id = insert_document_record(file.filename)
-        success = index_document_to_chroma(temp_file_path, file_id)
+        file_id = insert_document_record(file.filename, client_id=client_id)
+        success = index_document_to_chroma(temp_file_path, file_id, client_id=client_id)
 
         if success:
-            logging.info(f"File {file.filename} successfully uploaded and indexed with file_id {file_id}")
-            return {"message": f"File {file.filename} has been successfully uploaded and indexed.", "file_id": file_id}
+            return {
+                "message": f"Файл {file.filename} успешно загружен и проиндексирован.",
+                "file_id": file_id,
+            }
         else:
-            # Если индексация не удалась, удаляем запись из БД
-            delete_document_record(file_id)
-            raise HTTPException(status_code=500, detail=f"Failed to process and index {file.filename}. The file may be corrupted or in an unsupported format.")
-            
+            delete_document_record(file_id, client_id=client_id)
+            raise HTTPException(status_code=500, detail=f"Не удалось обработать {file.filename}.")
+
     except HTTPException:
         raise
     except Exception as e:
-        logging.error(f"Unexpected error during upload: {e}")
-        raise HTTPException(status_code=500, detail=f"Unexpected error during file processing: {str(e)}")
+        logging.error(f"Upload error: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка загрузки: {str(e)}")
     finally:
-        # Всегда очищаем временные файлы
         if os.path.exists(temp_file_path):
             try:
                 os.remove(temp_file_path)
             except Exception as e:
-                logging.warning(f"Could not remove temp file {temp_file_path}: {e}")
+                logging.warning(f"Could not remove temp file: {e}")
 
-@app.post("/chat", response_model=QueryResponse)
-def chat(query_input: QueryInput):
-    session_id = query_input.session_id or str(uuid.uuid4())
-    logging.info(f"Session ID: {session_id}, User Query: {query_input.question}, Model: {query_input.model.value}")
-    
-    chat_history = get_chat_history(session_id)
-    rag_chain = get_rag_chain(query_input.model.value)
-    answer = rag_chain.invoke({
-        "input": query_input.question,
-        "chat_history": chat_history
-    })['answer']
 
-    insert_application_logs(session_id, query_input.question, answer, query_input.model.value)
-    logging.info(f"Session ID: {session_id}, AI Response: {answer}")
-    return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
-
+# ── Сохранение / загрузка тестов ───────────────────────────────────
 
 @app.post("/upload-test-pdf")
 async def upload_test_pdf(
+    request: Request,
     file: UploadFile = File(...),
     document_id: Optional[int] = Form(None),
-    session_id: Optional[str] = Form(None)
+    session_id: Optional[str] = Form(None),
 ):
-    """Загружает тестовый PDF или конвертирует Markdown в PDF"""
+    """Загружает тестовый PDF или конвертирует Markdown в PDF."""
     try:
-        # Читаем содержимое файла
         file_content = await file.read()
-        
-        # Определяем тип файла по расширению
         file_extension = os.path.splitext(file.filename)[1].lower()
-        
-        print(f"📥 Загрузка тестового файла: {file.filename}, расширение: {file_extension}")
-        
+
         pdf_content = None
         final_filename = file.filename
-        
+
         if file_extension == '.md':
-            # Декодируем Markdown текст
             markdown_text = file_content.decode('utf-8', errors='ignore')
-            print(f"📝 Markdown текст (первые 500 символов): {markdown_text[:500]}...")
-            
-            # Конвертируем в PDF
             pdf_buffer = markdown_to_pdf(markdown_text, file.filename)
             pdf_content = pdf_buffer.read()
-            
-            # Обновляем имя файла
             final_filename = file.filename.replace('.md', '.pdf')
-            print(f"✅ Markdown конвертирован в PDF: {final_filename}")
-            
         elif file_extension == '.pdf':
-            # Уже PDF файл
             pdf_content = file_content
-            print(f"✅ Получен готовый PDF: {file.filename}")
-            
         else:
-            raise HTTPException(
-                status_code=400, 
-                detail="Поддерживаются только PDF и Markdown (.md) файлы"
-            )
-        
+            raise HTTPException(status_code=400, detail="Поддерживаются только PDF и Markdown (.md)")
+
         if not pdf_content or len(pdf_content) == 0:
-            raise HTTPException(
-                status_code=400, 
-                detail="Пустой PDF контент после конвертации"
-            )
-        
-        # Сохраняем в базу данных
+            raise HTTPException(status_code=400, detail="Пустой PDF после конвертации")
+
+        client_id = get_client_id_from_request(request)
         file_id = insert_test_pdf_record(
             filename=final_filename,
             document_id=document_id,
             session_id=session_id or "default_session",
-            pdf_content=pdf_content
+            pdf_content=pdf_content,
+            client_id=client_id,
         )
-        
-        print(f"🎉 Test PDF сохранен в БД: ID={file_id}, filename={final_filename}")
-        
-        return {
-            "message": f"Test PDF {final_filename} has been successfully uploaded.",
-            "file_id": file_id,
-            "filename": final_filename
-        }
-        
+
+        return {"message": f"Test PDF {final_filename} uploaded.", "file_id": file_id, "filename": final_filename}
+
     except HTTPException:
         raise
     except Exception as e:
-        logging.error(f"❌ Error uploading test PDF: {e}")
-        raise HTTPException(
-            status_code=500, 
-            detail=f"Ошибка при загрузке тестового PDF: {str(e)}"
-        )
+        logging.error(f"Error uploading test PDF: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка: {str(e)}")
+
 
 @app.post("/save-test")
 async def save_test_endpoint(
+    request: Request,
     test_content: str = Form(...),
     filename: str = Form("test.md"),
     document_id: Optional[int] = Form(None),
-    session_id: Optional[str] = Form(None)
+    session_id: Optional[str] = Form(None),
 ):
-    """Специальный эндпоинт для сохранения сгенерированных тестов"""
+    """Сохраняет сгенерированный тест как PDF."""
     try:
-        print(f"💾 Сохранение теста: {filename}, длина контента: {len(test_content)} символов")
-        
-        # Конвертируем Markdown в PDF
         pdf_buffer = markdown_to_pdf(test_content, filename)
         pdf_content = pdf_buffer.read()
-        
-        # Обновляем имя файла
         pdf_filename = filename.replace('.md', '.pdf')
-        
+
         if not pdf_content or len(pdf_content) == 0:
-            raise HTTPException(
-                status_code=400, 
-                detail="Ошибка при создании PDF: пустой контент"
-            )
-        
-        # Сохраняем в базу данных
+            raise HTTPException(status_code=400, detail="Ошибка создания PDF")
+
+        client_id = get_client_id_from_request(request)
         file_id = insert_test_pdf_record(
             filename=pdf_filename,
             document_id=document_id,
             session_id=session_id or f"session_{uuid.uuid4()}",
-            pdf_content=pdf_content
+            pdf_content=pdf_content,
+            client_id=client_id,
         )
-        
-        print(f"✅ Тест сохранен: ID={file_id}, filename={pdf_filename}")
-        
-        return {
-            "message": "Test saved successfully",
-            "file_id": file_id,
-            "filename": pdf_filename
-        }
-        
+
+        return {"message": "Test saved successfully", "file_id": file_id, "filename": pdf_filename}
+
     except Exception as e:
-        logging.error(f"❌ Error saving test: {e}")
-        raise HTTPException(
-            status_code=500, 
-            detail=f"Ошибка при сохранении теста: {str(e)}"
-        )
+        logging.error(f"Error saving test: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка сохранения: {str(e)}")
 
 
-# Прокси-эндпоинт для Google Apps Script — обходит CORS, выполняя запрос с сервера
+# ── Прокси Google Forms ────────────────────────────────────────────
+
 @app.post("/proxy-google-form")
 async def proxy_google_form(request: Request):
-    """Принимает JSON от фронтенда и пересылает его на Google Apps Script с сервера.
-    Тело запроса: { "test": <object с тестом> }
-    Опционально можно задать переменную окружения GOOGLE_SCRIPT_URL или передать script_url в теле.
-    """
+    """Пересылает тест на Google Apps Script (обходит CORS)."""
     try:
         body = await request.json()
     except Exception as e:
-        logging.error(f"proxy_google_form: invalid json body: {e}")
         raise HTTPException(status_code=400, detail="Invalid JSON body")
 
     test_payload = body.get("test") or body.get("testJson") or body
     script_url = body.get("script_url") or os.environ.get("GOOGLE_SCRIPT_URL")
 
     if not script_url:
-        logging.error("proxy_google_form: GOOGLE_SCRIPT_URL not configured")
-        raise HTTPException(status_code=500, detail="GOOGLE_SCRIPT_URL not configured on server")
+        raise HTTPException(status_code=500, detail="GOOGLE_SCRIPT_URL not configured")
 
     try:
-        logging.info(f"Proxying request to Google Script: {script_url}")
-        resp = requests.post(script_url, json=test_payload, timeout=15)
+        normalized_payload = test_payload
+        if isinstance(test_payload, dict) and "test" not in test_payload:
+            normalized_payload = {"test": test_payload}
+        resp = requests.post(script_url, json=normalized_payload, timeout=15)
         resp.raise_for_status()
         try:
             data = resp.json()
@@ -480,74 +649,71 @@ async def proxy_google_form(request: Request):
             data = resp.text
         return {"status": "ok", "script_response": data}
     except requests.exceptions.RequestException as e:
-        logging.error(f"proxy_google_form: request to Google Script failed: {e}")
-        raise HTTPException(status_code=502, detail=f"Failed to call Google Script: {str(e)}")
+        raise HTTPException(status_code=502, detail=f"Google Script error: {str(e)}")
+
+
+# ── CRUD для документов и тестов ───────────────────────────────────
+
 @app.get("/list-docs", response_model=list[DocumentInfo])
-def list_documents():
-    return get_all_documents()
+def list_documents(request: Request):
+    client_id = get_client_id_from_request(request)
+    return get_all_documents(client_id=client_id)
+
 
 @app.get("/list-test-pdfs", response_model=list[TestPDFInfo])
-def list_test_pdfs():
-    return get_all_test_pdfs()
+def list_test_pdfs(request: Request):
+    client_id = get_client_id_from_request(request)
+    return get_all_test_pdfs(client_id=client_id)
+
 
 @app.get("/download-test-pdf/{file_id}")
-def download_test_pdf(file_id: int):
-    pdf_content = get_test_pdf_content(file_id)
+def download_test_pdf(file_id: int, request: Request):
+    client_id = get_client_id_from_request(request)
+    pdf_content = get_test_pdf_content(file_id, client_id=client_id)
     if not pdf_content:
         raise HTTPException(status_code=404, detail="Test PDF not found.")
     return Response(
         content=pdf_content,
         media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename=test_{file_id}.pdf"}
+        headers={"Content-Disposition": f"attachment; filename=test_{file_id}.pdf"},
     )
 
-@app.post("/delete-doc")
-def delete_document(request: DeleteFileRequest):
-    chroma_delete_success = delete_doc_from_chroma(request.file_id)
 
+@app.post("/delete-doc")
+def delete_document(payload: DeleteFileRequest, request: Request):
+    chroma_delete_success = delete_doc_from_chroma(payload.file_id)
     if chroma_delete_success:
-        db_delete_success = delete_document_record(request.file_id)
+        client_id = get_client_id_from_request(request)
+        db_delete_success = delete_document_record(payload.file_id, client_id=client_id)
         if db_delete_success:
-            return {"message": f"Successfully deleted document with file_id {request.file_id} from the system."}
-        else:
-            return {"error": f"Deleted from Chroma but failed to delete document with file_id {request.file_id} from the database."}
-    else:
-        return {"error": f"Failed to delete document with file_id {request.file_id} from Chroma."}
+            return {"message": f"Document {payload.file_id} deleted."}
+        return {"error": f"Deleted from Chroma but DB delete failed for {payload.file_id}."}
+    return {"error": f"Failed to delete {payload.file_id} from Chroma."}
+
 
 @app.post("/delete-test-pdf")
-def delete_test_pdf(request: DeleteFileRequest):
-    db_delete_success = delete_test_pdf_record(request.file_id)
-    if db_delete_success:
-        return {"message": f"Successfully deleted test PDF with file_id {request.file_id}."}
-    else:
-        return {"error": f"Failed to delete test PDF with file_id {request.file_id} from the database."}
+def delete_test_pdf(payload: DeleteFileRequest, request: Request):
+    client_id = get_client_id_from_request(request)
+    if delete_test_pdf_record(payload.file_id, client_id=client_id):
+        return {"message": f"Test PDF {payload.file_id} deleted."}
+    return {"error": f"Failed to delete test PDF {payload.file_id}."}
 
 
 @app.post("/check-uniqueness")
-def check_document_uniqueness_endpoint(file: UploadFile = File(...)):
+def check_document_uniqueness_endpoint(request: Request, file: UploadFile = File(...)):
     temp_file_path = f"temp_{file.filename}"
     try:
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        # Проверка уникальности имени файла в SQLite
-        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename)
+        client_id = get_client_id_from_request(request)
+        is_unique_filename, existing_filename = check_filename_uniqueness(file.filename, client_id=client_id)
         if not is_unique_filename:
             return {
                 "is_unique": False,
                 "source": "SQLite",
-                "message": f"Document with filename {file.filename} already exists"
+                "message": f"Document with filename {file.filename} already exists",
             }
-
-        # Проверка в ChromaDB
-        # is_unique_chroma, max_similarity_chroma, similar_doc_id = check_document_uniqueness(temp_file_path)
-        # if not is_unique_chroma:
-        #     return {
-        #         "is_unique": False,
-        #         "source": "ChromaDB",
-        #         "max_similarity": max_similarity_chroma,
-        #         "similar_doc_id": similar_doc_id
-        #     }
 
         return {"is_unique": True, "message": "Document is unique"}
     finally:
@@ -556,27 +722,39 @@ def check_document_uniqueness_endpoint(file: UploadFile = File(...)):
 
 
 @app.get("/get-document-text/{file_id}")
-def get_document_text(file_id: int):
-    try:
-        # Получаем документ из ChromaDB
-        docs = vectorstore.get(where={"file_id": file_id})
-        if not docs or not docs.get('documents'):
-            raise HTTPException(status_code=404, detail="Document not found")
-        
-        # Собираем весь текст документа
-        document_text = "\n\n".join(docs['documents'])
-        return {"text": document_text}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def get_document_text(file_id: int, request: Request):
+    """Возвращает полный текст документа из ChromaDB."""
+    client_id = get_client_id_from_request(request)
+    text = get_document_text_by_id(file_id, client_id=client_id)
+    if not text:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"text": text}
 
+
+# ── Информация о графе агентов ─────────────────────────────────────
+
+@app.get("/agent-info")
+def agent_info():
+    """Возвращает информацию об архитектуре агентов."""
+    return {
+        "architecture": "LangGraph Agentic RAG",
+        "agents": {
+            "orchestrator": "Маршрутизирует запросы к нужному агенту",
+            "rag": "Поиск по документам (ChromaDB) и генерация ответа",
+            "vision": "Анализ изображений (Llama 4 Scout via Groq)",
+            "test_gen": "Генерация тестов с валидацией JSON",
+            "chat": "Общий разговор о платформе",
+        },
+        "tools": {
+            "search_documents": "Поиск в ChromaDB",
+            "validate_json": "Валидация JSON-структуры тестов",
+        },
+    }
+
+
+# ── Запуск ─────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     import uvicorn
-    print("Starting OneClickTest API server...")
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0", 
-        port=8000,
-        reload=True,
-        log_level="info"
-    )
+    print("Starting OneClickTest API v2.0 (LangGraph Agentic RAG)...")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, log_level="info")

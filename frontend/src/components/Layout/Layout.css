@@ -3,31 +3,74 @@
     min-height: 100vh;
 }
 
-.main-content {
+.layout-body {
     flex: 1;
-    margin-left: 250px;
-    padding: 20px;
-    background: #f5f7fa;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-.help-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #3498db;
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+/* ── Header ─────────────────────────────────────────────── */
+.layout-header {
+    padding: 20px 32px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.85);
 }
 
-    .help-button:hover {
-        background: #2980b9;
-        transform: scale(1.1);
+.header-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* ── Main Content ───────────────────────────────────────── */
+.main-content {
+    flex: 1;
+    padding: 24px 32px;
+    background: var(--bg-page);
+}
+
+/* ── Help Button ────────────────────────────────────────── */
+.help-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 200;
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    background-image: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-accent) 50%, var(--clr-primary) 100%);
+    box-shadow: 0 4px 16px rgba(87, 79, 140, 0.3);
+    transition: background-position 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.help-button:hover {
+    background-position: 100% 50%;
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(87, 79, 140, 0.4);
+}
+
+@media (max-width: 768px) {
+    .layout-body {
+        margin-left: 0;
     }
+
+    .main-content {
+        padding: 16px;
+    }
+}

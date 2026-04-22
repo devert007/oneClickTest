@@ -7,7 +7,7 @@ from io import BytesIO
 
 from auth_utils import get_current_client_id
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8001")
 
 def get_api_response(question, session_id, model):
     headers = {
@@ -22,7 +22,7 @@ def get_api_response(question, session_id, model):
         data["session_id"] = session_id
 
     try:
-        response = requests.post("http://localhost:8000/chat", headers=headers, json=data)
+        response = requests.post("http://localhost:8001/chat", headers=headers, json=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -43,7 +43,7 @@ def upload_document(file):
         # Добавляем client_id в данные формы
         data = {"client_id": client_id}
         
-        response = requests.post("http://localhost:8000/upload-doc", files=files, data=data)
+        response = requests.post("http://localhost:8001/upload-doc", files=files, data=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -89,7 +89,7 @@ def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None,
         if client_id:
             data["client_id"] = client_id
         
-        response = requests.post("http://localhost:8000/upload-test-pdf", files=files, data=data)
+        response = requests.post("http://localhost:8001/upload-test-pdf", files=files, data=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -100,7 +100,7 @@ def upload_test_pdf(pdf_buffer: BytesIO, filename: str, document_id: int = None,
         return None
 def download_test_pdf(file_id: int):
     try:
-        response = requests.get(f"http://localhost:8000/download-test-pdf/{file_id}")
+        response = requests.get(f"http://localhost:8001/download-test-pdf/{file_id}")
         if response.status_code == 200:
             return response.content
         else:
@@ -114,7 +114,7 @@ def list_documents():
     try:
         # Передаем client_id в запрос
         client_id = get_current_client_id()
-        response = requests.get(f"http://localhost:8000/list-docs?client_id={client_id}")
+        response = requests.get(f"http://localhost:8001/list-docs?client_id={client_id}")
         if response.status_code == 200:
             return response.json()
         else:
@@ -128,7 +128,7 @@ def list_test_pdfs():
     try:
         # Передаем client_id в запрос
         client_id = get_current_client_id()
-        response = requests.get(f"http://localhost:8000/list-test-pdfs?client_id={client_id}")
+        response = requests.get(f"http://localhost:8001/list-test-pdfs?client_id={client_id}")
         if response.status_code == 200:
             return response.json()
         else:
@@ -146,7 +146,7 @@ def delete_document(file_id):
     data = {"file_id": file_id}
 
     try:
-        response = requests.post("http://localhost:8000/delete-doc", headers=headers, json=data)
+        response = requests.post("http://localhost:8001/delete-doc", headers=headers, json=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -164,7 +164,7 @@ def delete_test_pdf(file_id):
     data = {"file_id": file_id}
 
     try:
-        response = requests.post("http://localhost:8000/delete-test-pdf", headers=headers, json=data)
+        response = requests.post("http://localhost:8001/delete-test-pdf", headers=headers, json=data)
         if response.status_code == 200:
             return response.json()
         else:
@@ -179,7 +179,7 @@ def check_document_uniqueness(file):
         print("hi",client_id)
         files = {"file": (file.name, file, file.type)}
         data = {"client_id": client_id}
-        response = requests.post("http://localhost:8000/check-uniqueness/", files=files,data=data)
+        response = requests.post("http://localhost:8001/check-uniqueness/", files=files,data=data)
         if response.status_code == 200:
             print(response,response.json())
             return response.json()
@@ -203,7 +203,7 @@ def generate_test_api(document_id: int, question_count: int, difficulty: str, qu
             "question_type": question_type
         }
         print(data)
-        response = requests.post("http://localhost:8000/generate-test", json=data)
+        response = requests.post("http://localhost:8001/generate-test", json=data)
         if response.status_code == 200:
             return response.json()
         else:

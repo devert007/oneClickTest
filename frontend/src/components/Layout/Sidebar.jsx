@@ -1,6 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { Home, ClipboardCheck, FolderOpen, Archive, MessageCircle, User, LogOut } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -14,30 +15,43 @@ const Sidebar = () => {
     };
 
     const menuItems = [
-        { path: '/create-test', label: 'Создать тест', icon: '📝' },
-        { path: '/my-documents', label: 'Мои документы', icon: '📁' },
-        { path: '/my-tests', label: 'Мои тесты', icon: '💾' },
-        { path: '/chat', label: 'Чат с AI', icon: '💬' },
-        { path: '/profile', label: 'Профиль', icon: '👤' }
+        { path: '/', label: 'Главная', icon: <Home size={20} /> },
+        { path: '/create-test', label: 'Создать тест', icon: <ClipboardCheck size={20} /> },
+        { path: '/my-documents', label: 'Мои документы', icon: <FolderOpen size={20} /> },
+        { path: '/my-tests', label: 'Мои тесты', icon: <Archive size={20} /> },
+        { path: '/chat', label: 'Чат с AI', icon: <MessageCircle size={20} /> },
+        { path: '/profile', label: 'Профиль', icon: <User size={20} /> }
     ];
 
+    const isActive = (path) => {
+        if (path === '/') return location.pathname === '/';
+        return location.pathname.startsWith(path);
+    };
+
     return (
-        <div className="sidebar">
-            <div className="sidebar-header">
-                <h2>OneClickTest</h2>
-                {user && (
-                    <div className="user-info">
-                        <span>Привет, {user.name}!</span>
-                    </div>
-                )}
+        <aside className="sidebar">
+            <div className="sidebar-brand">
+                <div className="brand-icon">
+                    <ClipboardCheck size={22} />
+                </div>
+                <span className="brand-text">OneClickTest</span>
             </div>
+
+            {user && (
+                <div className="sidebar-user">
+                    <div className="user-avatar">
+                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                    </div>
+                    <span className="user-name">{user.name}</span>
+                </div>
+            )}
 
             <nav className="sidebar-nav">
                 {menuItems.map(item => (
                     <Link
                         key={item.path}
                         to={item.path}
-                        className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                        className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
                     >
                         <span className="nav-icon">{item.icon}</span>
                         <span className="nav-label">{item.label}</span>
@@ -47,10 +61,11 @@ const Sidebar = () => {
 
             <div className="sidebar-footer">
                 <button onClick={handleLogout} className="logout-btn">
-                    🚪 Выйти
+                    <LogOut size={18} />
+                    <span>Выйти</span>
                 </button>
             </div>
-        </div>
+        </aside>
     );
 };
 

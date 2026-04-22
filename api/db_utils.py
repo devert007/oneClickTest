@@ -205,21 +205,27 @@ def insert_test_pdf_record(filename: str, document_id: int, session_id: str, pdf
     finally:
         cursor.close()
         conn.close()
-def delete_document_record(file_id: int) -> bool:
+def delete_document_record(file_id: int, client_id: int = None) -> bool:
     """Удаляет запись документа по ID"""
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM document_store WHERE id = %s', (file_id,))
+    if client_id is None:
+        cursor.execute('DELETE FROM document_store WHERE id = %s', (file_id,))
+    else:
+        cursor.execute('DELETE FROM document_store WHERE id = %s AND client_id = %s', (file_id, client_id))
     conn.commit()
     cursor.close()
     conn.close()
     return True
 
-def delete_test_pdf_record(file_id: int) -> bool:
+def delete_test_pdf_record(file_id: int, client_id: int = None) -> bool:
     """Удаляет запись тестового PDF по ID"""
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM test_pdf_store WHERE id = %s', (file_id,))
+    if client_id is None:
+        cursor.execute('DELETE FROM test_pdf_store WHERE id = %s', (file_id,))
+    else:
+        cursor.execute('DELETE FROM test_pdf_store WHERE id = %s AND client_id = %s', (file_id, client_id))
     conn.commit()
     cursor.close()
     conn.close()
@@ -280,11 +286,14 @@ def get_all_test_pdfs(client_id: int = None) -> List[Dict[str, Any]]:
     conn.close()
     return test_pdfs
 
-def get_test_pdf_content(file_id: int) -> Optional[bytes]:
+def get_test_pdf_content(file_id: int, client_id: int = None) -> Optional[bytes]:
     """Получает содержимое тестового PDF по ID"""
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT pdf_content FROM test_pdf_store WHERE id = %s', (file_id,))
+    if client_id is None:
+        cursor.execute('SELECT pdf_content FROM test_pdf_store WHERE id = %s', (file_id,))
+    else:
+        cursor.execute('SELECT pdf_content FROM test_pdf_store WHERE id = %s AND client_id = %s', (file_id, client_id))
     result = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -347,6 +356,48 @@ def create_client(username: str, email: str, password_hash: str) -> Optional[int
         return client_id
     except Exception as e:
         print(f"❌ Error creating client: {e}")
+        conn.rollback()
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
+def get_or_create_google_client(email: str, name: str) -> Optional[int]:
+    """Находит или создает пользователя для Google OAuth и возвращает client_id."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'SELECT id FROM clients WHERE email = %s',
+            (email,)
+        )
+        existing = cursor.fetchone()
+        if existing:
+            return existing[0]
+
+        base_username = (name or email.split("@")[0] or "google_user").strip().lower()
+        safe_username = "".join(ch if ch.isalnum() or ch in ("_", "-") else "_" for ch in base_username)
+        if not safe_username:
+            safe_username = "google_user"
+
+        candidate = safe_username
+        suffix = 1
+        while True:
+            cursor.execute('SELECT id FROM clients WHERE username = %s', (candidate,))
+            if not cursor.fetchone():
+                break
+            suffix += 1
+            candidate = f"{safe_username}_{suffix}"
+
+        cursor.execute(
+            'INSERT INTO clients (username, email, password_hash) VALUES (%s, %s, %s) RETURNING id',
+            (candidate, email, "")
+        )
+        client_id = cursor.fetchone()[0]
+        conn.commit()
+        return client_id
+    except Exception as e:
+        print(f"❌ Error creating Google client: {e}")
         conn.rollback()
         return None
     finally:

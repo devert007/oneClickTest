@@ -1,338 +1,219 @@
-﻿.my-tests {
-    padding: 20px;
-    max-width: 1200px;
+.tests-page {
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-.page-header {
-    margin-bottom: 30px;
-}
-
-    .page-header h1 {
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .page-header p {
-        color: #666;
-        font-size: 16px;
-    }
-
-.connection-error {
-    background-color: #fff3cd;
-    border: 1px solid #ffeaa7;
-    border-radius: 8px;
-    padding: 16px;
+.tests-conn-error {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: rgba(217, 61, 26, 0.06);
+    border: 1px solid rgba(217, 61, 26, 0.15);
+    border-radius: var(--radius-md);
     margin-bottom: 20px;
-    color: #856404;
+    color: var(--clr-danger);
 }
 
-    .connection-error h3 {
-        margin-top: 0;
-        color: #856404;
-    }
+.tests-conn-error p {
+    font-size: 0.82rem;
+    margin: 2px 0 0;
+    opacity: 0.8;
+}
 
-/* Контейнер для списка и предпросмотра */
-.tests-container {
+/* ── Layout ─────────────────────────────────────────────── */
+.tests-layout {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 340px;
     gap: 20px;
 }
 
-.tests-list {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* ── List Card ──────────────────────────────────────────── */
+.tests-list-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
 }
 
-.list-header {
+.tests-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-light);
 }
 
-    .list-header h3 {
-        margin: 0;
-    }
+.tests-list-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
 
-.loading,
-.empty-state {
+.tests-loading,
+.tests-empty {
     text-align: center;
-    padding: 40px;
-    color: #666;
+    padding: 48px 20px;
+    color: var(--text-muted);
 }
 
-/* Список тестов в одну колонку */
+.tests-empty svg {
+    margin-bottom: 12px;
+    opacity: 0.4;
+}
+
+.tests-empty p { margin: 4px 0; }
+
+.tests-empty-sub {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
 .tests-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
 }
 
-/* Карточка теста (точно как .document-card в my-documents) */
-.test-card {
+.tests-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px; /* Точный размер из my-documents */
-    border: 1px solid #e9ecef;
-    border-radius: 8px; /* Точный radius из my-documents */
-    background: #f8f9fa; /* Точный background из my-documents */
-    transition: all 0.3s ease; /* Точная transition из my-documents */
+    justify-content: space-between;
+    padding: 14px 18px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-page);
+    cursor: pointer;
+    transition: var(--transition);
+    gap: 12px;
 }
 
-    .test-card:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Точный hover-shadow из my-documents */
-        transform: translateY(-2px); /* Точный hover-transform из my-documents */
-    }
+.tests-item:hover {
+    border-color: var(--clr-accent);
+    box-shadow: var(--shadow-sm);
+}
 
-    .test-card.selected {
-        border-color: #007bff;
-        background-color: #f8f9fa;
-    }
+.tests-item.selected {
+    border-color: var(--clr-primary);
+    background: rgba(160, 148, 242, 0.04);
+}
 
-/* Левая часть карточки (точно как .document-info в my-documents) */
-.test-info {
+.tests-item-info {
     flex: 1;
     min-width: 0;
 }
 
-    .test-info h4 {
-        margin: 0 0 8px 0; /* Точный margin из my-documents */
-        color: #333;
-        font-size: 1.1em; /* Точный font-size из my-documents */
-        word-break: break-word;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-.test-meta {
-    display: flex;
-    flex-direction: column; /* Точно как в my-documents */
-    gap: 4px; /* Точный gap из my-documents */
-    font-size: 0.9em; /* Точный font-size для span из my-documents */
-}
-
-    .test-meta span {
-        color: #666; /* Точный color из my-documents */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-.test-actions {
-    display: flex;
-    gap: 10px; /* Точный gap из my-documents */
-    align-items: center; /* Точно как в my-documents */
-    flex-shrink: 0;
-    margin-left: 15px; /* Небольшой отступ для баланса */
-}
-
-    /* Стили для кнопок в test-actions (точно как .document-actions .btn в my-documents) */
-    .test-actions .btn {
-        min-width: 140px; /* Одинаковая минимальная ширина для кнопок */
-        padding: 10px 16px; /* Точный padding из my-documents */
-        border: none;
-        border-radius: 6px; /* Точный radius из my-documents */
-        cursor: pointer;
-        font-size: 0.9em; /* Точный font-size из my-documents */
-        font-weight: 500; /* Точный font-weight из my-documents */
-        text-align: center; /* Точно как в my-documents */
-        transition: all 0.3s ease; /* Унифицировал transition */
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px; /* Точный gap из my-documents */
-    }
-
-    /* Специфичные стили для каждой кнопки (с градиентами, как в create-test) */
-    .test-actions .btn-secondary {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3); /* Добавил shadow */
-    }
-
-        .test-actions .btn-secondary:hover {
-            background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
-            transform: translateY(-1px); /* Точно как в my-documents */
-            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
-        }
-
-    .test-actions .btn-danger {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); /* Добавил shadow */
-    }
-
-        .test-actions .btn-danger:hover {
-            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-            transform: translateY(-1px); /* Точно как в my-documents */
-            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
-        }
-
-/* Общие стили для других кнопок на странице (если есть, например, в preview-actions) */
-.btn {
-    padding: 12px 24px; /* Немного больше, как в create-test */
-    border: none;
-    border-radius: 10px; /* Мягче углы */
-    cursor: pointer;
-    font-size: 14px; /* Унифицировал */
+.tests-item-info h4 {
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: all 0.3s ease; /* Унифицировал */
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Для иконок */
-    text-decoration: none;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); /* Добавил shadow */
+.tests-item-info span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
 }
 
-    .btn-primary:hover:not(:disabled) {
-        transform: translateY(-2px); /* Как в create-test */
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .btn-primary:disabled {
-        background: linear-gradient(135deg, #bdc3c7 0%, #6c757d 100%);
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-
-.btn-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-    color: #212529;
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3); /* Добавил shadow */
+.tests-item-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
-    .btn-warning:hover:not(:disabled) {
-        background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
-        transform: translateY(-2px); /* Как в create-test */
-        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
-    }
-
-.btn-success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); /* Добавил, если используется */
+/* ── Preview ────────────────────────────────────────────── */
+.tests-preview {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    align-self: start;
+    position: sticky;
+    top: 100px;
 }
 
-    .btn-success:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-    }
-
-.btn-danger {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); /* Добавил, если используется */
-}
-
-    .btn-danger:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
-    }
-
-.btn-secondary {
-    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3); /* Добавил, если используется */
-}
-
-    .btn-secondary:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
-    }
-
-.btn-sm {
-    padding: 8px 16px;
-    font-size: 13px;
-}
-
-/* Предпросмотр теста (справа) */
-.test-preview {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.preview-header {
+.tests-preview-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
 }
 
-    .preview-header h3 {
-        margin: 0;
-    }
+.tests-preview-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
 
-.preview-content h4 {
-    margin: 0 0 15px 0;
-    color: #333;
+.tests-preview-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.tests-preview-close:hover {
+    color: var(--clr-danger);
+    background: rgba(217, 61, 26, 0.06);
+}
+
+.tests-preview-body h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 14px;
     word-break: break-word;
 }
 
-.test-details {
+.tests-detail-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
 }
 
-    .test-details p {
-        margin: 8px 0;
-        font-size: 14px;
-    }
-
-.preview-actions {
+.tests-preview-actions {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
-/* Адаптивность (точно как в my-documents) */
-@media (max-width: 768px) {
-    .tests-container {
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .tests-layout {
         grid-template-columns: 1fr;
     }
 
-    .test-preview {
-        order: -1; /* Предпросмотр сверху на мобильных */
+    .tests-preview {
+        position: static;
+        order: -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .tests-item {
+        flex-wrap: wrap;
     }
 
-    .test-card {
-        flex-direction: column; /* Точно как в my-documents */
-        align-items: flex-start; /* Точно как в my-documents */
-        gap: 15px; /* Точный gap из my-documents */
-        padding: 20px; /* Точный padding из my-documents */
-    }
-
-    .test-info {
+    .tests-item-actions {
         width: 100%;
+        justify-content: stretch;
     }
 
-    .test-actions {
-        margin-left: 0;
-        width: 100%; /* Точно как в my-documents */
-        justify-content: space-between; /* Точно как в my-documents */
-    }
-
-        .test-actions .btn {
-            flex: 1; /* Точно как в my-documents */
-            min-width: auto; /* Точно как в my-documents */
-        }
-
-    .test-meta {
-        flex-direction: column;
-        gap: 4px; /* Точный gap из my-documents */
+    .tests-item-actions .btn {
+        flex: 1;
+        justify-content: center;
     }
 }

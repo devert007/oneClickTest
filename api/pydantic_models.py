@@ -11,10 +11,11 @@ class ModelName(str, Enum):
 class DifficultyLevel(str, Enum):
     EASY = "Для средних классов"
     HARD = "Для старших классов"
+    STUDENT = "Для студентов"
 
 class QuestionType(str, Enum):
     MULTIPLE_CHOICE = "multiple_choice"
-    OPEN_ENDED = "open_ended"
+    OPEN_QUESTIONS = "open_questions"
 
 class QueryInput(BaseModel):
     question: str
@@ -43,13 +44,23 @@ class DeleteFileRequest(BaseModel):
 
 class TestGenerationRequest(BaseModel):
     document_id: Optional[int] = Field(default=None)
-    question_count: int = Field(default=5, ge=1, le=20)
+    question_count: int = Field(default=5, ge=1, le=50)
     difficulty: DifficultyLevel = Field(default=DifficultyLevel.EASY)
     question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
     include_answers: bool = Field(default=True)
     session_id: Optional[str] = Field(default=None)
     model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
     # XML fields removed — XML support deprecated
+
+class MaterialAndTestRequest(BaseModel):
+    prompt: str = Field(..., min_length=3)
+    question_count: int = Field(default=10, ge=1, le=50)
+    difficulty: DifficultyLevel = Field(default=DifficultyLevel.EASY)
+    question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
+    include_answers: bool = Field(default=True)
+    session_id: Optional[str] = Field(default=None)
+    model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
+
 
 class TestGenerationResponse(BaseModel):
     test_content: str
@@ -65,3 +76,8 @@ class TestContent(BaseModel):
     questions: List[TestQuestion]
 
 
+class ImageAnalysisResponse(BaseModel):
+    answer: str
+    session_id: str
+    agent_type: str = "vision"
+    filename: Optional[str] = None

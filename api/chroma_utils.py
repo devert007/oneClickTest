@@ -2,7 +2,7 @@ from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, Un
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings  # Обновленный импорт
 from langchain_chroma import Chroma
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from langchain_core.documents import Document
 import numpy as np
 import logging
@@ -29,37 +29,56 @@ def load_and_split_document(file_path: str) -> List[Document]:
     Универсальная функция загрузки документов с использованием Docling
     Поддерживает: PDF, DOCX, HTML, PPTX, XLSX и другие форматы
     """
-    # Инициализация конвертера Docling
-    converter = DocumentConverter()
-    
-    # Конвертация документа
-    result = converter.convert(file_path)
-    
-    if not result.documents:
-        logging.error(f"No content extracted from {file_path}")
+    if not os.path.exists(file_path):
+        logging.error(f"File not found: {file_path}")
         return []
-    
-    # Извлечение текста из всех документов
-    all_texts = []
-    for doc in result.documents:
-        # Экспорт в Markdown для сохранения структуры
-        markdown_content = doc.export_to_markdown()
-        all_texts.append(markdown_content)
-    
-    # Объединение всего текста
-    full_text = "\n\n".join(all_texts)
-    
-    # Создание Langchain Document
-    documents = [Document(page_content=full_text, metadata={"source": file_path})]
-    
-    logging.debug(f"Loaded document from {file_path} using Docling")
-    print(f"Loaded document from {file_path} using Docling")
-    
-    # Разбиение на чанки
-    splits = text_splitter.split_documents(documents)
+
+    try:
+        converter = DocumentConverter()
+        result = converter.convert(file_path)
+        converted_doc = getattr(result, "document", None)
+
+        if not converted_doc:
+            raise ValueError("Docling returned empty conversion result")
+
+        # У разных версий Docling методы экспорта отличаются.
+        if hasattr(converted_doc, "export_to_markdown"):
+            markdown_content = converted_doc.export_to_markdown()
+        elif hasattr(result, "export_to_markdown"):
+            markdown_content = result.export_to_markdown()
+        elif hasattr(converted_doc, "export_to_text"):
+            markdown_content = converted_doc.export_to_text()
+        else:
+            markdown_content = str(converted_doc)
+        if not markdown_content or not markdown_content.strip():
+            raise ValueError("Docling extracted empty text")
+
+        documents = [Document(page_content=markdown_content, metadata={"source": file_path})]
+        logging.debug(f"Loaded document from {file_path} using Docling")
+
+    except Exception as docling_error:
+        logging.warning(f"Docling failed for {file_path}: {docling_error}. Falling back to legacy loaders.")
+        extension = os.path.splitext(file_path)[1].lower()
+        if extension == ".pdf":
+            loader = PyPDFLoader(file_path)
+        elif extension == ".docx":
+            loader = Docx2txtLoader(file_path)
+        elif extension == ".html":
+            loader = UnstructuredHTMLLoader(file_path)
+        else:
+            logging.error(f"Unsupported file type for fallback loader: {extension}")
+            return []
+        documents = loader.load()
+
+    valid_documents = [doc for doc in documents if doc.page_content and doc.page_content.strip()]
+    if not valid_documents:
+        logging.error(f"No valid text content extracted from {file_path}")
+        return []
+
+    splits = text_splitter.split_documents(valid_documents)
     logging.debug(f"Split document into {len(splits)} chunks")
     print(f"Split document into {len(splits)} chunks")
-    
+
     return splits
         
 
@@ -127,7 +146,7 @@ def load_and_split_document(file_path: str) -> List[Document]:
 #         print(f"Error loading document {file_path}: {e}")
 #         return []
 
-def index_document_to_chroma(file_path: str, file_id: int) -> bool:
+def index_document_to_chroma(file_path: str, file_id: int, client_id: Optional[int] = None) -> bool:
     try:
         # Дополнительная проверка файла перед обработкой
         if not os.path.exists(file_path):
@@ -147,6 +166,8 @@ def index_document_to_chroma(file_path: str, file_id: int) -> bool:
 
         for split in valid_splits:
             split.metadata['file_id'] = file_id
+            if client_id is not None:
+                split.metadata['client_id'] = client_id
 
         vectorstore.add_documents(valid_splits)
         logging.info(f"Successfully indexed document with file_id {file_id}, {len(valid_splits)} chunks")

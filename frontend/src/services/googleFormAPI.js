@@ -1,20 +1,22 @@
 // Google Form API integration
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFxkVPUicjMeHT-Qn2lIuSd-S9he7esbPoOOBj8-pK0biy7VgLQ-N8bLlLJI6xjKVt/exec"
-
+const GOOGLE_SCRIPT_URL =
+	"https://script.google.com/macros/s/AKfycbxFxkVPUicjMeHT-Qn2lIuSd-S9he7esbPoOOBj8-pK0biy7VgLQ-N8bLlLJI6xjKVt/exec";
 
 export const googleFormAPI = {
 	sendTestToGoogleForm: async (testJson) => {
 		try {
+			const token = localStorage.getItem("token");
 			// Посылаем на backend прокси-эндпоинт (обходит CORS)
-			const response = await fetch("http://localhost:8000/proxy-google-form", {
+			const response = await fetch("http://localhost:8001/proxy-google-form", {
 				method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          test: testJson,
-          script_url: GOOGLE_SCRIPT_URL   // ← вот это было нужно!
-        }),
+				headers: {
+					"Content-Type": "application/json",
+					...(token ? { Authorization: `Bearer ${token}` } : {}),
+				},
+				body: JSON.stringify({
+					test: testJson,
+					script_url: GOOGLE_SCRIPT_URL, // ← вот это было нужно!
+				}),
 			});
 			// Проверяем статус ответа
 			if (!response.ok) {
@@ -30,7 +32,7 @@ export const googleFormAPI = {
 			} catch (e) {
 				result = await response.text();
 			}
-      console.log(result)
+			console.log(result);
 			return result;
 		} catch (error) {
 			// Подробный вывод для диагностики
