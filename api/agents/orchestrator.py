@@ -2,7 +2,7 @@
 Orchestrator Agent — маршрутизирует запросы к нужному агенту.
 
 Стратегия:
-  1. Быстрые эвристики (есть изображение → vision, есть test_params → test_gen)
+  1. Быстрые эвристики (есть test_params → test_gen)
   2. Если эвристики не сработали — LLM классифицирует intent
   3. Fallback → chat
 """
@@ -12,19 +12,18 @@ from agents.state import AgentState
 from langchain_utils import create_llm
 
 # Допустимые типы агентов
-VALID_AGENTS = {"rag", "vision", "test_gen", "chat"}
+VALID_AGENTS = {"rag", "test_gen", "chat"}
 
 ROUTING_PROMPT = """Ты — маршрутизатор запросов платформы OneClickTest.
 Классифицируй запрос пользователя в ОДНУ из категорий:
 
 - "rag"      → вопрос по загруженным документам, поиск информации в документах
-- "vision"   → анализ изображения, распознавание текста на картинке
 - "test_gen" → генерация теста/викторины по документу
 - "chat"     → общий разговор, вопросы о платформе, приветствие
 
 Запрос пользователя: {user_input}
 
-Ответь ТОЛЬКО одним словом (rag/vision/test_gen/chat):"""
+Ответь ТОЛЬКО одним словом (rag/test_gen/chat):"""
 
 
 def orchestrator_node(state: AgentState) -> dict:
@@ -33,18 +32,13 @@ def orchestrator_node(state: AgentState) -> dict:
 
     Приоритет:
       1. agent_type уже задан (напр. из API-эндпоинта) → пропускаем
-      2. Есть image_data → vision
-      3. Есть test_params → test_gen
-      4. LLM-классификация → rag/vision/test_gen/chat
-      5. Fallback → chat
+      2. Есть test_params → test_gen
+      3. LLM-классификация → rag/test_gen/chat
+      4. Fallback → chat
     """
     # Если тип агента уже задан API-эндпоинтом — не меняем
     if state.get("agent_type"):
         return {"agent_type": state["agent_type"]}
-
-    # Быстрые эвристики (без вызова LLM)
-    if state.get("image_data"):
-        return {"agent_type": "vision"}
 
     if state.get("test_params"):
         return {"agent_type": "test_gen"}

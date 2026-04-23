@@ -48,6 +48,7 @@ class TestGenerationRequest(BaseModel):
     difficulty: DifficultyLevel = Field(default=DifficultyLevel.EASY)
     question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
     include_answers: bool = Field(default=True)
+    include_chart: bool = Field(default=False)
     session_id: Optional[str] = Field(default=None)
     model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
     # XML fields removed — XML support deprecated
@@ -58,6 +59,7 @@ class MaterialAndTestRequest(BaseModel):
     difficulty: DifficultyLevel = Field(default=DifficultyLevel.EASY)
     question_type: QuestionType = Field(default=QuestionType.MULTIPLE_CHOICE)
     include_answers: bool = Field(default=True)
+    include_chart: bool = Field(default=False)
     session_id: Optional[str] = Field(default=None)
     model: ModelName = Field(default=ModelName.GROQ_GPT_OSS)
 
@@ -76,8 +78,3 @@ class TestContent(BaseModel):
     questions: List[TestQuestion]
 
 
-class ImageAnalysisResponse(BaseModel):
-    answer: str
-    session_id: str
-    agent_type: str = "vision"
-    filename: Optional[str] = None

@@ -183,6 +183,7 @@ export const testGenerationAPI = {
 		filename,
 		documentId = null,
 		sessionId = null,
+		chartImage = null,
 	) => {
 		try {
 			console.log("💾 Сохранение теста через /save-test:", {
@@ -196,6 +197,7 @@ export const testGenerationAPI = {
 			formData.append("filename", filename);
 			if (documentId) formData.append("document_id", documentId);
 			if (sessionId) formData.append("session_id", sessionId);
+			if (chartImage) formData.append("chart_image", chartImage);
 
 			const response = await api.post("/save-test", formData, {
 				headers: {

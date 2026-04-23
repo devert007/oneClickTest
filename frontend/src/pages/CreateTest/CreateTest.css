@@ -399,3 +399,26 @@
     width: auto;
     min-width: 120px;
 }
+
+/* Сгенерированная схема к вопросу */
+.ct-chart {
+    margin: 16px 0;
+    padding: 12px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.ct-chart img {
+    max-width: 100%;
+    max-height: 480px;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.ct-chart figcaption {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+}

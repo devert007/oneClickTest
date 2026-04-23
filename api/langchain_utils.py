@@ -27,8 +27,6 @@ GROQ_MODELS = {
 
 LOCAL_MODEL = "bambucha/saiga-llama3:8b"
 
-VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
-
 
 # ── Фабрики ────────────────────────────────────────────────────────
 

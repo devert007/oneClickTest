@@ -3,7 +3,7 @@ OneClickTest API — FastAPI-сервер с LangGraph Agentic RAG.
 
 Архитектура:
     Все AI-запросы проходят через граф агентов (agents/graph.py):
-    Orchestrator → RAG Agent | Vision Agent | Test Generator | Chat Agent
+    Orchestrator → RAG Agent | Test Generator | Chat Agent
 """
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Response, Request
@@ -11,10 +11,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic_models import (
     QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest,
     TestPDFInfo, TestGenerationRequest, TestGenerationResponse,
-    DifficultyLevel, QuestionType, ImageAnalysisResponse,
+    DifficultyLevel, QuestionType,
     MaterialAndTestRequest,
 )
 from langchain_utils import create_llm
+from image_gen import generate_chart_image
 from agents.graph import run_agent
 from db_utils import (
     insert_application_logs, get_chat_history, get_all_documents,
@@ -31,25 +32,26 @@ from parse_test_to_md import test_json_to_markdown
 import os
 import sys
 import uuid
-import base64
 import json
 import logging
 import shutil
 import requests
 from typing import Optional
 from jose import jwt, JWTError
+import base64
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.utils import ImageReader
 from io import BytesIO
 from email_auth import router as email_auth_router
 
 
 # ── Вспомогательные функции ────────────────────────────────────────
 
-def markdown_to_pdf(markdown_text, filename="test.pdf"):
-    """Конвертирует Markdown текст в PDF файл."""
+def markdown_to_pdf(markdown_text, filename="test.pdf", chart_image_b64: Optional[str] = None):
+    """Конвертирует Markdown текст в PDF файл. Если передана картинка (data URL или голый base64), вставляет её сверху."""
     try:
         buffer = BytesIO()
 
@@ -71,6 +73,22 @@ def markdown_to_pdf(markdown_text, filename="test.pdf"):
         p.drawString(500, 780, f"Страница {page_number}")
         p.line(50, 775, 550, 775)
         y -= 40
+
+        if chart_image_b64:
+            try:
+                raw = chart_image_b64.split(",", 1)[1] if chart_image_b64.startswith("data:") else chart_image_b64
+                img_bytes = base64.b64decode(raw)
+                reader = ImageReader(BytesIO(img_bytes))
+                img_w = 400
+                img_h = 260
+                p.drawImage(reader, 50, y - img_h, width=img_w, height=img_h,
+                            preserveAspectRatio=True, mask="auto")
+                p.setFont(font_name, 10)
+                p.drawString(50, y - img_h - 12, "Схема к вопросу 1")
+                p.setFont(font_name, 12)
+                y = y - img_h - 30
+            except Exception as e:
+                logging.warning(f"Cannot embed chart image into PDF: {e}")
 
         for line in lines:
             if not line.strip():
@@ -175,7 +193,7 @@ def read_root():
         "message": "OneClickTest API is running",
         "version": "2.0.0",
         "architecture": "LangGraph Agentic RAG",
-        "agents": ["orchestrator", "rag", "vision", "test_gen", "chat"],
+        "agents": ["orchestrator", "rag", "test_gen", "chat"],
     }
 
 
@@ -271,6 +289,8 @@ def generate_test(request_data: TestGenerationRequest, request: Request):
         except Exception:
             test_json = None
 
+        chart = _maybe_attach_chart(test_json, request_data.include_chart, request_data.model.value)
+
         insert_application_logs(
             session_id,
             f"Generate test: {request_data.question_count} questions",
@@ -281,12 +301,15 @@ def generate_test(request_data: TestGenerationRequest, request: Request):
         return {
             "test_content": combined_content,
             "test_json": test_json,
+            "chart_image": chart["image"] if chart else None,
+            "chart_question_index": chart["question_index"] if chart else None,
             "session_id": session_id,
             "parameters": {
                 "question_count": request_data.question_count,
                 "difficulty": request_data.difficulty.value,
                 "question_type": request_data.question_type.value,
                 "include_answers": request_data.include_answers,
+                "include_chart": request_data.include_chart,
                 "document_id": request_data.document_id,
             },
         }
@@ -296,6 +319,27 @@ def generate_test(request_data: TestGenerationRequest, request: Request):
     except Exception as e:
         logging.error(f"Error generating test: {e}")
         raise HTTPException(status_code=500, detail=f"Ошибка генерации теста: {str(e)}")
+
+
+def _maybe_attach_chart(test_json: Optional[dict], enabled: bool, model_name: str) -> Optional[dict]:
+    """Если enabled=True, генерирует одну схему для первого вопроса. Возвращает данные картинки или None."""
+    if not enabled or not test_json:
+        return None
+    questions = test_json.get("questions") if isinstance(test_json, dict) else None
+    if not questions:
+        return None
+    topic = (questions[0] or {}).get("question", "")
+    if not topic:
+        return None
+    try:
+        llm = create_llm(model_name, temperature=0.0, max_tokens=200)
+    except Exception as e:
+        logging.warning(f"Cannot create LLM for chart planning: {e}")
+        llm = None
+    data_url = generate_chart_image(topic, llm=llm)
+    if not data_url:
+        return None
+    return {"image": data_url, "question_index": 0, "question_text": topic}
 
 
 MATERIAL_SYSTEM_PROMPT = (
@@ -400,6 +444,8 @@ def generate_material_and_test(request_data: MaterialAndTestRequest, request: Re
     except Exception:
         test_json = None
 
+    chart = _maybe_attach_chart(test_json, request_data.include_chart, model_name)
+
     insert_application_logs(
         session_id,
         f"Generate material+test: {prompt_text[:80]}",
@@ -410,6 +456,8 @@ def generate_material_and_test(request_data: MaterialAndTestRequest, request: Re
     return {
         "test_content": combined_content,
         "test_json": test_json,
+        "chart_image": chart["image"] if chart else None,
+        "chart_question_index": chart["question_index"] if chart else None,
         "material_content": material_md,
         "document_id": file_id,
         "document_filename": filename,
@@ -420,66 +468,9 @@ def generate_material_and_test(request_data: MaterialAndTestRequest, request: Re
             "difficulty": request_data.difficulty.value,
             "question_type": request_data.question_type.value,
             "include_answers": request_data.include_answers,
+            "include_chart": request_data.include_chart,
         },
     }
-
-
-# ── Анализ изображений (через Vision Agent) ────────────────────────
-
-@app.post("/analyze-image", response_model=ImageAnalysisResponse)
-async def analyze_image(
-    file: UploadFile = File(...),
-    question: str = Form("Опиши это изображение подробно и извлеки весь текст."),
-    session_id: Optional[str] = Form(None),
-):
-    """
-    Анализ изображения через Vision Agent (Llama 4 Scout).
-
-    Поддерживает JPEG, PNG, GIF, WebP.
-    Можно задать конкретный вопрос по изображению.
-    """
-    session_id = session_id or str(uuid.uuid4())
-
-    allowed_types = {"image/jpeg", "image/png", "image/gif", "image/webp"}
-    if file.content_type not in allowed_types:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Неподдерживаемый тип: {file.content_type}. Допустимы: {', '.join(allowed_types)}",
-        )
-
-    try:
-        image_bytes = await file.read()
-        if not image_bytes:
-            raise HTTPException(status_code=400, detail="Пустой файл")
-
-        image_data = base64.b64encode(image_bytes).decode("utf-8")
-
-        chat_history = get_chat_history(session_id)
-
-        result = run_agent(
-            user_input=question,
-            session_id=session_id,
-            chat_history=chat_history,
-            agent_type="vision",
-            image_data=image_data,
-            image_mime_type=file.content_type,
-        )
-
-        answer = result["answer"]
-        insert_application_logs(session_id, f"[Image: {file.filename}] {question}", answer, "vision")
-
-        return ImageAnalysisResponse(
-            answer=answer,
-            session_id=session_id,
-            agent_type="vision",
-            filename=file.filename,
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logging.error(f"Error analyzing image: {e}")
-        raise HTTPException(status_code=500, detail=f"Ошибка анализа изображения: {str(e)}")
 
 
 # ── Загрузка документов ────────────────────────────────────────────
@@ -595,10 +586,11 @@ async def save_test_endpoint(
     filename: str = Form("test.md"),
     document_id: Optional[int] = Form(None),
     session_id: Optional[str] = Form(None),
+    chart_image: Optional[str] = Form(None),
 ):
-    """Сохраняет сгенерированный тест как PDF."""
+    """Сохраняет сгенерированный тест как PDF. chart_image — data URL или base64."""
     try:
-        pdf_buffer = markdown_to_pdf(test_content, filename)
+        pdf_buffer = markdown_to_pdf(test_content, filename, chart_image_b64=chart_image)
         pdf_content = pdf_buffer.read()
         pdf_filename = filename.replace('.md', '.pdf')
 
@@ -641,7 +633,7 @@ async def proxy_google_form(request: Request):
         normalized_payload = test_payload
         if isinstance(test_payload, dict) and "test" not in test_payload:
             normalized_payload = {"test": test_payload}
-        resp = requests.post(script_url, json=normalized_payload, timeout=15)
+        resp = requests.post(script_url, json=normalized_payload, timeout=120)
         resp.raise_for_status()
         try:
             data = resp.json()
@@ -741,7 +733,6 @@ def agent_info():
         "agents": {
             "orchestrator": "Маршрутизирует запросы к нужному агенту",
             "rag": "Поиск по документам (ChromaDB) и генерация ответа",
-            "vision": "Анализ изображений (Llama 4 Scout via Groq)",
             "test_gen": "Генерация тестов с валидацией JSON",
             "chat": "Общий разговор о платформе",
         },

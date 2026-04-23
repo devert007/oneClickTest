@@ -18,14 +18,10 @@ class AgentState(TypedDict, total=False):
     chat_history: list                  # история [{role, content}, …]
 
     # ── Маршрутизация ───────────────────────────────────────────────
-    agent_type: str                     # "rag" | "vision" | "test_gen" | "chat"
+    agent_type: str                     # "rag" | "test_gen" | "chat"
 
     # ── RAG ─────────────────────────────────────────────────────────
     context: str                        # извлечённые чанки из ChromaDB
-
-    # ── Vision ──────────────────────────────────────────────────────
-    image_data: Optional[str]           # base64-закодированное изображение
-    image_mime_type: Optional[str]      # MIME-тип ("image/jpeg", "image/png" …)
 
     # ── Генерация тестов ────────────────────────────────────────────
     test_params: Optional[dict]         # {question_count, difficulty, question_type, include_answers}

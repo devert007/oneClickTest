@@ -6,11 +6,11 @@ LangGraph — сборка графа агентов и главная точк�
     │ Orchestrator │  ← точка входа
     └──────┬──────┘
            │ conditional edge (route_to_agent)
-     ┌─────┼──────┬──────────┐
-     ▼     ▼      ▼          ▼
-   [RAG] [Vision] [TestGen] [Chat]
-     │     │       │          │
-     └─────┴───────┴──────────┘
+     ┌─────┼──────────┐
+     ▼     ▼          ▼
+   [RAG] [TestGen] [Chat]
+     │     │          │
+     └─────┴──────────┘
                    │
                   END
 
@@ -35,7 +35,6 @@ from langgraph.graph import StateGraph, END
 from agents.state import AgentState
 from agents.orchestrator import orchestrator_node, route_to_agent
 from agents.rag_agent import rag_node
-from agents.vision_agent import vision_node
 from agents.test_gen_agent import test_gen_node
 from agents.chat_agent import chat_node
 
@@ -49,7 +48,6 @@ def build_graph():
     # Узлы
     graph.add_node("orchestrator", orchestrator_node)
     graph.add_node("rag", rag_node)
-    graph.add_node("vision", vision_node)
     graph.add_node("test_gen", test_gen_node)
     graph.add_node("chat", chat_node)
 
@@ -62,14 +60,13 @@ def build_graph():
         route_to_agent,
         {
             "rag": "rag",
-            "vision": "vision",
             "test_gen": "test_gen",
             "chat": "chat",
         },
     )
 
     # Все агенты → END
-    for node_name in ("rag", "vision", "test_gen", "chat"):
+    for node_name in ("rag", "test_gen", "chat"):
         graph.add_edge(node_name, END)
 
     return graph.compile()
@@ -98,8 +95,6 @@ def run_agent(
     model_name: str = "openai/gpt-oss-120b",
     chat_history: Optional[list] = None,
     agent_type: Optional[str] = None,
-    image_data: Optional[str] = None,
-    image_mime_type: Optional[str] = None,
     test_params: Optional[dict] = None,
     document_text: Optional[str] = None,
 ) -> dict:
@@ -112,8 +107,6 @@ def run_agent(
         model_name:      имя LLM для генерации
         chat_history:    история чата
         agent_type:      принудительный выбор агента (None = оркестратор решает)
-        image_data:      base64-изображение (для Vision Agent)
-        image_mime_type:  MIME-тип изображения
         test_params:     параметры генерации теста
         document_text:   текст документа для генерации теста
 
@@ -135,9 +128,6 @@ def run_agent(
 
     if agent_type:
         initial_state["agent_type"] = agent_type
-    if image_data:
-        initial_state["image_data"] = image_data
-        initial_state["image_mime_type"] = image_mime_type or "image/jpeg"
     if test_params:
         initial_state["test_params"] = test_params
     if document_text:

@@ -44,6 +44,7 @@ const CreateTest = () => {
         difficulty: "Для средних классов",
         questionType: "multiple_choice",
         includeAnswers: true,
+        includeChart: false,
         model: "openai/gpt-oss-120b",
     });
     const [generatedTest, setGeneratedTest] = useState(null);
@@ -181,6 +182,7 @@ const CreateTest = () => {
                 difficulty: testParams.difficulty,
                 question_type: testParams.questionType,
                 include_answers: testParams.includeAnswers,
+                include_chart: testParams.includeChart,
                 model: testParams.model,
                 session_id: `session_${Date.now()}`,
             };
@@ -219,6 +221,7 @@ const CreateTest = () => {
                 difficulty: testParams.difficulty,
                 question_type: testParams.questionType,
                 include_answers: testParams.includeAnswers,
+                include_chart: testParams.includeChart,
                 model: testParams.model,
                 session_id: `session_${Date.now()}`,
             };
@@ -271,7 +274,8 @@ const CreateTest = () => {
             setIsGenerating(true);
 
             const result = await testGenerationAPI.saveTest(
-                generatedTest.test_content, filename, documentId, sessionId
+                generatedTest.test_content, filename, documentId, sessionId,
+                generatedTest.chart_image || null
             );
 
             setGeneratedTest((prev) => ({
@@ -317,7 +321,8 @@ const CreateTest = () => {
             setIsGenerating(true);
 
             const result = await testGenerationAPI.saveTest(
-                generatedTest.test_content, filename, documentId, sessionId
+                generatedTest.test_content, filename, documentId, sessionId,
+                generatedTest.chart_image || null
             );
 
             await downloadTestFromBackend(result.file_id, result.filename);
@@ -593,6 +598,15 @@ const CreateTest = () => {
                                 </div>
                             )}
 
+                            {generatedTest.chart_image && (
+                                <figure className="ct-chart">
+                                    <img src={generatedTest.chart_image} alt="Схема к вопросу" />
+                                    <figcaption>
+                                        Сгенерированная схема к вопросу {(generatedTest.chart_question_index ?? 0) + 1}
+                                    </figcaption>
+                                </figure>
+                            )}
+
                             <div className="ct-test-content">
                                 <pre>{generatedTest.test_content}</pre>
                             </div>
@@ -710,6 +724,17 @@ const CreateTest = () => {
                             }
                         />
                         <span>Включать ответы</span>
+                    </label>
+
+                    <label className="ct-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={testParams.includeChart}
+                            onChange={(e) =>
+                                setTestParams((prev) => ({ ...prev, includeChart: e.target.checked }))
+                            }
+                        />
+                        <span>Сгенерировать схему/график для одного вопроса</span>
                     </label>
 
                     <button

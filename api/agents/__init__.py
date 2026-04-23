@@ -3,7 +3,6 @@ LangGraph Agentic RAG — мульти-агентная система OneClickT
 
 Архитектура:
     User → Orchestrator (Router) → RAG Agent
-                                  → Vision Agent
                                   → Test Generator Agent
                                   → Chat Agent
 """
