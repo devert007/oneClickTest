@@ -54,7 +54,7 @@ def build_graph():
     # Точка входа
     graph.set_entry_point("orchestrator")
 
-    # Условные рёбра: orchestrator → один из агентов
+    # рёбра: orchestrator → один из агентов
     graph.add_conditional_edges(
         "orchestrator",
         route_to_agent,

@@ -365,12 +365,7 @@ def _generate_material_from_prompt(prompt: str, model_name: str) -> str:
 
 @app.post("/generate-material-and-test")
 def generate_material_and_test(request_data: MaterialAndTestRequest, request: Request):
-    """
-    По пользовательскому промпту (например, «Тест для 8 класса по биологии»):
-      1) Генерирует учебный материал через LLM.
-      2) Сохраняет материал как документ пользователя (БД + ChromaDB).
-      3) Передаёт материал в Test Generator Agent и возвращает готовый тест.
-    """
+
     session_id = request_data.session_id or str(uuid.uuid4())
     client_id = get_client_id_from_request(request)
     model_name = request_data.model.value
